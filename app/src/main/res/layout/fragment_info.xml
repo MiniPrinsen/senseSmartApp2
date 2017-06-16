@@ -108,6 +108,7 @@ SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
                 android:text="VÄGBESKRIVNING"
                 android:textColor="@color/colorWhite"
                 android:layout_centerHorizontal="true"
+                android:background="@color/colorPrimaryDark"
                 />
         </RelativeLayout>
     </ScrollView>

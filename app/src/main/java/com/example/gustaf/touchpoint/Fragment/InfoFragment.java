@@ -3,11 +3,13 @@ package com.example.gustaf.touchpoint.Fragment;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +69,8 @@ public class InfoFragment extends Fragment
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ScrollPositionObserver());
         ImageView imgview = new ImageView(getContext());
         imgview.setImageResource(R.drawable.ic_arrow_back);
-        imgview.setColorFilter(R.color.colorPrimary);
+        int color = Color.parseColor("#51ACC7");
+        imgview.setColorFilter(color);
         setToolbarTitle(toolbarTitle);
         imgview.setLayoutParams(new Toolbar.LayoutParams(70,70, Gravity.START));
         toolbar.addView(imgview);
@@ -90,6 +93,7 @@ public class InfoFragment extends Fragment
         });
         new DownloadImageTask((ImageView) rootView.findViewById(R.id.imageView1))
                 .execute("http://ellesmerecollegetitans.co.uk/wp-content/uploads/2017/05/officially-amazing_brand_logo_image_bid.png");
+                Log.d("LOGGAR","Nu är jag här");
 
         return rootView;
     }

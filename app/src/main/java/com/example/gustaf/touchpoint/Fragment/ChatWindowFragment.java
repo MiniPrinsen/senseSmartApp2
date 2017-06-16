@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -70,6 +71,8 @@ public class ChatWindowFragment extends Fragment {
 
         ImageView imgview = new ImageView(getContext());
         imgview.setImageResource(R.drawable.ic_arrow_back);
+        int color = Color.parseColor("#51ACC7");
+        imgview.setColorFilter(color);
         imgview.setLayoutParams(new Toolbar.LayoutParams(70,70, Gravity.START));
         toolbar.addView(imgview);
         imgview.setOnClickListener(new View.OnClickListener() {
@@ -196,14 +199,6 @@ public class ChatWindowFragment extends Fragment {
                     }
 
                     break;
-                /*case R.id.btn_back:
-                    try {
-                        Intent myIntent = new Intent(getContext(), ChatFragment.class);
-                        myIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivityForResult(myIntent, 0);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }*/
 
                 default:
                     break;

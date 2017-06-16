@@ -80,7 +80,4 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
             Log.d("Location not accessed", "Security Exception");
         }
     }
-    public void getLongitude() {
-
-    }
 }
