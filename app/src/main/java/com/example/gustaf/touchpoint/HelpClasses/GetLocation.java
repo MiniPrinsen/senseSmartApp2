@@ -33,6 +33,7 @@ import java.util.List;
  */
 public class GetLocation implements LocationListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, Runnable {
     private static final long ONE_MIN = 1000 * 60;
+    private static final long CITY_DIST = 50000;
     private static final long TWO_MIN = ONE_MIN * 2;
     private static final long FIVE_MIN = ONE_MIN * 5;
     private static final long POLLING_FREQ = 1000 * 30;
@@ -111,7 +112,7 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
                 public void run() {
                     try {
 
-                        String urlParameters = "longitude=" + getLongitude() + "&latitude=" + getLatitude();
+                        String urlParameters = "longitude=" + getLongitude() + "&latitude=" + getLatitude() + "&distance=" + CITY_DIST;
                         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
                         URL url = new URL("http://130.240.135.32:8080/senseSmart/hey");
                         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();

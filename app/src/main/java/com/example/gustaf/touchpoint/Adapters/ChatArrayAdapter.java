@@ -73,6 +73,4 @@ public class ChatArrayAdapter extends ArrayAdapter {
 
         return row;
     }
-
-
 }

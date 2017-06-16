@@ -45,8 +45,6 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
         return view;
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-
-
         }
 
     @Override
