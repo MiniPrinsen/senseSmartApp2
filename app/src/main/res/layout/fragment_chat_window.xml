@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".BaseActivity"
+    android:id="@+id/chat_window_content"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fafafa"
+    android:clickable="true"
+    android:orientation="vertical" >
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <include layout="@layout/toolbar_layout"/>
+    </android.support.design.widget.AppBarLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <ListView
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:layout_marginTop="@dimen/bottom_navigation_height"
+        android:showDividers="none"
+        android:id="@+id/listanmedView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_above="@+id/faltetForMedelanden">
+    </ListView>
+    <RelativeLayout
+        android:id="@+id/faltetForMedelanden"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical"
+        android:background="@color/colorWhite"
+        android:gravity="bottom">
+
+        <EditText
+            android:id="@+id/msgBox"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="291dp"
+            android:hint="Skriv ett meddelande..."
+            android:layout_margin="6dip"
+            android:background="#ffffff"
+            android:layout_weight="0.63"
+            android:textSize="14sp"/>
+        <Button android:id="@+id/send_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SEND"
+            android:padding="0dp"
+            android:textColor="#FFFFFF"
+            android:background="@color/colorPrimary"
+            android:layout_gravity="center_vertical"
+            android:layout_toRightOf="@id/msgBox"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

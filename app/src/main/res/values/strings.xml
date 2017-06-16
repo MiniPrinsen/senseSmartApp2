@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Touch Point</string>
+    <string name="settings_name">INSTÄLLNINGAR</string>
+    <string name="map_name">NÄRA DIG</string>
+    <string name="chat_name">CHATT</string>
+    <string name="achievement_name">DINA TROFÈER</string>
+    <string name="messagebox_hint">Skriv ett meddelande...</string>
+    <string name="server_url">http://127.0.0.1:8080/senseSmart/hey</string>
+    <string name="send_text">SEND</string>
+
+    <string name="object_bonnstan">BONNSTAN</string>
+    <string name="object_lejonstromsbron">LEJONSTRÖMSBRON</string>
+    <string name="object_johanna_i_parken">JOHANNA I PARKEN</string>
+    <string name="title_activity_map">Map</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">Map</string>
+
+
+</resources>

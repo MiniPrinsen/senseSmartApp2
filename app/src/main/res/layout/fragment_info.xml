@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--THIS IS THE XML FOR THE INFO PAGE. WE HAVE A SCROLLVIEW AS THE MAIN LAYOUT OF THE FRAGMENT
+SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/flWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <!--INCLUDES THE NAVIGATION BAR SINCE WE WILL INFLATE A BACK BUTTON ON IT IN THE CODE.-->
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true">
+
+        <include layout="@layout/toolbar_layout"
+            />
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/infofragment"
+        android:background="@color/colorWhite"
+        android:clickable="true"
+        >
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--THE VIEWFLIPPER IS USED TO GET THE SLIDESHOW ON THE PAGE. IF YOU WANT
+             MORE PICTURES, ADD A NEW IMAGEVIEW INSIDE THIS VIEWFLIPPER.-->
+            <ViewFlipper
+                android:id="@+id/flipper"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/info_photo_height"
+                android:layout_marginTop="@dimen/bottom_navigation_height"
+                >
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/info_photo_height" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/info_photo_height"
+                    android:background="@drawable/bonnstan_square600"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/info_photo_height"
+                    android:background="@drawable/lejonstromsbron_square600"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/info_photo_height"
+                    android:background="@drawable/johannaiparken_square600"/>
+            </ViewFlipper>
+
+            <!--THIS IMAGEVIEW IS USED AS THE BLURRED BACKGROUND WHERE THE TEXT IS PUT.-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/blurbitmap"
+                android:layout_below="@+id/flipper"
+                android:background="@drawable/lejonstromsbronblur"
+                android:scaleType="fitXY"
+                />
+            <!--RATINGBAR INFLATES THE RATING ON THE PAGE.-->
+            <RatingBar
+                android:id="@+id/ratingbar"
+                android:numStars="5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/myrating"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:rating="4"
+                android:layout_below="@+id/flipper"/>
+            <!--THIS IS THE INFO TEXTVIEW.-->
+            <TextView
+                android:id="@+id/infoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_below="@+id/ratingbar"
+                android:layout_marginTop="25dp"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:text="Mitt i grönskan står gjutjärnsfontänen Johanna.
+        1895, då Skellefteå fick vattenledning, ansåg drätselkammaren att staden borde förskönas med en fontän.
+        Stadsfullmäktige - på den tiden bestående av enbart herrar -
+        sammanträdde och resultatet blev Johanna."
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:textSize="16sp"
+                android:textColor="@color/colorWhite"/>
+
+            <!--BUTTON FOR THE DIRECTIONS-->
+            <Button
+                android:id="@+id/directionsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginTop="25dp"
+                android:paddingLeft="10dp"
+                android:layout_marginBottom="25dp"
+                android:layout_below="@+id/infoText"
+                android:paddingRight="10dp"
+                android:text="VÄGBESKRIVNING"
+                android:textColor="@color/colorWhite"
+                android:layout_centerHorizontal="true"
+                />
+        </RelativeLayout>
+    </ScrollView>
+    </FrameLayout>

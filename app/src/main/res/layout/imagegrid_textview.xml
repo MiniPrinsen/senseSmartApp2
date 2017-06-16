@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView android:id="@+id/gridTextTitle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:gravity="center"
+    android:textAllCaps="true"
+    android:paddingTop="70dp"
+    android:textSize="12sp"
+    android:paddingBottom="20dp"
+    android:textColor="@color/gridTextColor"
+    android:background="@drawable/imagegridview_gradient"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
