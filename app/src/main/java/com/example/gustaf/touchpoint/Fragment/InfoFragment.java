@@ -4,14 +4,15 @@ package com.example.gustaf.touchpoint.Fragment;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -25,7 +26,6 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.example.gustaf.touchpoint.BaseActivity;
-import com.example.gustaf.touchpoint.HelpClasses.DownloadImageTask;
 import com.example.gustaf.touchpoint.R;
 
 
@@ -67,7 +67,7 @@ public class InfoFragment extends Fragment
         findViewsById();
         slideShow();
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ScrollPositionObserver());
-        ImageView imgview = new ImageView(getContext());
+        final ImageView imgview = new ImageView(getContext());
         imgview.setImageResource(R.drawable.ic_arrow_back);
         int color = Color.parseColor("#51ACC7");
         imgview.setColorFilter(color);
@@ -91,9 +91,36 @@ public class InfoFragment extends Fragment
                 startActivity(intent);
             }
         });
+
+        View parent = rootView.findViewById(R.id.infofragment);
+        parent.post(new Runnable() {
+            public void run() {
+                // Post in the parent's message queue to make sure the parent
+                // lays out its children before we call getHitRect()
+                Rect delegateArea = new Rect();
+                ImageView delegate = imgview;
+                delegate.getHitRect(delegateArea);
+                delegateArea.top -= 600;
+                delegateArea.bottom += 300;
+                delegateArea.left -= 600;
+                delegateArea.right += 300;
+                TouchDelegate expandedArea = new TouchDelegate(delegateArea,
+                        delegate);
+                // give the delegate to an ancestor of the view we're
+                // delegating the
+                // area to
+                if (View.class.isInstance(delegate.getParent())) {
+                    ((View) delegate.getParent())
+                            .setTouchDelegate(expandedArea);
+                }
+            };
+        });
+
+        /*
         new DownloadImageTask((ImageView) rootView.findViewById(R.id.imageView1))
                 .execute("http://ellesmerecollegetitans.co.uk/wp-content/uploads/2017/05/officially-amazing_brand_logo_image_bid.png");
                 Log.d("LOGGAR","Nu är jag här");
+        */
 
         return rootView;
     }

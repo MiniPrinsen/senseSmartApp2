@@ -38,10 +38,10 @@ SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
                 android:layout_height="@dimen/info_photo_height"
                 android:layout_marginTop="@dimen/bottom_navigation_height"
                 >
-                <ImageView
+                <!--<ImageView
                     android:id="@+id/imageView1"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/info_photo_height" />
+                    android:layout_height="@dimen/info_photo_height" />-->
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/info_photo_height"
@@ -86,10 +86,9 @@ SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
                 android:layout_marginTop="25dp"
                 android:layout_gravity="center"
                 android:textAlignment="center"
-                android:text="Mitt i grönskan står gjutjärnsfontänen Johanna.
-        1895, då Skellefteå fick vattenledning, ansåg drätselkammaren att staden borde förskönas med en fontän.
-        Stadsfullmäktige - på den tiden bestående av enbart herrar -
-        sammanträdde och resultatet blev Johanna."
+                android:text="I Sverige har det funnits drygt 70 kyrkstäder, men det finns endast 16 ”levande” kyrkstäder kvar, däribland i Skellefteå. De anlades eftersom det var kyrkoplikt i landet, dvs. man var tvungen att besöka kyrkan. Skellefteå socken innefattade på 1600-talet även Norsjö och av förståeliga skäl kunde man inte vandra fram och tillbaka till kyrkan på en dag när det rörde sig om flera mil. Bonnstan har funnits i närheten av Skellefteå landsförsamlings kyrka sedan 1600-talet, men de nuvarande husen kom på plats i mitten av 1830-talet efter en stor brand som ödelade hela den gamla bonnstan.
+
+Kamrarna i Bonnstan i Skellefteå ägs privat och har på senare år fått något av en renässans.  De bestod av 116 hus och 392 numrerade kammare innan två hus med 16 kammare brann ner 2012. De är alla olika och många flyttades till Bonnstan efter branden 1835. Vanligast är tvåvånings­hus med åtta kammare och envåningshus med fyra olika kammare med en gemensam murstock, ofta byggda gemensamt av byamännen i socknens byar. Några kammare är friliggande. Alla står i räta rader efter ett rutnätsystem. Bonnstan blev förklarat som byggnadsminne 1982 vilket innebär vissa restriktioner för ägarna."
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
                 android:textSize="16sp"
@@ -108,7 +107,7 @@ SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
                 android:text="VÄGBESKRIVNING"
                 android:textColor="@color/colorWhite"
                 android:layout_centerHorizontal="true"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/colorPrimary"
                 />
         </RelativeLayout>
     </ScrollView>

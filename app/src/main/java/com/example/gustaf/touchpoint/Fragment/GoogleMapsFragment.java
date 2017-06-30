@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.gustaf.touchpoint.BaseActivity;
-import com.example.gustaf.touchpoint.HelpClasses.Location;
-import com.example.gustaf.touchpoint.HelpClasses.TouchPoint;
+import com.example.gustaf.touchpoint.HelpClasses.Coordinates;
+import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,6 +18,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -42,8 +43,8 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frag_map);
         mapFragment.getMapAsync(this);
 
-        return view;
 
+        return view;
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         }
 
@@ -52,11 +53,11 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
     mMap = googleMap;
 
     BaseActivity bs = (BaseActivity)getActivity();
-    ArrayList<TouchPoint> touchPoints = bs.getTouchPoints();
+    ArrayList<CityObject> cityObjects = bs.getCityObjects();
     LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-        for (TouchPoint tPoint : touchPoints) {
-            Location loc = tPoint.getLocation();
+        for (CityObject tPoint : cityObjects) {
+            Coordinates loc = tPoint.getCoordinates();
             LatLng pos = new LatLng(loc.getLatitude(), loc.getLongitude());
             mMap.addMarker(new MarkerOptions().position(pos).title(tPoint.getName()));
             builder.include(pos);
@@ -75,7 +76,61 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
             mMap.setMyLocationEnabled(true);
         }
         catch(SecurityException e) {
-            Log.d("Location not accessed", "Security Exception");
+            Log.d("Coordinate not accessed", "Security Exception");
         }
+        getInfoWindow();
+    }
+
+
+
+    public void getInfoWindow() {
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            // Use default InfoWindow frame
+            @Override
+            public View getInfoWindow(Marker arg0) {
+                View v = getActivity().getLayoutInflater().inflate(R.layout.layout_info_window, null);
+                //View v = View.inflate(getContext(), R.layout.layout_info_window,null);
+
+
+                // Returning the view containing InfoWindow contents
+                return v;
+
+            }
+
+            // Defines the contents of the InfoWindow
+            @Override
+            public View getInfoContents(Marker arg0) {
+
+                // Getting view from the layout file info_window_layout
+                return null;
+            }
+        });
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+            @Override
+            public void onMapClick(LatLng arg0) {
+                // Clears any existing markers from the GoogleMap
+                mMap.clear();
+
+                // Creating an instance of MarkerOptions to set position
+                MarkerOptions markerOptions = new MarkerOptions();
+
+                // Setting position on the MarkerOptions
+                markerOptions.position(arg0);
+
+                // Animating to the currently touched position
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(arg0));
+
+                // Adding marker on the GoogleMap
+                Marker marker = mMap.addMarker(markerOptions);
+
+                // Showing InfoWindow on the GoogleMap
+                marker.showInfoWindow();
+
+            }
+        });
+
     }
 }

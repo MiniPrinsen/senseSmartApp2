@@ -24,10 +24,10 @@ import com.example.gustaf.touchpoint.Fragment.AchievementFragment;
 import com.example.gustaf.touchpoint.Fragment.ChatFragment;
 import com.example.gustaf.touchpoint.Fragment.GoogleMapsFragment;
 import com.example.gustaf.touchpoint.Fragment.ListFragment;
+import com.example.gustaf.touchpoint.HelpClasses.CityObject;
+import com.example.gustaf.touchpoint.HelpClasses.Coordinates;
 import com.example.gustaf.touchpoint.HelpClasses.GetLocation;
-import com.example.gustaf.touchpoint.HelpClasses.Location;
 import com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager;
-import com.example.gustaf.touchpoint.HelpClasses.TouchPoint;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +44,7 @@ public class BaseActivity extends AppCompatActivity {
     ViewPager viewPagerTabbed;
     NoSwipeViewPager viewPagerDeafult;
 
-    ArrayList<TouchPoint> touchPoints;
+    ArrayList<CityObject> cityObjects;
 
     ViewPagerAdapter viewPagerAdapterTabbed;
     ViewPagerAdapter viewPagerAdapterDeafult;
@@ -58,9 +58,10 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_base);
         super.onCreate(savedInstanceState);
-        touchPoints = createExampleTouchPoints();
+        cityObjects = createExampleTouchPoints();
 
         /* Implements the toolbar */
         toolbar = (Toolbar) findViewById(R.id.gustaf_toolbar);
@@ -96,11 +97,12 @@ public class BaseActivity extends AppCompatActivity {
         /*Sets the properties*/
         bottomNavigation.setDefaultBackgroundColor(ContextCompat.getColor(this, R.color.colorWhite));
         bottomNavigation.setInactiveColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        bottomNavigation.setAccentColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        bottomNavigation.setAccentColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
         bottomNavigation.setForceTint(true);
 
         bottomNavigation.setTitleTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+        bottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
         bottomNavigation.setTitleTextSize(24, 24);
         /*Sets the current position*/
 
@@ -121,13 +123,13 @@ public class BaseActivity extends AppCompatActivity {
                         documentaryItem.setDrawable(R.drawable.ic_trophy_empty);
                         break;
                     case 1:
-                        showPage(0, "CHAT");
+                        showPage(0, "CHATT");
                         crimeItem.setDrawable(R.drawable.ic_map_empty);
                         dramaItem.setDrawable(R.drawable.ic_chat_filled);
                         documentaryItem.setDrawable(R.drawable.ic_trophy_empty);
                         break;
                     case 2:
-                        showPage(1, "DINA TROFÈER");
+                        showPage(1, "PRESTATIONER");
                         crimeItem.setDrawable(R.drawable.ic_map_empty);
                         dramaItem.setDrawable(R.drawable.ic_chat_empty);
                         documentaryItem.setDrawable(R.drawable.ic_trophy_filled);
@@ -180,8 +182,7 @@ public class BaseActivity extends AppCompatActivity {
 
         viewPagerAdapterDeafult = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapterDeafult.addFragments(new ChatFragment(), "CHATT");
-        viewPagerAdapterDeafult.addFragments(new AchievementFragment(), "DINA TROFÈER");
-        //viewPagerAdapterDeafult.addFragments(new ChatWindowFragment(), "STATSFONTÄNEN");
+        viewPagerAdapterDeafult.addFragments(new AchievementFragment(), "PRESTATIONER");
         viewPagerDeafult.setAdapter(viewPagerAdapterDeafult);
     }
 
@@ -238,24 +239,58 @@ public class BaseActivity extends AppCompatActivity {
             Log.v("LOCATION HEHE", String.valueOf(loc.getLongitude()));
             current_position = loc;
             ((ListFragment)(viewPagerAdapterTabbed.getItem(0))).recieveLocation(loc);
-            for (TouchPoint tPoint : touchPoints) {
-                tPoint.setDistance(lengthBetween(loc, tPoint.getLocation()));
+            for (CityObject tPoint : cityObjects) {
+                tPoint.setDistance(lengthBetween(loc, tPoint.getCoordinates()));
             }
-            ((ChatFragment)(viewPagerAdapterDeafult.getItem(0) ) ).updateLocation(touchPoints.get(0));
+            ((ChatFragment)(viewPagerAdapterDeafult.getItem(0) ) ).updateLocation(cityObjects.get(0));
 
             super.handleMessage(msg);
         }
 
     };
 
-    public ArrayList<TouchPoint> createExampleTouchPoints(){
+    public ArrayList<CityObject> createExampleTouchPoints() {
+        ArrayList<Integer> images12 = new ArrayList<>();
+        images12.add(R.drawable.bonnstan_square600);
+        images12.add(R.drawable.johannaiparken_square600);
+        CityObject bonnstan = new CityObject("Bonnstan", "Bonnstan är en stad som ser ut som den är jättegammal"
+        , new Coordinates(64.7506874,20.933061199999997), (float)34.5, (float)2.5, images12);
 
-        TouchPoint bonnstan = new TouchPoint("Bonnstan", R.drawable.bonnstan_square600, "Bonnstan är det område med 116 kyrkstugor i Skellefteå, som ligger strax öster om landsförsamlingens kyrka. Bonnstan ingår tillsammans med bland annat landskyrkan och Lejonströmsbron i riksintresset \"Skellefteå sockencentrum\" (AC 20 Skellefteå, västra delen) med motiveringen \"Skellefteå sockencentrum, kyrkstad och marknadsplats vid den gamla kustlandsvägen, som berättar om platsens betydelse för bygdens kyrkliga, sociala och kommersiella liv sedan medeltiden.\"[1] Bonnstan är sedan 1982 byggnadsminne.", new Location(64.7506874,20.933061199999997));
-        TouchPoint johanna_i_parken = new TouchPoint("Johanna i Parken", R.drawable.johannaiparken_square600, "", new Location(64.7497674, 20.95096460000002));
-        TouchPoint lejonstromsbron = new TouchPoint("Lejonströmsbron", R.drawable.lejonstromsbron_square600, "", new Location(64.7501393,20.91393830000004));
-        TouchPoint volleyBoll = new TouchPoint("Volleybollplanen Campus", R.drawable.volleyball_square600, "", new Location(64.74512696, 20.9547472));
+        CityObject bonnstan2 = new CityObject("Bonnstan", "Bonnstan är en stad som ser ut som den är jättegammal"
+                , new Coordinates(64.7506874,20.933061199999997), (float)34.5, (float)2.5, images12);
 
-        ArrayList<TouchPoint> tpoints = new ArrayList<>();
+        CityObject bonnstan3 = new CityObject("Bonnstan", "Bonnstan är en stad som ser ut som den är jättegammal"
+                , new Coordinates(64.7506874,20.933061199999997), (float)34.5, (float)2.5, images12);
+        ArrayList<CityObject> tpoints = new ArrayList<>();
+        tpoints.add(bonnstan);
+        tpoints.add(bonnstan2);
+        tpoints.add(bonnstan3);
+        return tpoints;
+    }
+
+   /* public ArrayList<CityObject> createExampleTouchPoints(){
+
+        CityObject bonnstan = new CityObject("Bonnstan", R.drawable.bonnstan_square600,
+                "Bonnstan är det område med 116 kyrkstugor i Skellefteå, som ligger strax öster " +
+                        "om landsförsamlingens kyrka. Bonnstan ingår tillsammans med bland annat " +
+                        "landskyrkan och Lejonströmsbron i riksintresset" +
+                        " \"Skellefteå sockencentrum\" (AC 20 Skellefteå," +
+                        " västra delen) med motiveringen \"Skellefteå sockencentrum, " +
+                        "kyrkstad och marknadsplats vid den gamla kustlandsvägen," +
+                        " som berättar om platsens betydelse för bygdens kyrkliga," +
+                        " sociala och kommersiella liv sedan medeltiden.\"[1]" +
+                        " Bonnstan är sedan 1982 byggnadsminne.",
+                new Coordinates(64.7506874,20.933061199999997));
+        CityObject johanna_i_parken = new CityObject("Johanna i Parken",
+                R.drawable.johannaiparken_square600, "", new Coordinates(64.7497674, 20.95096460000002));
+
+        CityObject lejonstromsbron = new CityObject("Lejonströmsbron",
+                R.drawable.lejonstromsbron_square600, "", new Coordinates(64.7501393,20.91393830000004));
+
+        CityObject volleyBoll = new CityObject("Volleybollplanen Campus",
+                R.drawable.volleyball_square600, "", new Coordinates(64.74512696, 20.9547472));
+
+        ArrayList<CityObject> tpoints = new ArrayList<>();
 
         tpoints.add(bonnstan);
         tpoints.add(lejonstromsbron);
@@ -263,19 +298,19 @@ public class BaseActivity extends AppCompatActivity {
         tpoints.add(volleyBoll);
 
         return tpoints;
-    }
+    }*/
 
-    private ArrayList<TouchPoint> sortedTouchPoints() {
+    private ArrayList<CityObject> sortedTouchPoints() {
 
-        if (touchPoints == null){
-            touchPoints = createExampleTouchPoints();
+        if (cityObjects == null){
+            cityObjects = createExampleTouchPoints();
         }
-        Collections.sort(touchPoints, new Comparator<TouchPoint>() {
+        Collections.sort(cityObjects, new Comparator<CityObject>() {
             @Override
-            public int compare(TouchPoint lhs, TouchPoint rhs) {
+            public int compare(CityObject lhs, CityObject rhs) {
                 if (current_position != null){
-                    float length1 = lengthBetween(current_position, lhs.getLocation());
-                    float length2 = lengthBetween(current_position, rhs.getLocation());
+                    float length1 = lengthBetween(current_position, lhs.getCoordinates());
+                    float length2 = lengthBetween(current_position, rhs.getCoordinates());
                     return Float.compare(length1, length2);
                 }
 
@@ -283,30 +318,25 @@ public class BaseActivity extends AppCompatActivity {
             }
 
         });
-        return touchPoints;
+        return cityObjects;
     }
 
-    public ArrayList<TouchPoint> getTouchPoints(){
-        return touchPoints;
+    public ArrayList<CityObject> getCityObjects(){
+        return cityObjects;
     }
 
-    private float lengthBetween(android.location.Location currentLocation, Location objectLocation) {
+    private float lengthBetween(android.location.Location currentLocation, Coordinates objectCoordinates) {
 
         double earthRadius = 6371000; //meters
-        double dLat = Math.toRadians(currentLocation.getLatitude()-objectLocation.getLatitude());
-        double dLng = Math.toRadians(currentLocation.getLongitude()-objectLocation.getLongitude());
+        double dLat = Math.toRadians(currentLocation.getLatitude()- objectCoordinates.getLatitude());
+        double dLng = Math.toRadians(currentLocation.getLongitude()- objectCoordinates.getLongitude());
         double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(Math.toRadians(objectLocation.getLatitude())) * Math.cos(Math.toRadians(currentLocation.getLatitude())) *
+                Math.cos(Math.toRadians(objectCoordinates.getLatitude())) *
+                        Math.cos(Math.toRadians(currentLocation.getLatitude())) *
                         Math.sin(dLng/2) * Math.sin(dLng/2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         float dist = (float) (earthRadius * c);
 
         return dist;
     }
-
-    public void hideNavigationBar(boolean hide){
-        bottomNavigation.setVisibility(View.GONE);
-        viewPagerDeafult.setPadding(0, 0, 0, 0);
-    }
-
 }

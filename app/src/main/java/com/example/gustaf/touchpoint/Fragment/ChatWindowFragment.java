@@ -45,10 +45,11 @@ import java.net.URLEncoder;
 public class ChatWindowFragment extends Fragment {
     Button buttonSend;
     boolean askedForName = false;
-    public static final String URL =
-            "http://130.240.135.203:9999/TouchPoint/sayhello";
+    public static final String URL ="";
+           // "http://130.240.135.203:9999/TouchPoint/sayhello";
     private Button goBackBtn;
     private EditText chatText;
+    ImageView imgview;
 
 
 
@@ -69,7 +70,7 @@ public class ChatWindowFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_chat_window, container, false);
         findViewsById(view);
 
-        ImageView imgview = new ImageView(getContext());
+        imgview = new ImageView(getContext());
         imgview.setImageResource(R.drawable.ic_arrow_back);
         int color = Color.parseColor("#51ACC7");
         imgview.setColorFilter(color);
@@ -100,6 +101,29 @@ public class ChatWindowFragment extends Fragment {
 
                 return false;
             }
+        });
+        View parent = view.findViewById(R.id.chat_window_content);
+        parent.post(new Runnable() {
+            public void run() {
+                // Post in the parent's message queue to make sure the parent
+                // lays out its children before we call getHitRect()
+                Rect delegateArea = new Rect();
+                ImageView delegate = imgview;
+                delegate.getHitRect(delegateArea);
+                delegateArea.top -= 600;
+                delegateArea.bottom += 300;
+                delegateArea.left -= 600;
+                delegateArea.right += 300;
+                TouchDelegate expandedArea = new TouchDelegate(delegateArea,
+                        delegate);
+                // give the delegate to an ancestor of the view we're
+                // delegating the
+                // area to
+                if (View.class.isInstance(delegate.getParent())) {
+                    ((View) delegate.getParent())
+                            .setTouchDelegate(expandedArea);
+                }
+            };
         });
 
 
@@ -138,43 +162,6 @@ public class ChatWindowFragment extends Fragment {
                 });
         AlertDialog alert = builder.create();
         alert.show();
-    }
-
-    private void doStuff(){
-        toolbar.post(new Runnable() {
-            // Post in the parent's message queue to make sure the parent
-            // lays out its children before you call getHitRect()
-            @Override
-            public void run() {
-                Rect delegateArea = new Rect();
-                goBackBtn.setEnabled(true);
-                goBackBtn.setOnClickListener(customListener);
-
-                // The hit rectangle for the ImageButton
-                goBackBtn.getHitRect(delegateArea);
-
-                // Extend the touch area of the ImageButton beyond its bounds
-                // on the right and bottom.
-                delegateArea.right += 150;
-                delegateArea.bottom += 150;
-                delegateArea.top += 50;
-
-
-                // Instantiate a TouchDelegate.
-                // "delegateArea" is the bounds in local coordinates of
-                // the containing view to be mapped to the delegate view.
-                // "myButton" is the child view that should receive motion
-                // events.
-                TouchDelegate touchDelegate = new TouchDelegate(delegateArea,
-                        goBackBtn);
-
-                // Sets the TouchDelegate on the parent view, such that touches
-                // within the touch delegate bounds are routed to the child.
-                if (View.class.isInstance(goBackBtn.getParent())) {
-                    ((View) goBackBtn.getParent()).setTouchDelegate(touchDelegate);
-                }
-            }
-        });
     }
 
     private View.OnClickListener customListener = new View.OnClickListener() {

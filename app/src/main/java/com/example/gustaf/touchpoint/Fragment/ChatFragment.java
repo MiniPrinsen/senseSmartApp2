@@ -12,7 +12,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.LruCache;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,7 +22,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 
 import com.example.gustaf.touchpoint.HelpClasses.Blur;
-import com.example.gustaf.touchpoint.HelpClasses.TouchPoint;
+import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.R;
 import com.skyfishjy.library.RippleBackground;
 /**
@@ -49,7 +48,7 @@ public class ChatFragment extends Fragment {
     Boolean isShown = false;
     int idOfBlurredImage;
     GradientDrawable drawable;
-    TouchPoint closestTouchPoint;
+    CityObject closestCityObject;
     /**
      *
      * @param inflater
@@ -77,9 +76,8 @@ public class ChatFragment extends Fragment {
         goToChatt2.setOnTouchListener(onTouchListener);
         backgroundAnim = (ImageView) rootView.findViewById(R.id.backgroundImage);
         assert goToChatt != null;
-        volleyboll = new Location("");
-        volleyboll.setLatitude(64.74512696);
-        volleyboll.setLongitude(20.9547472);
+        //volleyboll.setLatitude(64.74512696);
+        //volleyboll.setLongitude(20.9547472);
 
         rippleBackground.startRippleAnimation();
 
@@ -111,7 +109,6 @@ public class ChatFragment extends Fragment {
 
 
             } else if (event.getAction() == android.view.MotionEvent.ACTION_UP && !isShown) {
-                Log.d("TOUCHTEST", "Touch up");
                 Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_in_onpress);
                 anim.setAnimationListener(new Animation.AnimationListener() {
                     @Override
@@ -150,12 +147,12 @@ public class ChatFragment extends Fragment {
     /**
      *
      */
-    public void updateLocation(TouchPoint tPoint) {
-        boolean newTouchPoint = !tPoint.equals(closestTouchPoint);
+    public void updateLocation(CityObject tPoint) {
+        boolean newTouchPoint = !tPoint.equals(closestCityObject);
         if (newTouchPoint){
-            goToChatt2.setImageBitmap(getCircularBitmap(tPoint.getImage()));
+            goToChatt2.setImageBitmap(getCircularBitmap(tPoint.getImage().get(0)));
         }
-        closestTouchPoint = tPoint;
+        closestCityObject = tPoint;
 
         if (tPoint.isOnline() && !isShown) {
             zoomIn();
@@ -173,7 +170,7 @@ public class ChatFragment extends Fragment {
     public Bitmap blurImage(int picture) {
         Bitmap blurredImage = BitmapFactory.decodeResource(getResources(), picture);
         Blur br = new Blur();
-        blurredImage = br.blurImage(getContext(), closestTouchPoint.getImage());//blurredImage, 0.2f, 70);
+        blurredImage = br.blurImage(getContext(), closestCityObject.getImage().get(0));//blurredImage, 0.2f, 70);
         return blurredImage;
     }
     /**
@@ -199,7 +196,8 @@ public class ChatFragment extends Fragment {
         double dLat = Math.toRadians(currentLocation.getLatitude() - objectLocation.getLatitude());
         double dLng = Math.toRadians(currentLocation.getLongitude() - objectLocation.getLongitude());
         double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(objectLocation.getLatitude())) * Math.cos(Math.toRadians(currentLocation.getLatitude())) *
+                Math.cos(Math.toRadians(objectLocation.getLatitude())) *
+                        Math.cos(Math.toRadians(currentLocation.getLatitude())) *
                         Math.sin(dLng / 2) * Math.sin(dLng / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         float dist = (float) (earthRadius * c);
@@ -220,14 +218,14 @@ public class ChatFragment extends Fragment {
         final ImageView imgView = (ImageView)rootView.findViewById(R.id.backgroundImage);
 
 
-        if (blurredBitmaps.get(closestTouchPoint.getImage()) == null){
-            Bitmap bmp = blurImage(closestTouchPoint.getImage());
-            blurredBitmaps.put(closestTouchPoint.getImage(), bmp);
-            imgView.setImageBitmap(blurImage(closestTouchPoint.getImage()));
-            idOfBlurredImage = closestTouchPoint.getImage();
+        if (blurredBitmaps.get(closestCityObject.getImage().get(0)) == null){
+            Bitmap bmp = blurImage(closestCityObject.getImage().get(0));
+            blurredBitmaps.put(closestCityObject.getImage().get(0), bmp);
+            imgView.setImageBitmap(blurImage(closestCityObject.getImage().get(0)));
+            idOfBlurredImage = closestCityObject.getImage().get(0);
         }
         else{
-            imgView.setImageBitmap(blurredBitmaps.get(closestTouchPoint.getImage()));
+            imgView.setImageBitmap(blurredBitmaps.get(closestCityObject.getImage().get(0)));
         }
 
         imgView.setVisibility(View.VISIBLE);
@@ -238,7 +236,7 @@ public class ChatFragment extends Fragment {
                 goToChatt.setVisibility(View.VISIBLE);
                 isShown = true;
                 firstTime = false;
-                goToChatt.setImageBitmap(getCircularBitmap(closestTouchPoint.getImage()));
+                goToChatt.setImageBitmap(getCircularBitmap(closestCityObject.getImage().get(0)));
                 goToChatt2.setVisibility(View.INVISIBLE);
                 drawable = (GradientDrawable) goToChatt.getBackground();
                 drawable.setStroke(8, getResources().getColor(R.color.colorGreenPrimary));

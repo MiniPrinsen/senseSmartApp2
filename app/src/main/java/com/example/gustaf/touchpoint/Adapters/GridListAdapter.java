@@ -16,11 +16,10 @@ import android.widget.TextView;
 
 import com.example.gustaf.touchpoint.BaseActivity;
 import com.example.gustaf.touchpoint.Fragment.InfoFragment;
+import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.HelpClasses.Holder;
-import com.example.gustaf.touchpoint.HelpClasses.TouchPoint;
 import com.example.gustaf.touchpoint.R;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,12 +28,12 @@ import java.util.List;
 public class GridListAdapter extends RecyclerView.Adapter<Holder> {
 
     private final int mDefaultSpanCount;
-    private List<TouchPoint> mItemList;
+    private List<CityObject> mItemList;
     private final int SCREEN_WIDTH;
     private final int SCREEN_HEIGHT;
     Context context;
 
-    public GridListAdapter(List<TouchPoint> itemList, GridLayoutManager gridLayoutManager, int defaultSpanCount, int width, int height, Context context) {
+    public GridListAdapter(List<CityObject> itemList, GridLayoutManager gridLayoutManager, int defaultSpanCount, int width, int height, Context context) {
         mItemList = itemList;
         mDefaultSpanCount = defaultSpanCount;
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -46,7 +45,6 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
         this.SCREEN_HEIGHT = height;
         this.SCREEN_WIDTH = width;
         this.context = context;
-
 
     }
 
@@ -95,7 +93,7 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
 
 
 
-        final TouchPoint item = (TouchPoint) mItemList.get(position);
+        final CityObject item = (CityObject) mItemList.get(position);
         TextView txtView = (TextView)container.findViewById(R.id.gridTextTitle);
         txtView.setText(item.getName());
 
@@ -104,7 +102,7 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
 
         container.setLayoutParams(new FrameLayout.LayoutParams(SCREEN_WIDTH/2, SCREEN_WIDTH/2));
         imgView.setLayoutParams(new FrameLayout.LayoutParams(SCREEN_WIDTH/2, SCREEN_WIDTH/2));
-        imgView.setImageResource(item.getImage());
+        imgView.setImageResource(item.getImage().get(0));
 
         container.setOnClickListener(gridPress);
     }
@@ -127,7 +125,7 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
      * @param position
      */
     private void bindHeaderItem(Holder holder, int position) {
-        final TouchPoint itm = mItemList.get(position);
+        final CityObject itm = mItemList.get(position);
         View container = holder.itemView;
 
 
@@ -136,7 +134,7 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
         ImageView imgView = (ImageView)container.findViewById(R.id.header_image);
         imgView.setLayoutParams(new FrameLayout.LayoutParams(SCREEN_WIDTH, SCREEN_HEIGHT/2-200));
         holder.itemView.setLayoutParams(new FrameLayout.LayoutParams(SCREEN_WIDTH, SCREEN_HEIGHT/2-200));
-        imgView.setImageResource(itm.getImage());
+        imgView.setImageResource(itm.getImage().get(0));
 
         ImageView online = (ImageView)container.findViewById(R.id.online_indicator);
         TextView txtView2 = (TextView) container.findViewById(R.id.distanceTextViewHeader);
@@ -157,8 +155,8 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
     }
 
 
-    public void swapItems(TouchPoint item1, TouchPoint item2) {
-        Collections.swap(mItemList, mItemList.indexOf(item2), mItemList.indexOf(item1));
+    public void swapItems(CityObject item1, CityObject item2) {
+        //Collections.swap(mItemList, mItemList.indexOf(item2), mItemList.indexOf(item1));
         notifyDataSetChanged();
     }
 
@@ -179,7 +177,7 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
      *
      * @param item
      */
-    public void addItem(TouchPoint item) {
+    public void addItem(CityObject item) {
         mItemList.add(item);
         notifyDataSetChanged();
     }
@@ -187,9 +185,9 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
     /**
      * This method is used to remove items from the list
      *
-     * @param item {@link TouchPoint}
+     * @param item {@link CityObject}
      */
-    public void removeItem(TouchPoint item) {
+    public void removeItem(CityObject item) {
         mItemList.remove(item);
         notifyDataSetChanged();
     }

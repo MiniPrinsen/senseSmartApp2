@@ -16,7 +16,6 @@ public class Blur {
         private static final float BLUR_RADIUS = 25f;
 
 
-
         @SuppressLint("NewApi")
         public static Bitmap blur(Context context, Bitmap image) {
             int width = Math.round(image.getWidth() * BITMAP_SCALE);
@@ -290,6 +289,7 @@ public class Blur {
 
         }
     }*/
+
 
     public static Bitmap blurImage(Context context, int inputimage) {
         Bitmap image = BitmapFactory.decodeResource(context.getResources(), inputimage);

@@ -16,6 +16,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -31,7 +35,9 @@ import java.util.List;
 /**
  * Created by Soulstorm on 2/4/2015.
  */
-public class GetLocation implements LocationListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, Runnable {
+public class GetLocation implements LocationListener, GoogleApiClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks, Runnable {
+
     private static final long ONE_MIN = 1000 * 60;
     private static final long CITY_DIST = 50000;
     private static final long TWO_MIN = ONE_MIN * 2;
@@ -105,6 +111,15 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
         msg.obj = location;
         handler.sendMessage(msg);
 
+        sendPost();
+
+
+        Log.v("LOCATION CHANGED", location.getLongitude()+", "+location.getLatitude());
+
+    }
+
+    public void sendPost() {
+
         if(!visited) {
 
             Thread thread = new Thread(new Runnable() {
@@ -112,12 +127,14 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
                 public void run() {
                     try {
 
-                        String urlParameters = "longitude=" + getLongitude() + "&latitude=" + getLatitude() + "&distance=" + CITY_DIST;
+                        String urlParameters = "longitude=" + getLongitude() + "&latitude=" +
+                                getLatitude() + "&distance=" + CITY_DIST;
                         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
-                        URL url = new URL("http://130.240.135.32:8080/senseSmart/hey");
+                        URL url = new URL(" http://52.28.236.84:8080/sensesmart/hey");
                         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                         try {
-                            urlConnection.setDoOutput(true);
+
+                            urlConnection.setRequestMethod("POST");
                             urlConnection.setChunkedStreamingMode(0);
 
                             OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
@@ -125,10 +142,25 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
                             out.flush();
 
                             int status = (urlConnection).getResponseCode();
-                            Log.i("LOGGAR", "Status : " + status + " " + urlConnection.getResponseMessage());
 
-                            Log.d("PLS_VIRR: ", getStringFromInputStream(urlConnection.getInputStream()));
+                            String json = getStringFromInputStream(urlConnection.getInputStream());
+                            JSONArray array = new JSONArray(json);
+                            Gson gson = new Gson();
+                            for (int i = 0; i<array.length(); i++){
+                                JSONObject obj = array.getJSONObject(i);
+                                CityObject cObject = gson.fromJson(obj.toString(), CityObject.class);
+                                Log.d("LOGGAR", cObject.getName());
+                                Log.d("LOGGAR", cObject.getDescription());
+                                Log.d("LOGGAR", (String.valueOf(cObject.coordinates.getLatitude())));
+                                Log.d("LOGGAR", (String.valueOf(cObject.coordinates.getLongitude())));
+                                Log.d("LOGGAR", (String.valueOf(cObject.rating)));
+                                Log.d("LOGGAR", (String.valueOf(cObject.persons_voted)));
 
+                                for(String img : cObject.getImgs()){
+                                    Log.d("LOGGAR", img);
+                                }
+
+                            }
 
                         } finally {
                             urlConnection.disconnect();
@@ -141,10 +173,6 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
             thread.start();
             visited = true;
         }
-
-
-        Log.v("LOCATION CHANGED", location.getLongitude()+", "+location.getLatitude());
-
     }
 
     /**
@@ -192,7 +220,8 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
         double dLat = Math.toRadians(currentLocation.getLatitude()-objectLocation.getLatitude());
         double dLng = Math.toRadians(currentLocation.getLongitude()-objectLocation.getLongitude());
         double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(Math.toRadians(objectLocation.getLatitude())) * Math.cos(Math.toRadians(currentLocation.getLatitude())) *
+                Math.cos(Math.toRadians(objectLocation.getLatitude())) *
+                        Math.cos(Math.toRadians(currentLocation.getLatitude())) *
                         Math.sin(dLng/2) * Math.sin(dLng/2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         float dist = (float) (earthRadius * c);
@@ -227,7 +256,8 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
     private void bestLastKnownLocation() {
         // Get the best most recent location currently available
         try {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
+                    mLocationRequest, this);
         }
         catch(SecurityException e) {
             Log.d("DET HÄR VA INGE BRA", "WHUPS");
@@ -240,7 +270,8 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
         if (ConnectionResult.SUCCESS == resultCode) {
             return true;
         } else {
-            Toast.makeText(mContext, "Google play services connection failed! Won't be able to get location.", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "Google play services connection failed! Won't be able" +
+                    " to get location.", Toast.LENGTH_LONG).show();
             return false;
         }
     }
