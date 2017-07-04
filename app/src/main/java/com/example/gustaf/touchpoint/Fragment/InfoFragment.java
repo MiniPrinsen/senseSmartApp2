@@ -33,6 +33,7 @@ public class InfoFragment extends Fragment
 {
 
     private Toolbar toolbar;
+    private TextView infoText;
     private View rootView;
     private ViewFlipper flipper;
     private Animation fadein, fadeout;
@@ -131,6 +132,7 @@ public class InfoFragment extends Fragment
         flipper = (ViewFlipper) rootView.findViewById(R.id.flipper);
         mScrollView = (ScrollView) rootView.findViewById(R.id.infofragment);
         mWrapperFL = (FrameLayout) rootView.findViewById(R.id.flWrapper);
+        infoText = (TextView) rootView.findViewById(R.id.infoText);
     }
 
     public void slideShow() {
