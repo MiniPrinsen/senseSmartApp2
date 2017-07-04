@@ -5,8 +5,10 @@ package com.example.gustaf.touchpoint.Adapters;
  */
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,8 @@ import com.example.gustaf.touchpoint.Fragment.InfoFragment;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.HelpClasses.Holder;
 import com.example.gustaf.touchpoint.R;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -110,8 +114,25 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
     View.OnClickListener gridPress = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    Log.d("type", view.getClass().getName());
+
+                    TextView txtView = (TextView)view.findViewById(R.id.gridTextTitle);
+
+                    int pos = -1;
+                    String itemText = txtView.getText().toString();
+                    for (int i = 0; i<mItemList.size(); i++){
+                        if (mItemList.get(i).getName() == itemText){
+                            pos = i;
+                        }
+                    }
+
+
                     final BaseActivity activity = (BaseActivity) context;
                     InfoFragment infoFragment = new InfoFragment();
+                    Bundle args = new Bundle();
+                    args.putString("info", mItemList.get(pos).getDescription());
+                    infoFragment.setArguments(args);
                     android.support.v4.app.FragmentManager fr = activity.getSupportFragmentManager();
                     fr.beginTransaction()
                             .add(android.R.id.content, infoFragment).commit();

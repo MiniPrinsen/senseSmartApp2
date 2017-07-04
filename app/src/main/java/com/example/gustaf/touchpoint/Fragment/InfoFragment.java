@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.TouchDelegate;
@@ -34,6 +35,7 @@ public class InfoFragment extends Fragment
 
     private Toolbar toolbar;
     private TextView infoText;
+    private String description;
     private View rootView;
     private ViewFlipper flipper;
     private Animation fadein, fadeout;
@@ -45,10 +47,10 @@ public class InfoFragment extends Fragment
             "+931+44+Skellefteå/@64.7449891,20.914278,14z/" +
             "data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x467e954ff842f71f" +
             ":0x412452cb329526e!2m2!1d20.9157401!2d64.7510032?hl=sv";
-
     public InfoFragment() {
 
     }
+
 
     public static InfoFragment newInstance(String toolbar) {
         InfoFragment myFragment = new InfoFragment();
@@ -65,7 +67,13 @@ public class InfoFragment extends Fragment
     {
         rootView = inflater.inflate(R.layout.fragment_info, container, false);
 
+
         findViewsById();
+
+        description = getArguments().getString("info");
+        Log.d("LÖV", description);
+        infoText.setText(description);
+
         slideShow();
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ScrollPositionObserver());
         final ImageView imgview = new ImageView(getContext());
