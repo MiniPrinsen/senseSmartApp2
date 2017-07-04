@@ -6,15 +6,15 @@
     <string name="achievement_name">DINA TROFÈER</string>
     <string name="messagebox_hint">Skriv ett meddelande...</string>
     <string name="server_url">http://127.0.0.1:8080/senseSmart/hey</string>
-    <string name="send_text">SEND</string>
+    <string name="send_text">SKICKA</string>
 
     <string name="object_bonnstan">BONNSTAN</string>
     <string name="object_lejonstromsbron">LEJONSTRÖMSBRON</string>
     <string name="object_johanna_i_parken">JOHANNA I PARKEN</string>
-    <string name="title_activity_map">Map</string>
+    <string name="title_activity_map">KARTA</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps">KARTA</string>
     <string name="server_ip">http://52.28.236.84:8080</string>
 
 
