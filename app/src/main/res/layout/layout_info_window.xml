@@ -22,7 +22,6 @@
        android:id="@+id/infoButton"
        android:layout_width="match_parent"
        android:layout_height="40dp"
-       android:text="BONNSTAN"
        android:textSize="16sp"
        android:background="@color/colorGrayMediumLight"
        android:gravity="start|center_vertical"

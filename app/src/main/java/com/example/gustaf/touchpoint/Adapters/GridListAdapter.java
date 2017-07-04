@@ -22,8 +22,6 @@ import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.HelpClasses.Holder;
 import com.example.gustaf.touchpoint.R;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 /**
@@ -120,9 +118,11 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
                     TextView txtView = (TextView)view.findViewById(R.id.gridTextTitle);
 
                     int pos = -1;
+                    String title = "";
                     String itemText = txtView.getText().toString();
                     for (int i = 0; i<mItemList.size(); i++){
                         if (mItemList.get(i).getName() == itemText){
+                            title = mItemList.get(i).getName();
                             pos = i;
                         }
                     }
@@ -132,6 +132,7 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
                     InfoFragment infoFragment = new InfoFragment();
                     Bundle args = new Bundle();
                     args.putString("info", mItemList.get(pos).getDescription());
+                    args.putString("title", title);
                     infoFragment.setArguments(args);
                     android.support.v4.app.FragmentManager fr = activity.getSupportFragmentManager();
                     fr.beginTransaction()

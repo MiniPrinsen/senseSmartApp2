@@ -254,13 +254,13 @@ public class BaseActivity extends AppCompatActivity {
         images12.add(R.drawable.bonnstan_square600);
         images12.add(R.drawable.johannaiparken_square600);
         CityObject bonnstan = new CityObject("Bonnstan", "Bonnstan är en stad som ser ut som den är jättegammal"
-        , new Coordinates(64.7506874,20.933061199999997), (float)34.5, (float)2.5, images12);
+        , new Coordinates(64.751409,20.929309), (float)34.5, (float)2.5, images12);
 
         CityObject bonnstan2 = new CityObject("Lejonströmsbron", "Lejonströmsbron är en stad som ser ut som den är jättegammal"
-                , new Coordinates(64.7506874,20.933061199999997), (float)34.5, (float)2.5, images12);
+                , new Coordinates( 64.750233,20.914101), (float)34.5, (float)2.5, images12);
 
-        CityObject bonnstan3 = new CityObject("Laxen", "Laxen är en stad som ser ut som den är jättegammal"
-                , new Coordinates(64.7506874,20.933061199999997), (float)34.5, (float)2.5, images12);
+        CityObject bonnstan3 = new CityObject("Johanna", "Johanna är en stad som ser ut som den är jättegammal"
+                , new Coordinates(64.749489,20.951445), (float)34.5, (float)2.5, images12);
         ArrayList<CityObject> tpoints = new ArrayList<>();
         tpoints.add(bonnstan);
         tpoints.add(bonnstan2);

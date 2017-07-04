@@ -73,6 +73,7 @@ public class InfoFragment extends Fragment
         description = getArguments().getString("info");
         Log.d("LÖV", description);
         infoText.setText(description);
+        toolbarTitle = getArguments().getString("title");
 
         slideShow();
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ScrollPositionObserver());
@@ -155,7 +156,7 @@ public class InfoFragment extends Fragment
 
     public void setToolbarTitle(String title){
         TextView toolbarText = (TextView)rootView.findViewById(R.id.toolbar_title);
-        toolbarText.setText(title);
+        toolbarText.setText(title.toUpperCase());
     }
 
     private class ScrollPositionObserver implements ViewTreeObserver.OnScrollChangedListener {

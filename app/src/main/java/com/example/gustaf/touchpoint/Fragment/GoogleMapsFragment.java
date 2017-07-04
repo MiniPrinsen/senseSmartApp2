@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.gustaf.touchpoint.BaseActivity;
-import com.example.gustaf.touchpoint.HelpClasses.Coordinates;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
+import com.example.gustaf.touchpoint.HelpClasses.Coordinates;
 import com.example.gustaf.touchpoint.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -56,10 +56,10 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
     ArrayList<CityObject> cityObjects = bs.getCityObjects();
     LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-        for (CityObject tPoint : cityObjects) {
-            Coordinates loc = tPoint.getCoordinates();
+        for (CityObject cObject : cityObjects) {
+            Coordinates loc = cObject.getCoordinates();
             LatLng pos = new LatLng(loc.getLatitude(), loc.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(pos).title(tPoint.getName()));
+            mMap.addMarker(new MarkerOptions().position(pos).title(cObject.getName()));
             builder.include(pos);
         }
 
@@ -104,31 +104,6 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
 
                 // Getting view from the layout file info_window_layout
                 return null;
-            }
-        });
-
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-
-            @Override
-            public void onMapClick(LatLng arg0) {
-                // Clears any existing markers from the GoogleMap
-                mMap.clear();
-
-                // Creating an instance of MarkerOptions to set position
-                MarkerOptions markerOptions = new MarkerOptions();
-
-                // Setting position on the MarkerOptions
-                markerOptions.position(arg0);
-
-                // Animating to the currently touched position
-                mMap.animateCamera(CameraUpdateFactory.newLatLng(arg0));
-
-                // Adding marker on the GoogleMap
-                Marker marker = mMap.addMarker(markerOptions);
-
-                // Showing InfoWindow on the GoogleMap
-                marker.showInfoWindow();
-
             }
         });
 
