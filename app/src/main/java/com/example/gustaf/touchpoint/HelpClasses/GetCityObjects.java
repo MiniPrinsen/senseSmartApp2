@@ -26,6 +26,7 @@ import android.os.Handler;
  */
 
 public class GetCityObjects implements Runnable {
+    private final String HOST = "http://35.158.191.6:8080/sensesmart/hey";
     private double longitude;
     private double latitude;
     private int distance;
@@ -45,32 +46,27 @@ public class GetCityObjects implements Runnable {
     @Override
     public void run() {
         try {
-            Log.v("LOGGAR", "innanadsgasgaga....");
             String urlParameters = "longitude=" + longitude + "&latitude=" +
                     latitude + "&distance=" + distance;
             Log.v("CITYOBJ", urlParameters);
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
-            URL url = new URL(" http://35.158.191.6:8080/sensesmart/hey");
+            URL url = new URL(HOST);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             ArrayList<CityObject> temp = new ArrayList<>();
-            Log.v("LOGGAR", "innan 2......");
 
             try {
 
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setChunkedStreamingMode(0);
 
-                Log.v("LOGGAR", urlConnection.getURL().toString());
 
                 OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
-                Log.v("LOGGAR", "innan 3......");
 
                 out.write(postData);
                 out.flush();
 
 
                 int status = (urlConnection).getResponseCode();
-                Log.v("LOGGAR", "status"+status);
 
                 String json = getStringFromInputStream(urlConnection.getInputStream());
                 JSONArray array = new JSONArray(json);
@@ -78,21 +74,12 @@ public class GetCityObjects implements Runnable {
                 for (int i = 0; i<array.length(); i++){
                     JSONObject obj = array.getJSONObject(i);
                     CityObject cObject = gson.fromJson(obj.toString(), CityObject.class);
-                    Log.v("LOGGAR", cObject.getName());
-                    Log.v("LOGGAR", cObject.getDescription());
-                    Log.d("LOGGAR", (String.valueOf(cObject.coordinates.getLatitude())));
-                    Log.d("LOGGAR", (String.valueOf(cObject.coordinates.getLongitude())));
                     temp.add(cObject);
-                    for(String img : cObject.getImgs()){
-                        Log.d("LOGGAR", img);
-                    }
-
                 }
 
             } finally {
                 Message msg = handler.obtainMessage();
                 if (temp.size() != 0) {
-                    Log.v("CITYOBJ", temp.toString());
                     msg.obj = temp;
                     handler.sendMessage(msg);
                 }
@@ -100,7 +87,6 @@ public class GetCityObjects implements Runnable {
 
             }
         } catch (Exception e) {
-            Log.v("LOGGAR", "ERROR"+e);
             e.printStackTrace();
         }
     }

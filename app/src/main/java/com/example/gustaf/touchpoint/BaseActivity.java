@@ -38,33 +38,23 @@ import java.util.Comparator;
  *  BaseActivity contains the toolbar and navigationbar that
  *  is used by many of the activities in the app.
  */
-public class BaseActivity extends AppCompatActivity {
-    TabLayout tabLayout;
-
-    private static final int CITY_DIST = 50000;
-
-    android.location.Location current_position;
-    ViewPager viewPagerTabbed;
-    NoSwipeViewPager viewPagerDeafult;
-
-    ArrayList<CityObject> cityObjects;
-
-    ViewPagerAdapter viewPagerAdapterTabbed;
-    ViewPagerAdapter viewPagerAdapterDeafult;
-    /*
-    * BottomNavigation -> tabs in the bottom
-    * Toolbar -> Acitivtybar in the top
-    *
-    * */
-    protected AHBottomNavigation bottomNavigation;
-    protected Toolbar toolbar;
+public class BaseActivity extends AppCompatActivity{
+    private static final int                      CITY_DIST = 50000;
+    private TabLayout                            tabLayout;
+    private android.location.Location      current_position;
+    private ViewPager                       viewPagerTabbed;
+    private NoSwipeViewPager               viewPagerDeafult;
+    private ArrayList<CityObject>               cityObjects;
+    private ViewPagerAdapter         viewPagerAdapterTabbed;
+    private ViewPagerAdapter        viewPagerAdapterDeafult;
+    protected AHBottomNavigation           bottomNavigation;
+    protected Toolbar                               toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_base);
         super.onCreate(savedInstanceState);
-       // cityObjects = createExampleTouchPoints();
 
         /* Implements the toolbar */
         toolbar = (Toolbar) findViewById(R.id.gustaf_toolbar);
@@ -73,10 +63,7 @@ public class BaseActivity extends AppCompatActivity {
         /*Defines the navigationbar*/
         bottomNavigation=(AHBottomNavigation)findViewById(R.id.myBottomNavigation_ID);
         initializeNavigationBar();
-        //addTabs();
-        //addPages();
 
-//        showTabbed("SKELLEFTEÅ");
     }
 
     /**
@@ -126,13 +113,13 @@ public class BaseActivity extends AppCompatActivity {
                         documentaryItem.setDrawable(R.drawable.ic_trophy_empty);
                         break;
                     case 1:
-                        showPage(0, "CHATT");
+                        showPage(0, "CHAT");
                         crimeItem.setDrawable(R.drawable.ic_map_empty);
                         dramaItem.setDrawable(R.drawable.ic_chat_filled);
                         documentaryItem.setDrawable(R.drawable.ic_trophy_empty);
                         break;
                     case 2:
-                        showPage(1, "PRESTATIONER");
+                        showPage(1, "ACHIEVEMENTS");
                         crimeItem.setDrawable(R.drawable.ic_map_empty);
                         dramaItem.setDrawable(R.drawable.ic_chat_empty);
                         documentaryItem.setDrawable(R.drawable.ic_trophy_filled);
@@ -165,8 +152,8 @@ public class BaseActivity extends AppCompatActivity {
             viewPagerTabbed = (ViewPager) findViewById(R.id.tabbed_viewPager);
 
             viewPagerAdapterTabbed = new ViewPagerAdapter(getSupportFragmentManager());
-            viewPagerAdapterTabbed.addFragments(new ListFragment(), "LISTA");
-            viewPagerAdapterTabbed.addFragments(new GoogleMapsFragment(), "KARTA");
+            viewPagerAdapterTabbed.addFragments(new ListFragment(), "LIST");
+            viewPagerAdapterTabbed.addFragments(new GoogleMapsFragment(), "MAP");
             viewPagerTabbed.setAdapter(viewPagerAdapterTabbed);
             tabLayout.setupWithViewPager(viewPagerTabbed);
         }
@@ -239,10 +226,10 @@ public class BaseActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             android.location.Location loc = (android.location.Location) msg.obj;
-            Log.v("ASD", String.valueOf(loc.getLongitude()));
             current_position = loc;
             if(cityObjects == null){
-                new Thread(new GetCityObjects(loc.getLongitude(), loc.getLatitude(), CITY_DIST, receiveFromDb)).start();
+                new Thread(new GetCityObjects(current_position.getLongitude(),
+                        current_position.getLatitude(), CITY_DIST, receiveFromDb)).start();
             }
             else {
                 ((ListFragment) (viewPagerAdapterTabbed.getItem(0))).recieveLocation(loc);
@@ -276,73 +263,9 @@ public class BaseActivity extends AppCompatActivity {
         }
     };
 
-    public ArrayList<CityObject> createExampleTouchPoints() {
-        ArrayList<Integer> images12 = new ArrayList<>();
-        /*images12.add(R.drawable.bonnstan_square600);
-        images12.add(R.drawable.johannaiparken_square600);*/
-        CityObject bonnstan = new CityObject("Bonnstan", "Bonnstan är en stad som ser ut som den är jättegammal"
-        , new Coordinates(64.751409,20.929309), (float)34.5, (float)2.5, images12);
-
-        ArrayList<String> bnstnImages = new ArrayList<>();
-        bnstnImages.add("http://www.stiftsgarden.se/wp-content/uploads/2013/05/Bonnstan.jpg");
-        bnstnImages.add("http://skellefteamuseum.se/wp-content/uploads/2012/10/Brand_panorama1b-640x320.jpg");
-        bonnstan.addImages(bnstnImages);
 
 
-        CityObject bonnstan2 = new CityObject("Lejonströmsbron", "Lejonströmsbron är en stad som ser ut som den är jättegammal"
-                , new Coordinates( 64.750233,20.914101), (float)34.5, (float)2.5, images12);
-        ArrayList<String> ljnstromsbronImages = new ArrayList<>();
-        ljnstromsbronImages.add("http://static.panoramio.com/photos/large/45113441.jpg");
-        ljnstromsbronImages.add("http://visitskelleftea.se/wp-content/uploads/2016/04/eb240e6da475aa792ff1025cee55d05a.jpeg");
-        bonnstan2.addImages(ljnstromsbronImages);
-
-        CityObject bonnstan3 = new CityObject("Johanna", "Johanna är en stad som ser ut som den är jättegammal"
-                , new Coordinates(64.749489,20.951445), (float)34.5, (float)2.5, images12);
-        ArrayList<CityObject> tpoints = new ArrayList<>();
-        ArrayList<String> johannaImages = new ArrayList<>();
-        johannaImages.add("https://cdn3.cdnme.se/4435958/8-3/105_johanna_i_parken_minus_12_grader_2015-12-13_566da84fddf2b364016af473.jpg");
-        johannaImages.add("http://www.skelleftea.se/Bilder/Bildspel/Stadsparken%20-%20historiska%20bilder/af56b70f-69ba-492c-b60f-68fc63a0ff60~__H.png?doprocessing=1&w=980");
-        bonnstan3.addImages(johannaImages);
-
-        tpoints.add(bonnstan);
-        tpoints.add(bonnstan2);
-        tpoints.add(bonnstan3);
-        return tpoints;
-    }
-
-   /* public ArrayList<CityObject> createExampleTouchPoints(){
-
-        CityObject bonnstan = new CityObject("Bonnstan", R.drawable.bonnstan_square600,
-                "Bonnstan är det område med 116 kyrkstugor i Skellefteå, som ligger strax öster " +
-                        "om landsförsamlingens kyrka. Bonnstan ingår tillsammans med bland annat " +
-                        "landskyrkan och Lejonströmsbron i riksintresset" +
-                        " \"Skellefteå sockencentrum\" (AC 20 Skellefteå," +
-                        " västra delen) med motiveringen \"Skellefteå sockencentrum, " +
-                        "kyrkstad och marknadsplats vid den gamla kustlandsvägen," +
-                        " som berättar om platsens betydelse för bygdens kyrkliga," +
-                        " sociala och kommersiella liv sedan medeltiden.\"[1]" +
-                        " Bonnstan är sedan 1982 byggnadsminne.",
-                new Coordinates(64.7506874,20.933061199999997));
-        CityObject johanna_i_parken = new CityObject("Johanna i Parken",
-                R.drawable.johannaiparken_square600, "", new Coordinates(64.7497674, 20.95096460000002));
-
-        CityObject lejonstromsbron = new CityObject("Lejonströmsbron",
-                R.drawable.lejonstromsbron_square600, "", new Coordinates(64.7501393,20.91393830000004));
-
-        CityObject volleyBoll = new CityObject("Volleybollplanen Campus",
-                R.drawable.volleyball_square600, "", new Coordinates(64.74512696, 20.9547472));
-
-        ArrayList<CityObject> tpoints = new ArrayList<>();
-
-        tpoints.add(bonnstan);
-        tpoints.add(lejonstromsbron);
-        tpoints.add(johanna_i_parken);
-        tpoints.add(volleyBoll);
-
-        return tpoints;
-    }*/
-
-    private ArrayList<CityObject> sortedTouchPoints() {
+   /* private ArrayList<CityObject> sortedTouchPoints() {
 
         if (cityObjects == null){
             return null;
@@ -362,7 +285,7 @@ public class BaseActivity extends AppCompatActivity {
 
         });
         return cityObjects;
-    }
+    }*/
 
     public ArrayList<CityObject> getCityObjects(){
         return cityObjects;

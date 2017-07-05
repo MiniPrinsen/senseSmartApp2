@@ -3,6 +3,7 @@ package com.example.gustaf.touchpoint.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -25,6 +26,10 @@ import com.example.gustaf.touchpoint.HelpClasses.Blur;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.R;
 import com.skyfishjy.library.RippleBackground;
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+
 /**
  *
  */
@@ -33,7 +38,7 @@ public class ChatFragment extends Fragment {
     LruCache<Integer, Bitmap> circleBitmaps;
 
     /**
-     *
+
      */
     public ChatFragment() {
         // Required empty public constructor
@@ -150,7 +155,7 @@ public class ChatFragment extends Fragment {
     public void updateLocation(CityObject tPoint) {
         boolean newTouchPoint = !tPoint.equals(closestCityObject);
         if (newTouchPoint){
-//            goToChatt2.setImageBitmap(getCircularBitmap(tPoint.getImage().get(0)));
+            Picasso.with(getContext()).load(tPoint.getImgs().get(0)).transform(new CircleImageTransformation()).into(goToChatt2);
         }
         closestCityObject = tPoint;
 
@@ -236,7 +241,7 @@ public class ChatFragment extends Fragment {
                 goToChatt.setVisibility(View.VISIBLE);
                 isShown = true;
                 firstTime = false;
-                goToChatt.setImageBitmap(getCircularBitmap(closestCityObject.getImage().get(0)));
+               // goToChatt.setImageBitmap(getCircularBitmap(closestCityObject.getImage().get(0)));
                 goToChatt2.setVisibility(View.INVISIBLE);
                 drawable = (GradientDrawable) goToChatt.getBackground();
                 drawable.setStroke(8, getResources().getColor(R.color.colorGreenPrimary));
@@ -304,38 +309,56 @@ public class ChatFragment extends Fragment {
         firstTime = true;
     }
 
-    public Bitmap getCircularBitmap(int image) {
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(),
-                image);
-        Bitmap output;
 
-        if (bitmap.getWidth() > bitmap.getHeight()) {
-            output = Bitmap.createBitmap(bitmap.getHeight(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        } else {
-            output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getWidth(), Bitmap.Config.ARGB_8888);
+    public class CircleImageTransformation implements com.squareup.picasso.Transformation {
+
+        @Override
+        public Bitmap transform ( final Bitmap source ) {
+            Blur br = new Blur();
+            Bitmap output = getCircularBitmap(source);
+            if (source != output) {
+                source.recycle();
+            }
+
+            return output;
         }
 
-        Canvas canvas = new Canvas(output);
-
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-
-        float r = 0;
-
-        if (bitmap.getWidth() > bitmap.getHeight()) {
-            r = bitmap.getHeight() / 2;
-        } else {
-            r = bitmap.getWidth() / 2;
+        @Override
+        public String key () {
+            return "customTransformation" + "12412414";
         }
 
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawCircle(r, r, r, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-        return output;
+        public Bitmap getCircularBitmap(Bitmap bitmap) {
+            Bitmap output;
+
+            if (bitmap.getWidth() > bitmap.getHeight()) {
+                output = Bitmap.createBitmap(bitmap.getHeight(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+            } else {
+                output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getWidth(), Bitmap.Config.ARGB_8888);
+            }
+
+            Canvas canvas = new Canvas(output);
+
+            final int color = 0xff424242;
+            final Paint paint = new Paint();
+            final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+            float r = 0;
+
+            if (bitmap.getWidth() > bitmap.getHeight()) {
+                r = bitmap.getHeight() / 2;
+            } else {
+                r = bitmap.getWidth() / 2;
+            }
+
+            paint.setAntiAlias(true);
+            canvas.drawARGB(0, 0, 0, 0);
+            paint.setColor(color);
+            canvas.drawCircle(r, r, r, paint);
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+            canvas.drawBitmap(bitmap, rect, rect, paint);
+            return output;
+        }
     }
 }
