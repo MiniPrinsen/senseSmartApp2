@@ -91,13 +91,13 @@ public class InfoFragment extends Fragment
 
 
         /* SET BACKGROUND */
-        Picasso.with(getContext())
+        Picasso.with(getContext()).load(cityObject.getImgs().get(0)).transform(new BlurTransformation()).into(background);
+        /*Picasso.with(getContext())
                 .load(cityObject.getImgs().get(0))
                 .into(new Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                         Log.v("BLUR", from.name());
-                        Blur blr = new Blur();
                     //    background.setScaleType(ImageView.ScaleType.FIT_XY);
                         background.setImageBitmap(blr.blur(getContext(), bitmap));
                     }
@@ -113,7 +113,7 @@ public class InfoFragment extends Fragment
                     }
                 });
 
-
+        */
         slideShow();
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ScrollPositionObserver());
         final ImageView imgview = new ImageView(getContext());
@@ -166,13 +166,6 @@ public class InfoFragment extends Fragment
                 }
             };
         });
-
-        /*
-        new DownloadImageTask((ImageView) rootView.findViewById(R.id.imageView1))
-                .execute("http://ellesmerecollegetitans.co.uk/wp-content/uploads/2017/05/officially-amazing_brand_logo_image_bid.png");
-                Log.d("LOGGAR","Nu är jag här");
-        */
-
         return rootView;
     }
 
@@ -228,6 +221,30 @@ public class InfoFragment extends Fragment
 
         }
     }
+
+    /**
+     * Class for bluring transformations using Picasso. Caches the image
+     * after transformation.
+     */
+    public class BlurTransformation implements com.squareup.picasso.Transformation {
+
+        @Override
+        public Bitmap transform ( final Bitmap source ) {
+            Blur br = new Blur();
+            Bitmap output = br.blur(getContext(), source);
+            if (source != output) {
+                source.recycle();
+            }
+
+            return output;
+        }
+
+        @Override
+        public String key () {
+            return "customTransformation" + "12312312oifs";
+        }
+    }
+
 
 
 }
