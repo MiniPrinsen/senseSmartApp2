@@ -41,7 +41,7 @@ SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
                 <!--<ImageView
                     android:id="@+id/imageView1"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/info_photo_height" />-->
+                    android:layout_height="@dimen/info_photo_height" />
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/info_photo_height"
@@ -53,7 +53,7 @@ SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/info_photo_height"
-                    android:background="@drawable/johannaiparken_square600"/>
+                    android:background="@drawable/johannaiparken_square600"/>-->
             </ViewFlipper>
 
             <!--THIS IMAGEVIEW IS USED AS THE BLURRED BACKGROUND WHERE THE TEXT IS PUT.-->
@@ -61,9 +61,13 @@ SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/blurbitmap"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
                 android:layout_below="@+id/flipper"
-                android:background="@drawable/lejonstromsbronblur"
-                android:scaleType="fitXY"
+
+                android:paddingBottom="0dp"
+                android:layout_marginBottom="0dp"
+
                 />
             <!--RATINGBAR INFLATES THE RATING ON THE PAGE.-->
             <RatingBar

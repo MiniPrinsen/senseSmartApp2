@@ -8,8 +8,7 @@
     <RelativeLayout
         android:id="@+id/infoBackground"
         android:layout_width="200dp"
-        android:layout_height="120dp"
-        android:background="@drawable/bonnstan_squaresmall">
+        android:layout_height="120dp">
         <Button
             android:id="@+id/infoDirection"
             android:layout_width="35dp"

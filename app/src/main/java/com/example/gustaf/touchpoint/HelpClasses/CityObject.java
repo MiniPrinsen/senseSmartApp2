@@ -53,6 +53,10 @@ public class CityObject {
 
     }*/
 
+   public void addImages(ArrayList<String> images){
+       this.images = images;
+   }
+
     public void setDistance(float distance){
         if (distance<50){
             isOnline = true;

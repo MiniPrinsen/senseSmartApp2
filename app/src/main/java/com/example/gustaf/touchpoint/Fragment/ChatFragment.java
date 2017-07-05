@@ -150,7 +150,7 @@ public class ChatFragment extends Fragment {
     public void updateLocation(CityObject tPoint) {
         boolean newTouchPoint = !tPoint.equals(closestCityObject);
         if (newTouchPoint){
-            goToChatt2.setImageBitmap(getCircularBitmap(tPoint.getImage().get(0)));
+//            goToChatt2.setImageBitmap(getCircularBitmap(tPoint.getImage().get(0)));
         }
         closestCityObject = tPoint;
 

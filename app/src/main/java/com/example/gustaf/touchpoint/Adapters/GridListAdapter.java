@@ -21,6 +21,7 @@ import com.example.gustaf.touchpoint.Fragment.InfoFragment;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.HelpClasses.Holder;
 import com.example.gustaf.touchpoint.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -104,7 +105,10 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
 
         container.setLayoutParams(new FrameLayout.LayoutParams(SCREEN_WIDTH/2, SCREEN_WIDTH/2));
         imgView.setLayoutParams(new FrameLayout.LayoutParams(SCREEN_WIDTH/2, SCREEN_WIDTH/2));
-        imgView.setImageResource(item.getImage().get(0));
+        //imgView.setImageResource(item.getImage().get(0));
+
+        Picasso.with(context).load(item.getImgs().get(0)).into(imgView);
+
 
         container.setOnClickListener(gridPress);
     }
@@ -127,11 +131,14 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
                         }
                     }
 
-
                     final BaseActivity activity = (BaseActivity) context;
                     InfoFragment infoFragment = new InfoFragment();
                     Bundle args = new Bundle();
+
+
+
                     args.putString("info", mItemList.get(pos).getDescription());
+                    args.putInt("index", pos);
                     args.putString("title", title);
                     infoFragment.setArguments(args);
                     android.support.v4.app.FragmentManager fr = activity.getSupportFragmentManager();
@@ -156,7 +163,10 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
         ImageView imgView = (ImageView)container.findViewById(R.id.header_image);
         imgView.setLayoutParams(new FrameLayout.LayoutParams(SCREEN_WIDTH, SCREEN_HEIGHT/2-200));
         holder.itemView.setLayoutParams(new FrameLayout.LayoutParams(SCREEN_WIDTH, SCREEN_HEIGHT/2-200));
-        imgView.setImageResource(itm.getImage().get(0));
+        //imgView.setImageResource(itm.getImage().get(0));
+
+        Picasso.with(context).load(itm.getImgs().get(0)).into(imgView);
+
 
         ImageView online = (ImageView)container.findViewById(R.id.online_indicator);
         TextView txtView2 = (TextView) container.findViewById(R.id.distanceTextViewHeader);

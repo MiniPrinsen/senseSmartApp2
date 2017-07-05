@@ -26,6 +26,7 @@ import com.example.gustaf.touchpoint.Fragment.GoogleMapsFragment;
 import com.example.gustaf.touchpoint.Fragment.ListFragment;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.HelpClasses.Coordinates;
+import com.example.gustaf.touchpoint.HelpClasses.GetCityObjects;
 import com.example.gustaf.touchpoint.HelpClasses.GetLocation;
 import com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager;
 
@@ -39,6 +40,8 @@ import java.util.Comparator;
  */
 public class BaseActivity extends AppCompatActivity {
     TabLayout tabLayout;
+
+    private static final int CITY_DIST = 50000;
 
     android.location.Location current_position;
     ViewPager viewPagerTabbed;
@@ -61,7 +64,7 @@ public class BaseActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_base);
         super.onCreate(savedInstanceState);
-        cityObjects = createExampleTouchPoints();
+       // cityObjects = createExampleTouchPoints();
 
         /* Implements the toolbar */
         toolbar = (Toolbar) findViewById(R.id.gustaf_toolbar);
@@ -70,10 +73,10 @@ public class BaseActivity extends AppCompatActivity {
         /*Defines the navigationbar*/
         bottomNavigation=(AHBottomNavigation)findViewById(R.id.myBottomNavigation_ID);
         initializeNavigationBar();
-        addTabs();
-        addPages();
+        //addTabs();
+        //addPages();
 
-        showTabbed("SKELLEFTEÅ");
+//        showTabbed("SKELLEFTEÅ");
     }
 
     /**
@@ -181,8 +184,8 @@ public class BaseActivity extends AppCompatActivity {
         viewPagerDeafult = (NoSwipeViewPager) findViewById(R.id.viewPager_deafult);
 
         viewPagerAdapterDeafult = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapterDeafult.addFragments(new ChatFragment(), "CHATT");
-        viewPagerAdapterDeafult.addFragments(new AchievementFragment(), "PRESTATIONER");
+        viewPagerAdapterDeafult.addFragments(new ChatFragment(), "CHAT");
+        viewPagerAdapterDeafult.addFragments(new AchievementFragment(), "ACHIEVEMENTS");
         viewPagerDeafult.setAdapter(viewPagerAdapterDeafult);
     }
 
@@ -228,40 +231,79 @@ public class BaseActivity extends AppCompatActivity {
     public void onStart(){
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         super.onStart();
-        Thread background = new Thread(new GetLocation(getApplicationContext(), handler));
+        Thread background = new Thread(new GetLocation(getApplicationContext(), locationHandler));
         background.start();
     }
 
-    Handler handler = new Handler() {
+    Handler locationHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             android.location.Location loc = (android.location.Location) msg.obj;
-            Log.v("LOCATION HEHE", String.valueOf(loc.getLongitude()));
+            Log.v("ASD", String.valueOf(loc.getLongitude()));
             current_position = loc;
-            ((ListFragment)(viewPagerAdapterTabbed.getItem(0))).recieveLocation(loc);
-            for (CityObject tPoint : cityObjects) {
-                tPoint.setDistance(lengthBetween(loc, tPoint.getCoordinates()));
+            if(cityObjects == null){
+                new Thread(new GetCityObjects(loc.getLongitude(), loc.getLatitude(), CITY_DIST, receiveFromDb)).start();
             }
-            ((ChatFragment)(viewPagerAdapterDeafult.getItem(0) ) ).updateLocation(cityObjects.get(0));
+            else {
+                ((ListFragment) (viewPagerAdapterTabbed.getItem(0))).recieveLocation(loc);
+                for (CityObject tPoint : cityObjects) {
+                    tPoint.setDistance(lengthBetween(loc, tPoint.getCoordinates()));
+                }
+                ((ChatFragment) (viewPagerAdapterDeafult.getItem(0))).updateLocation(cityObjects.get(0));
+            }
+
 
             super.handleMessage(msg);
         }
 
     };
 
+    Handler receiveFromDb = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            cityObjects = (ArrayList<CityObject>)msg.obj;
+            if (cityObjects != null) {
+                Log.v("CITYOBJ", cityObjects.toString());
+                addTabs();
+                addPages();
+                showTabbed("SKELLEFTEÅ");
+            }
+            else{
+                Log.v("CITYOBJ", "ISNULL");
+
+            }
+
+        }
+    };
+
     public ArrayList<CityObject> createExampleTouchPoints() {
         ArrayList<Integer> images12 = new ArrayList<>();
-        images12.add(R.drawable.bonnstan_square600);
-        images12.add(R.drawable.johannaiparken_square600);
+        /*images12.add(R.drawable.bonnstan_square600);
+        images12.add(R.drawable.johannaiparken_square600);*/
         CityObject bonnstan = new CityObject("Bonnstan", "Bonnstan är en stad som ser ut som den är jättegammal"
         , new Coordinates(64.751409,20.929309), (float)34.5, (float)2.5, images12);
 
+        ArrayList<String> bnstnImages = new ArrayList<>();
+        bnstnImages.add("http://www.stiftsgarden.se/wp-content/uploads/2013/05/Bonnstan.jpg");
+        bnstnImages.add("http://skellefteamuseum.se/wp-content/uploads/2012/10/Brand_panorama1b-640x320.jpg");
+        bonnstan.addImages(bnstnImages);
+
+
         CityObject bonnstan2 = new CityObject("Lejonströmsbron", "Lejonströmsbron är en stad som ser ut som den är jättegammal"
                 , new Coordinates( 64.750233,20.914101), (float)34.5, (float)2.5, images12);
+        ArrayList<String> ljnstromsbronImages = new ArrayList<>();
+        ljnstromsbronImages.add("http://static.panoramio.com/photos/large/45113441.jpg");
+        ljnstromsbronImages.add("http://visitskelleftea.se/wp-content/uploads/2016/04/eb240e6da475aa792ff1025cee55d05a.jpeg");
+        bonnstan2.addImages(ljnstromsbronImages);
 
         CityObject bonnstan3 = new CityObject("Johanna", "Johanna är en stad som ser ut som den är jättegammal"
                 , new Coordinates(64.749489,20.951445), (float)34.5, (float)2.5, images12);
         ArrayList<CityObject> tpoints = new ArrayList<>();
+        ArrayList<String> johannaImages = new ArrayList<>();
+        johannaImages.add("https://cdn3.cdnme.se/4435958/8-3/105_johanna_i_parken_minus_12_grader_2015-12-13_566da84fddf2b364016af473.jpg");
+        johannaImages.add("http://www.skelleftea.se/Bilder/Bildspel/Stadsparken%20-%20historiska%20bilder/af56b70f-69ba-492c-b60f-68fc63a0ff60~__H.png?doprocessing=1&w=980");
+        bonnstan3.addImages(johannaImages);
+
         tpoints.add(bonnstan);
         tpoints.add(bonnstan2);
         tpoints.add(bonnstan3);
@@ -303,7 +345,8 @@ public class BaseActivity extends AppCompatActivity {
     private ArrayList<CityObject> sortedTouchPoints() {
 
         if (cityObjects == null){
-            cityObjects = createExampleTouchPoints();
+            return null;
+            //cityObjects = createExampleTouchPoints();
         }
         Collections.sort(cityObjects, new Comparator<CityObject>() {
             @Override
@@ -325,6 +368,10 @@ public class BaseActivity extends AppCompatActivity {
         return cityObjects;
     }
 
+    public CityObject getCityObject(int i){
+        return cityObjects.get(i);
+    }
+
     private float lengthBetween(android.location.Location currentLocation, Coordinates objectCoordinates) {
 
         double earthRadius = 6371000; //meters
@@ -339,4 +386,5 @@ public class BaseActivity extends AppCompatActivity {
 
         return dist;
     }
+
 }

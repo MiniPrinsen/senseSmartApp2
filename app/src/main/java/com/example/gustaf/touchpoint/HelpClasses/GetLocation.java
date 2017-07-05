@@ -1,12 +1,15 @@
 package com.example.gustaf.touchpoint.HelpClasses;
 
 import android.app.ActivityManager;
+import android.app.KeyguardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -52,7 +55,6 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
     LocationRequest mLocationRequest;
 
 
-    Location volleyboll;
     Location mCurrentPosition;
     Handler handler;
     boolean visited = false;
@@ -65,9 +67,6 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
         this.handler = handler;
         this.mContext = mContext;
 
-        volleyboll = new Location("");
-        volleyboll.setLatitude(64.74512696);
-        volleyboll.setLongitude(20.9547472);
 
         buildGoogleApiClient();
         mGoogleApiClient.connect();
@@ -94,7 +93,10 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
         // Get first reading. Get additional location updates if necessary
         if (servicesAvailable()) {
             // Get best last location measurement meeting criteria
+            //Log.v("LOCATION", String.valueOf(mCurrentPosition.getLatitude()));
             bestLastKnownLocation();
+
+
         }
     }
 
@@ -111,98 +113,12 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
         msg.obj = location;
         handler.sendMessage(msg);
 
-        sendPost();
+        //sendPost();
 
 
         Log.v("LOCATION CHANGED", location.getLongitude()+", "+location.getLatitude());
 
     }
-
-    public void sendPost() {
-
-        if(!visited) {
-
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-
-                        String urlParameters = "longitude=" + getLongitude() + "&latitude=" +
-                                getLatitude() + "&distance=" + CITY_DIST;
-                        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
-                        URL url = new URL(" http://52.28.236.84:8080/sensesmart/hey");
-                        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                        try {
-
-                            urlConnection.setRequestMethod("POST");
-                            urlConnection.setChunkedStreamingMode(0);
-
-                            OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
-                            out.write(postData);
-                            out.flush();
-
-                            int status = (urlConnection).getResponseCode();
-
-                            String json = getStringFromInputStream(urlConnection.getInputStream());
-                            JSONArray array = new JSONArray(json);
-                            Gson gson = new Gson();
-                            for (int i = 0; i<array.length(); i++){
-                                JSONObject obj = array.getJSONObject(i);
-                                CityObject cObject = gson.fromJson(obj.toString(), CityObject.class);
-                                Log.d("LOGGAR", cObject.getName());
-                                Log.d("LOGGAR", cObject.getDescription());
-                                Log.d("LOGGAR", (String.valueOf(cObject.coordinates.getLatitude())));
-                                Log.d("LOGGAR", (String.valueOf(cObject.coordinates.getLongitude())));
-                                Log.d("LOGGAR", (String.valueOf(cObject.rating)));
-                                Log.d("LOGGAR", (String.valueOf(cObject.persons_voted)));
-
-                                for(String img : cObject.getImgs()){
-                                    Log.d("LOGGAR", img);
-                                }
-
-                            }
-
-                        } finally {
-                            urlConnection.disconnect();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            thread.start();
-            visited = true;
-        }
-    }
-
-    /**
-     *
-     * Creates a string from inputstream
-     *
-     * @param inputstream
-     * @return
-     */
-    private String getStringFromInputStream(InputStream inputstream) {
-
-        BufferedReader br = null;
-        StringBuilder sb = new StringBuilder();
-
-        String line;
-        try {
-            br = new BufferedReader(new InputStreamReader(inputstream,
-                    StandardCharsets.UTF_8));
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return sb.toString();
-
-    }
-
 
     public double getLatitude() {
 
@@ -213,29 +129,10 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
        return mCurrentPosition.getLongitude();
     }
 
-    public static boolean inRadius(Location currentLocation, Location objectLocation, int radius) {
-
-
-        double earthRadius = 6371000; //meters
-        double dLat = Math.toRadians(currentLocation.getLatitude()-objectLocation.getLatitude());
-        double dLng = Math.toRadians(currentLocation.getLongitude()-objectLocation.getLongitude());
-        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(Math.toRadians(objectLocation.getLatitude())) *
-                        Math.cos(Math.toRadians(currentLocation.getLatitude())) *
-                        Math.sin(dLng/2) * Math.sin(dLng/2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        float dist = (float) (earthRadius * c);
-
-        if (dist < radius){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(ConnectionResult connectionResult){
+
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -258,6 +155,7 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
         try {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
                     mLocationRequest, this);
+
         }
         catch(SecurityException e) {
             Log.d("DET HÄR VA INGE BRA", "WHUPS");
@@ -280,13 +178,15 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
+    /**
+     * Updates the location
+     */
     @Override
     public void run() {
         boolean error = false;
         while(!error) {
             try {
                 Thread.sleep(5000);
-                Log.v("HEJ", "UPDATED FROM GETLOCATION");
 
             } catch (InterruptedException e) {
                 e.printStackTrace();

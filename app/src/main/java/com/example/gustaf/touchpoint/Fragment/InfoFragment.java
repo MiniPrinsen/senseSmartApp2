@@ -3,8 +3,10 @@ package com.example.gustaf.touchpoint.Fragment;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,12 +29,20 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.example.gustaf.touchpoint.BaseActivity;
+import com.example.gustaf.touchpoint.HelpClasses.Blur;
+import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.R;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class InfoFragment extends Fragment
 {
-
+    private CityObject cityObject;
+    private ImageView background;
     private Toolbar toolbar;
     private TextView infoText;
     private String description;
@@ -66,18 +76,49 @@ public class InfoFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_info, container, false);
-
-
         findViewsById();
 
-        description = getArguments().getString("info");
-        Log.d("LÖV", description);
+
+        final BaseActivity activity = (BaseActivity) getContext();
+        int position = getArguments().getInt("index");
+        cityObject = activity.getCityObject(position);
+
+
+        description = cityObject.getDescription();
+        //Log.d("LÖV", description);
         infoText.setText(description);
-        toolbarTitle = getArguments().getString("title");
+        toolbarTitle = cityObject.getName();
+
+
+        /* SET BACKGROUND */
+        Picasso.with(getContext())
+                .load(cityObject.getImgs().get(0))
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        Log.v("BLUR", from.name());
+                        Blur blr = new Blur();
+                    //    background.setScaleType(ImageView.ScaleType.FIT_XY);
+                        background.setImageBitmap(blr.blur(getContext(), bitmap));
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                });
+
 
         slideShow();
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ScrollPositionObserver());
         final ImageView imgview = new ImageView(getContext());
+
+
         imgview.setImageResource(R.drawable.ic_arrow_back);
         int color = Color.parseColor("#51ACC7");
         imgview.setColorFilter(color);
@@ -142,9 +183,19 @@ public class InfoFragment extends Fragment
         mScrollView = (ScrollView) rootView.findViewById(R.id.infofragment);
         mWrapperFL = (FrameLayout) rootView.findViewById(R.id.flWrapper);
         infoText = (TextView) rootView.findViewById(R.id.infoText);
+        background = (ImageView)rootView.findViewById(R.id.blurbitmap);
     }
 
     public void slideShow() {
+        ArrayList<String> imageUrls = cityObject.getImgs();
+        for(String url : imageUrls){
+            ImageView img = new ImageView(getContext());
+            Picasso.with(getContext()).load(url).into(img);
+            img.setScaleType(ImageView.ScaleType.FIT_XY);
+            flipper.addView(img);
+        }
+
+
         fadein = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         fadeout = AnimationUtils.loadAnimation(getContext(),R.anim.fade_out);
         flipper.setInAnimation(fadein);
@@ -177,4 +228,6 @@ public class InfoFragment extends Fragment
 
         }
     }
+
+
 }
