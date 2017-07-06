@@ -31,8 +31,6 @@ import com.example.gustaf.touchpoint.HelpClasses.GetLocation;
 import com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 /**
  *  BaseActivity contains the toolbar and navigationbar that
@@ -234,12 +232,10 @@ public class BaseActivity extends AppCompatActivity{
             else {
                 ((ListFragment) (viewPagerAdapterTabbed.getItem(0))).recieveLocation(loc);
                 for (CityObject tPoint : cityObjects) {
-                    tPoint.setDistance(lengthBetween(loc, tPoint.getCoordinates()));
+                    tPoint.setLengthBetween(loc.getLongitude(), loc.getLatitude());
                 }
                 ((ChatFragment) (viewPagerAdapterDeafult.getItem(0))).updateLocation(cityObjects.get(0));
             }
-
-
             super.handleMessage(msg);
         }
 
@@ -255,37 +251,9 @@ public class BaseActivity extends AppCompatActivity{
                 addPages();
                 showTabbed("SKELLEFTEÅ");
             }
-            else{
-                Log.v("CITYOBJ", "ISNULL");
-
-            }
-
         }
     };
 
-
-
-   /* private ArrayList<CityObject> sortedTouchPoints() {
-
-        if (cityObjects == null){
-            return null;
-            //cityObjects = createExampleTouchPoints();
-        }
-        Collections.sort(cityObjects, new Comparator<CityObject>() {
-            @Override
-            public int compare(CityObject lhs, CityObject rhs) {
-                if (current_position != null){
-                    float length1 = lengthBetween(current_position, lhs.getCoordinates());
-                    float length2 = lengthBetween(current_position, rhs.getCoordinates());
-                    return Float.compare(length1, length2);
-                }
-
-                return 0;
-            }
-
-        });
-        return cityObjects;
-    }*/
 
     public ArrayList<CityObject> getCityObjects(){
         return cityObjects;
@@ -295,19 +263,5 @@ public class BaseActivity extends AppCompatActivity{
         return cityObjects.get(i);
     }
 
-    private float lengthBetween(android.location.Location currentLocation, Coordinates objectCoordinates) {
-
-        double earthRadius = 6371000; //meters
-        double dLat = Math.toRadians(currentLocation.getLatitude()- objectCoordinates.getLatitude());
-        double dLng = Math.toRadians(currentLocation.getLongitude()- objectCoordinates.getLongitude());
-        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(Math.toRadians(objectCoordinates.getLatitude())) *
-                        Math.cos(Math.toRadians(currentLocation.getLatitude())) *
-                        Math.sin(dLng/2) * Math.sin(dLng/2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        float dist = (float) (earthRadius * c);
-
-        return dist;
-    }
 
 }

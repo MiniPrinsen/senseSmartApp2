@@ -85,6 +85,20 @@ public class CityObject {
 
     }
 
+    public void setLengthBetween(double lng, double lat) {
+
+        double earthRadius = 6371000; //meters
+        double dLat = Math.toRadians(lat- coordinates.getLatitude());
+        double dLng = Math.toRadians(lng- coordinates.getLongitude());
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(Math.toRadians(coordinates.getLatitude())) *
+                        Math.cos(Math.toRadians(lat)) *
+                        Math.sin(dLng/2) * Math.sin(dLng/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        distance = (int)(earthRadius * c);
+
+    }
+
     public boolean isOnline(){
         return isOnline;
     }

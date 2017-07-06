@@ -3,6 +3,7 @@ package com.example.gustaf.touchpoint.Fragment;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -12,7 +13,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.TouchDelegate;
@@ -92,6 +95,12 @@ public class InfoFragment extends Fragment
 
         /* SET BACKGROUND */
         Picasso.with(getContext()).load(cityObject.getImgs().get(0)).transform(new BlurTransformation()).into(background);
+        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+        Log.v("HEIGHT", height + " HOJD");
+        background.setMinimumHeight(height);
+
+
+
         /*Picasso.with(getContext())
                 .load(cityObject.getImgs().get(0))
                 .into(new Target() {

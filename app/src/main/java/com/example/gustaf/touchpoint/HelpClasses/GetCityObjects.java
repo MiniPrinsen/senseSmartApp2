@@ -10,12 +10,15 @@ import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
@@ -59,6 +62,8 @@ public class GetCityObjects implements Runnable {
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setChunkedStreamingMode(0);
 
+                urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
+
 
                 OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
 
@@ -74,6 +79,7 @@ public class GetCityObjects implements Runnable {
                 for (int i = 0; i<array.length(); i++){
                     JSONObject obj = array.getJSONObject(i);
                     CityObject cObject = gson.fromJson(obj.toString(), CityObject.class);
+                    cObject.setLengthBetween(longitude, latitude);
                     temp.add(cObject);
                 }
 
@@ -101,20 +107,29 @@ public class GetCityObjects implements Runnable {
      */
     private String getStringFromInputStream(InputStream inputstream) {
 
+        String UTF8 = "utf8";
+        int BUFFER_SIZE = 8192;
+
         BufferedReader br = null;
         StringBuilder sb = new StringBuilder();
+        char tmp;
 
         String line;
         try {
-            br = new BufferedReader(new InputStreamReader(inputstream,
-                    StandardCharsets.UTF_8));
+
+            InputStreamReader reader = new InputStreamReader(inputstream, StandardCharsets.UTF_8);
+
+             br = new BufferedReader(reader, BUFFER_SIZE);
+
             while ((line = br.readLine()) != null) {
+                Log.v("ENCODE", line);
                 sb.append(line);
             }
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+        Log.v("ENCODE", "ÅÄÖ");
 
         return sb.toString();
 
