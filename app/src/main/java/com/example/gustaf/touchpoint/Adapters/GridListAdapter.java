@@ -35,6 +35,7 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
     private final int      SCREEN_WIDTH;
     private final int     SCREEN_HEIGHT;
     private Context             context;
+    private InfoFragment   infoFragment;
 
     public GridListAdapter(List<CityObject> itemList, GridLayoutManager gridLayoutManager, int defaultSpanCount, int width, int height, Context context) {
         mItemList = itemList;
@@ -129,7 +130,9 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
                     }
 
                     final BaseActivity activity = (BaseActivity) context;
-                    InfoFragment infoFragment = new InfoFragment();
+                    if (infoFragment == null){
+                        infoFragment = new InfoFragment();
+                    }
                     Bundle args = new Bundle();
 
 

@@ -58,12 +58,7 @@ public class CityObject {
    }
 
     public void setDistance(float distance){
-        if (distance<50){
-            isOnline = true;
-        }
-        else{
-            isOnline = false;
-        }
+
         this.distance = (int)distance;
     }
 
@@ -96,6 +91,12 @@ public class CityObject {
                         Math.sin(dLng/2) * Math.sin(dLng/2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         distance = (int)(earthRadius * c);
+        if (distance<50){
+            isOnline = true;
+        }
+        else{
+            isOnline = false;
+        }
 
     }
 

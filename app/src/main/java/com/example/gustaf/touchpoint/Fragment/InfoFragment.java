@@ -94,7 +94,7 @@ public class InfoFragment extends Fragment
 
 
         /* SET BACKGROUND */
-        Picasso.with(getContext()).load(cityObject.getImgs().get(0)).transform(new BlurTransformation()).into(background);
+        Picasso.with(getContext()).load(cityObject.getImgs().get(0)).transform(new Blur().getTransformation(getContext())).into(background);
         int height = Resources.getSystem().getDisplayMetrics().heightPixels;
         Log.v("HEIGHT", height + " HOJD");
         background.setMinimumHeight(height);
@@ -137,10 +137,11 @@ public class InfoFragment extends Fragment
         imgview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), BaseActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(i);
-                rootView.setVisibility(View.INVISIBLE);
+           //     Intent i = new Intent(getContext(), BaseActivity.class);
+              //  i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                //startActivity(i);
+             //   rootView.setVisibility(View.INVISIBLE);
+                removeFragment();
             }
         });
         directions.setOnClickListener(new View.OnClickListener() {
@@ -188,6 +189,10 @@ public class InfoFragment extends Fragment
         background = (ImageView)rootView.findViewById(R.id.blurbitmap);
     }
 
+    public void removeFragment(){
+       // getActivity().getSupportFragmentManager().popBackStack();
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+    }
     public void slideShow() {
         ArrayList<String> imageUrls = cityObject.getImgs();
         for(String url : imageUrls){
@@ -231,28 +236,7 @@ public class InfoFragment extends Fragment
         }
     }
 
-    /**
-     * Class for bluring transformations using Picasso. Caches the image
-     * after transformation.
-     */
-    public class BlurTransformation implements com.squareup.picasso.Transformation {
 
-        @Override
-        public Bitmap transform ( final Bitmap source ) {
-            Blur br = new Blur();
-            Bitmap output = br.blur(getContext(), source);
-            if (source != output) {
-                source.recycle();
-            }
-
-            return output;
-        }
-
-        @Override
-        public String key () {
-            return "customTransformation" + "12312312oifs";
-        }
-    }
 
 
 

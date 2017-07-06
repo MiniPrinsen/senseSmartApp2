@@ -321,5 +321,39 @@ public class Blur {
 
         return outputBitmap;//Bitmap.createScaledBitmap(outputBitmap, width, height, false);
     }
+        public BlurTransformation getTransformation(Context context){
+            return new BlurTransformation(context);
+        }
+
+        /**
+         * Class for bluring transformations using Picasso. Caches the image
+         * after transformation.
+         */
+        public class BlurTransformation implements com.squareup.picasso.Transformation {
+            Context context;
+            public BlurTransformation(Context context){
+                super();
+                this.context = context;
+            }
+
+            @Override
+            public Bitmap transform ( final Bitmap source ) {
+                Bitmap output = blur(context, source);
+
+                if (source != output) {
+                    source.recycle();
+                }
+
+                return output;
+            }
+
+            @Override
+            public String key () {
+                return "customTransformation" + "12312312oifs";
+            }
+        }
+
+
+
 }
 

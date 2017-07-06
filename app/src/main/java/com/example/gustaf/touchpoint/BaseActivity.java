@@ -233,6 +233,7 @@ public class BaseActivity extends AppCompatActivity{
                 ((ListFragment) (viewPagerAdapterTabbed.getItem(0))).recieveLocation(loc);
                 for (CityObject tPoint : cityObjects) {
                     tPoint.setLengthBetween(loc.getLongitude(), loc.getLatitude());
+                    Log.v("ONLINE", tPoint.getName() + " = " +String.valueOf(tPoint.isOnline()));
                 }
                 ((ChatFragment) (viewPagerAdapterDeafult.getItem(0))).updateLocation(cityObjects.get(0));
             }
