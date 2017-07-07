@@ -31,6 +31,8 @@ import com.example.gustaf.touchpoint.HelpClasses.GetLocation;
 import com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *  BaseActivity contains the toolbar and navigationbar that
@@ -61,7 +63,6 @@ public class BaseActivity extends AppCompatActivity{
         /*Defines the navigationbar*/
         bottomNavigation=(AHBottomNavigation)findViewById(R.id.myBottomNavigation_ID);
         initializeNavigationBar();
-
     }
 
     /**
@@ -148,7 +149,6 @@ public class BaseActivity extends AppCompatActivity{
         if (tabLayout == null) {
             tabLayout = (TabLayout) findViewById(R.id.tabLayout);
             viewPagerTabbed = (ViewPager) findViewById(R.id.tabbed_viewPager);
-
             viewPagerAdapterTabbed = new ViewPagerAdapter(getSupportFragmentManager());
             viewPagerAdapterTabbed.addFragments(new ListFragment(), "LIST");
             viewPagerAdapterTabbed.addFragments(new GoogleMapsFragment(), "MAP");
@@ -177,16 +177,16 @@ public class BaseActivity extends AppCompatActivity{
 
     /**
      *
-     * @param classToOpen Which class to open
-     * @param animation which animation when class opens
-     */
+     *  classToOpen Which class to open
+     *  animation which animation when class opens
+     *
     protected void classStarter(Class classToOpen, int animation){
         Intent myIntent = new Intent(getApplicationContext(), classToOpen);
         myIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivityForResult(myIntent, 0);
         overridePendingTransition(0,0);
     }
-
+*/
     protected void setToolBarTitle(String title){
         TextView toolbarText = (TextView)findViewById(R.id.toolbar_title);
         toolbarText.setText(title);
@@ -220,11 +220,13 @@ public class BaseActivity extends AppCompatActivity{
         background.start();
     }
 
-    Handler locationHandler = new Handler() {
+    private Handler locationHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             android.location.Location loc = (android.location.Location) msg.obj;
             current_position = loc;
+            super.handleMessage(msg);
+
             if(cityObjects == null){
                 new Thread(new GetCityObjects(current_position.getLongitude(),
                         current_position.getLatitude(), CITY_DIST, receiveFromDb)).start();
@@ -237,17 +239,16 @@ public class BaseActivity extends AppCompatActivity{
                 }
                 ((ChatFragment) (viewPagerAdapterDeafult.getItem(0))).updateLocation(cityObjects.get(0));
             }
-            super.handleMessage(msg);
         }
 
     };
 
-    Handler receiveFromDb = new Handler(){
+    private Handler receiveFromDb = new Handler(){
         @Override
         public void handleMessage(Message msg){
             cityObjects = (ArrayList<CityObject>)msg.obj;
             if (cityObjects != null) {
-                Log.v("CITYOBJ", cityObjects.toString());
+                Log.v("SKOR", cityObjects.toString());
                 addTabs();
                 addPages();
                 showTabbed("SKELLEFTEÅ");
@@ -257,7 +258,42 @@ public class BaseActivity extends AppCompatActivity{
 
 
     public ArrayList<CityObject> getCityObjects(){
-        return cityObjects;
+            if (cityObjects == null){
+                return null;
+            }
+            Collections.sort(cityObjects, new Comparator<CityObject>() {
+                @Override
+                public int compare(CityObject lhs, CityObject rhs) {
+                    if (current_position != null){
+                        float length1 = lengthBetween(current_position, lhs.getCoordinates());
+                        float length2 = lengthBetween(current_position, rhs.getCoordinates());
+
+                        return Float.compare(length1, length2);
+                    }
+
+                    return 0;
+                }
+
+
+            });
+            return cityObjects;
+        }
+
+
+    private float lengthBetween(android.location.Location currentLocation, Coordinates objectCoordinates) {
+
+        double earthRadius = 6371000; //meters
+        double dLat = Math.toRadians(currentLocation.getLatitude()- objectCoordinates.getLatitude());
+        double dLng = Math.toRadians(currentLocation.getLongitude()- objectCoordinates.getLongitude());
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(Math.toRadians(objectCoordinates.getLatitude())) * Math.cos(Math.toRadians(currentLocation.getLatitude())) *
+                        Math.sin(dLng/2) * Math.sin(dLng/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        float dist = (float) (earthRadius * c);
+
+        return dist;
+
+
     }
 
     public CityObject getCityObject(int i){

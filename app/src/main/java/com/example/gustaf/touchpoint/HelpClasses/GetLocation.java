@@ -186,7 +186,7 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
         boolean error = false;
         while(!error) {
             try {
-                Thread.sleep(5000);
+                Thread.sleep(500);
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
