@@ -97,11 +97,30 @@ public class InfoFragment extends Fragment
         infoText.setText(description);
         toolbarTitle = cityObject.getName();
 
+        if(cityObject.isOnline()) {
+            directions.setBackgroundColor(getResources().getColor(R.color.colorGreenPrimary));
+            directions.setText("CHAT");
+            directions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getFragmentManager().beginTransaction()
+                            .add(android.R.id.content, new ChatWindowFragment()).commit();
+                }
+            });
+        }
+        else {
+            directions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse(direction));
+                    startActivity(intent);
+                }
+            });
+        }
 
-        /* SET BACKGROUND */
-        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-        Log.v("HEIGHT", height + " HOJD");
-        background.setMinimumHeight(height);
+
+
 
 
 
@@ -140,14 +159,7 @@ public class InfoFragment extends Fragment
                 removeFragment();
             }
         });
-        directions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse(direction));
-                startActivity(intent);
-            }
-        });
+
 
         View parent = rootView.findViewById(R.id.infofragment);
         parent.post(new Runnable() {
