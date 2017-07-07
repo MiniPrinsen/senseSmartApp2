@@ -1,10 +1,12 @@
 package com.example.gustaf.touchpoint.Fragment;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,10 +55,13 @@ public class ListFragment extends Fragment  {
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), DEFAULT_SPAN_COUNT);
 
+
+
         /*Load the touchpoint objects from BaseActivity*/
         BaseActivity bs = (BaseActivity)getActivity();
         cityObjects = bs.getCityObjects();
-
+        current_location = bs.getCurrentPosition();
+        cityObjects = sortedTouchPoints(true);
         /*Sets the gridlistadapter with the touchpoint objects*/
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mAdapter = new GridListAdapter(cityObjects, gridLayoutManager, DEFAULT_SPAN_COUNT, width, height, getContext());
@@ -73,7 +78,7 @@ public class ListFragment extends Fragment  {
     * */
     public void recieveLocation(android.location.Location loc){
         current_location = loc;
-        cityObjects = sortedTouchPoints();
+        cityObjects = sortedTouchPoints(false);
 
 
     }
@@ -83,7 +88,7 @@ public class ListFragment extends Fragment  {
      * Sort the touchpoint depening on which one is closest
      * to the device
      * */
-    private ArrayList<CityObject> sortedTouchPoints() {
+    private ArrayList<CityObject> sortedTouchPoints(boolean isFirst) {
 
         if (cityObjects == null){
             return null;
@@ -104,7 +109,9 @@ public class ListFragment extends Fragment  {
 
         });
         /*Updates the sorted data to the gridview*/
-        mAdapter.notifyDataSetChanged();
+        if (!isFirst){
+            mAdapter.notifyDataSetChanged();
+        }
         return cityObjects;
     }
 

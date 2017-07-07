@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -30,6 +32,8 @@ import com.example.gustaf.touchpoint.HelpClasses.GetLocation;
 import com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *  BaseActivity contains the toolbar and navigationbar that
@@ -54,12 +58,18 @@ public class BaseActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         /* Implements the toolbar */
-        toolbar = (Toolbar) findViewById(R.id.gustaf_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         /*Defines the navigationbar*/
         bottomNavigation=(AHBottomNavigation)findViewById(R.id.myBottomNavigation_ID);
         initializeNavigationBar();
+    }
+
+    @Override
+    public void onStart(){
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        super.onStart();
 
     }
 
@@ -92,8 +102,6 @@ public class BaseActivity extends AppCompatActivity{
         bottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
         bottomNavigation.setTitleTextSize(24, 24);
         /*Sets the current position*/
-
-
 
         bottomNavigation.setBehaviorTranslationEnabled(false);
         bottomNavigation.setCurrentItem(0);
@@ -128,6 +136,11 @@ public class BaseActivity extends AppCompatActivity{
 
     }
 
+    /**
+     *
+     * @param pos position of the tab we want to display
+     * @param title title of the tab we want to open
+     */
     public void showPage(int pos, String title){
         viewPagerDeafult.setCurrentItem(pos, false);
         viewPagerDeafult.setVisibility(View.VISIBLE);
@@ -136,6 +149,10 @@ public class BaseActivity extends AppCompatActivity{
         setToolBarTitle(title);
     }
 
+    /**
+     *
+     * @param title
+     */
     public void showTabbed(String title){
         viewPagerTabbed.setVisibility(View.VISIBLE);
         viewPagerDeafult.setVisibility(View.INVISIBLE);
@@ -143,11 +160,13 @@ public class BaseActivity extends AppCompatActivity{
         setToolBarTitle(title);
     }
 
+    /**
+     * Creates the list and map fragments
+     */
     public void addTabs(){
         if (tabLayout == null) {
             tabLayout = (TabLayout) findViewById(R.id.tabLayout);
             viewPagerTabbed = (ViewPager) findViewById(R.id.tabbed_viewPager);
-
             viewPagerAdapterTabbed = new ViewPagerAdapter(getSupportFragmentManager());
             viewPagerAdapterTabbed.addFragments(new ListFragment(), "LIST");
             viewPagerAdapterTabbed.addFragments(new GoogleMapsFragment(), "MAP");
@@ -162,11 +181,13 @@ public class BaseActivity extends AppCompatActivity{
 
     }
 
+    /**
+     * Open achievement and chat fragments
+     */
     public void addPages(){
         tabLayout.setVisibility(View.GONE);
         viewPagerTabbed.setVisibility(View.INVISIBLE);
         viewPagerDeafult = (NoSwipeViewPager) findViewById(R.id.viewPager_deafult);
-
         viewPagerAdapterDeafult = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapterDeafult.addFragments(new ChatFragment(), "CHAT");
         viewPagerAdapterDeafult.addFragments(new AchievementFragment(), "ACHIEVEMENTS");
@@ -175,17 +196,9 @@ public class BaseActivity extends AppCompatActivity{
 
 
     /**
-     *
-     * @param classToOpen Which class to open
-     * @param animation which animation when class opens
+     * Sets the title for the toolbar
+     * @param title
      */
-    protected void classStarter(Class classToOpen, int animation){
-        Intent myIntent = new Intent(getApplicationContext(), classToOpen);
-        myIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivityForResult(myIntent, 0);
-        overridePendingTransition(0,0);
-    }
-
     protected void setToolBarTitle(String title){
         TextView toolbarText = (TextView)findViewById(R.id.toolbar_title);
         toolbarText.setText(title);
@@ -193,60 +206,69 @@ public class BaseActivity extends AppCompatActivity{
 
     }
 
+    /**
+     * Checks permission to use location
+     */
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case 1: {
-                // If request is cancelled, the result arrays are empty.
+                // If the app have permission to use location we will start using it
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.v("perms", "first If");
+                    Thread background = new Thread(new GetLocation(getApplicationContext(), locationHandler));
+                    background.start();
+                }
+                /* if not a new layout is loaded which says we need the location to use the app */
+                else {
+                    Log.v("perms", "2nd If");
+                    setContentView(R.layout.access_location);
+                    Button settingsBtn = (Button)findViewById(R.id.settingsBtn);
+                    settingsBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
 
-                } else {
-                    System.exit(1);
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                        }
+                    });
                 }
                 return;
             }
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
-    public void onStart(){
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        super.onStart();
-        Thread background = new Thread(new GetLocation(getApplicationContext(), locationHandler));
-        background.start();
-    }
 
-    Handler locationHandler = new Handler() {
+    /**
+     * Gets called when location changes and updates the other fragments.
+     */
+    private Handler locationHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            android.location.Location loc = (android.location.Location) msg.obj;
-            current_position = loc;
+            current_position = (android.location.Location) msg.obj;
+            super.handleMessage(msg);
             if(cityObjects == null){
                 new Thread(new GetCityObjects(current_position.getLongitude(),
                         current_position.getLatitude(), CITY_DIST, receiveFromDb)).start();
             }
             else {
-                ((ListFragment) (viewPagerAdapterTabbed.getItem(0))).recieveLocation(loc);
+                ((ListFragment) (viewPagerAdapterTabbed.getItem(0))).recieveLocation(current_position);
                 for (CityObject tPoint : cityObjects) {
-                    tPoint.setLengthBetween(loc.getLongitude(), loc.getLatitude());
-                    Log.v("ONLINE", tPoint.getName() + " = " +String.valueOf(tPoint.isOnline()));
+                    tPoint.setLengthBetween(current_position.getLongitude(), current_position.getLatitude());
                 }
                 ((ChatFragment) (viewPagerAdapterDeafult.getItem(0))).updateLocation(cityObjects.get(0));
             }
-            super.handleMessage(msg);
         }
 
     };
 
-    Handler receiveFromDb = new Handler(){
+    /**
+     * Recieves the cityobjects from the database via a handler from getCityObjects class
+     */
+    private Handler receiveFromDb = new Handler(){
         @Override
         public void handleMessage(Message msg){
             cityObjects = (ArrayList<CityObject>)msg.obj;
             if (cityObjects != null) {
-                Log.v("CITYOBJ", cityObjects.toString());
                 addTabs();
                 addPages();
                 showTabbed("SKELLEFTEÅ");
@@ -254,14 +276,10 @@ public class BaseActivity extends AppCompatActivity{
         }
     };
 
-
-    public ArrayList<CityObject> getCityObjects(){
-        return cityObjects;
-    }
-
     public CityObject getCityObject(int i){
         return cityObjects.get(i);
     }
-
+    public ArrayList<CityObject> getCityObjects(){ return cityObjects; }
+    public Location getCurrentPosition(){ return current_position; }
 
 }

@@ -32,6 +32,7 @@ import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.R;
 import com.squareup.picasso.Picasso;
 
+
 import java.util.ArrayList;
 
 
@@ -55,6 +56,17 @@ public class InfoFragment extends Fragment
             ":0x412452cb329526e!2m2!1d20.9157401!2d64.7510032?hl=sv";
     public InfoFragment() {
 
+    }
+
+
+    public static InfoFragment newInstance(String toolbar) {
+        InfoFragment myFragment = new InfoFragment();
+
+        Bundle args = new Bundle();
+        args.putString("string", toolbar);
+        myFragment.setArguments(args);
+        toolbarTitle = toolbar;
+        return myFragment;
     }
 
     @Override
@@ -103,6 +115,17 @@ public class InfoFragment extends Fragment
 
         Picasso.with(getContext()).load(cityObject.getImgs().get(0)).transform(
                 new Blur().getTransformation(getContext(), cityObject.getName())).into(background);
+        /*Picasso.with(getContext())
+                .load(cityObject.getImgs().get(0))
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        Log.v("BLUR", from.name());
+                    //    background.setScaleType(ImageView.ScaleType.FIT_XY);
+                        background.setImageBitmap(blr.blur(getContext(), bitmap));
+                    }
+
+*/
 
         slideShow();
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ScrollPositionObserver());
@@ -154,7 +177,7 @@ public class InfoFragment extends Fragment
     }
 
     public void findViewsById() {
-        toolbar = (Toolbar) rootView.findViewById(R.id.gustaf_toolbar);
+        toolbar = (Toolbar) rootView.findViewById(R.id.main_toolbar);
         directions = (Button) rootView.findViewById(R.id.directionsButton);
         flipper = (ViewFlipper) rootView.findViewById(R.id.flipper);
         mScrollView = (ScrollView) rootView.findViewById(R.id.infofragment);

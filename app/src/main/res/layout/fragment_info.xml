@@ -20,13 +20,7 @@ SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
         android:layout_height="match_parent"
         android:id="@+id/infofragment"
         android:clickable="true"
-        android:fillViewport="true"
-
-
-        >
-
-
-
+        android:fillViewport="true">
         <RelativeLayout
 
             android:layout_width="match_parent"
@@ -41,22 +35,6 @@ SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
                 android:layout_height="@dimen/info_photo_height"
                 android:layout_marginTop="@dimen/bottom_navigation_height"
                 >
-                <!--<ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/info_photo_height" />
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/info_photo_height"
-                    android:background="@drawable/bonnstan_square600"/>
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/info_photo_height"
-                    android:background="@drawable/lejonstromsbron_square600"/>
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/info_photo_height"
-                    android:background="@drawable/johannaiparken_square600"/>-->
             </ViewFlipper>
 
             <!--THIS IMAGEVIEW IS USED AS THE BLURRED BACKGROUND WHERE THE TEXT IS PUT.-->
@@ -69,21 +47,6 @@ SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
                 android:layout_below="@+id/flipper"
                 android:background="@color/colorWhite"
                 >
-          <!--  <ImageView
-
-                android:id="@+id/blurbitmap"
-                android:scaleType="fitXY"
-                android:layout_below="@+id/flipper"
-
-                android:paddingBottom="0dp"
-                android:layout_marginBottom="0dp"
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorGreenPrimaryLight"
-                android:layout_gravity="fill"
-                android:adjustViewBounds="false"
-                />-->
 
             <!--RATINGBAR INFLATES THE RATING ON THE PAGE.-->
             <RatingBar

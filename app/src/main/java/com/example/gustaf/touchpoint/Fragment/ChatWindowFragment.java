@@ -44,7 +44,6 @@ public class ChatWindowFragment extends Fragment {
     Button buttonSend;
     boolean askedForName = false;
     public static final String URL ="";
-           // "http://130.240.135.203:9999/TouchPoint/sayhello";
     private Button goBackBtn;
     private EditText chatText;
     ImageView imgview;
@@ -136,7 +135,7 @@ public class ChatWindowFragment extends Fragment {
         //goBackBtn = (Button)container.findViewById(R.id.btn_back);
         chatText = (EditText)container.findViewById(R.id.msgBox);
         listView = (ListView) container.findViewById(R.id.listanmedView);
-        toolbar = (Toolbar) container.findViewById(R.id.gustaf_toolbar);
+        toolbar = (Toolbar) container.findViewById(R.id.main_toolbar);
 
 
     }
