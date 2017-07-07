@@ -60,6 +60,7 @@ public class ListFragment extends Fragment  {
         /*Load the touchpoint objects from BaseActivity*/
         BaseActivity bs = (BaseActivity)getActivity();
         cityObjects = bs.getCityObjects();
+        current_location = bs.getCurrentPosition();
         cityObjects = sortedTouchPoints(true);
         /*Sets the gridlistadapter with the touchpoint objects*/
         mRecyclerView.setLayoutManager(gridLayoutManager);

@@ -36,6 +36,7 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
     private final int     SCREEN_HEIGHT;
     private Context             context;
     private InfoFragment   infoFragment;
+    private String tmpImage = "https://upload.wikimedia.org/wikipedia/en/7/78/Small_scream.png";
 
     public GridListAdapter(List<CityObject> itemList, GridLayoutManager gridLayoutManager, int defaultSpanCount, int width, int height, Context context) {
         mItemList = itemList;

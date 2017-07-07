@@ -30,26 +30,20 @@ import com.squareup.picasso.Picasso;
  *
  */
 public class ChatFragment extends Fragment {
-  //  LruCache<Integer, Bitmap> blurredBitmaps;
-  //  LruCache<Integer, Bitmap> circleBitmaps;
+    private View                rootView;
+    private RippleBackground    rippleBackground;
+    private ImageView           backgroundAnim;
+    private ImageView           goToChatt;
+    private ImageView           goToChatt2;
+    private Boolean             firstTime = true;
+    private Boolean             isShown = false;
+    private GradientDrawable    drawable;
+    private CityObject          closestCityObject;
 
-    /**
 
-     */
     public ChatFragment() {
         // Required empty public constructor
     }
-    View rootView;
-    RippleBackground rippleBackground;
-    ImageView backgroundAnim;
-    ImageView goToChatt;
-    ImageView goToChatt2;
-    Location volleyboll;
-    Boolean firstTime = true;
-    Boolean isShown = false;
-    int idOfBlurredImage;
-    GradientDrawable drawable;
-    CityObject closestCityObject;
     /**
      *
      * @param inflater
@@ -63,13 +57,6 @@ public class ChatFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_chat, container, false);
         rippleBackground = (RippleBackground) rootView.findViewById(R.id.content);
-
-        //blurredBitmaps = new LruCache<>(4*60*60);
-
-
-
-
-
         goToChatt = (ImageView) rootView.findViewById(R.id.go_to_chat_btn);
         goToChatt2 = (ImageView) rootView.findViewById(R.id.go_to_chat_btn2);
         goToChatt.setOnClickListener(chattObjectListener);
@@ -77,9 +64,6 @@ public class ChatFragment extends Fragment {
         goToChatt2.setOnTouchListener(onTouchListener);
         backgroundAnim = (ImageView) rootView.findViewById(R.id.backgroundImage);
         assert goToChatt != null;
-        //volleyboll.setLatitude(64.74512696);
-        //volleyboll.setLongitude(20.9547472);
-
         rippleBackground.startRippleAnimation();
 
         return rootView;
@@ -136,15 +120,7 @@ public class ChatFragment extends Fragment {
         }
     };
 
-    static void startScaleAnimation(View v, ScaleAnimation scaleAnim, float pivotX, float pivotY){
-        scaleAnim =
-                new ScaleAnimation(1.0f, 5f, 1.0f, 5f,
-                        ScaleAnimation.RELATIVE_TO_SELF, pivotX,
-                        ScaleAnimation.RELATIVE_TO_SELF, pivotY);
-        scaleAnim.setDuration(4000);
 
-        v.startAnimation(scaleAnim);
-    }
     /**
      *
      */
@@ -164,16 +140,7 @@ public class ChatFragment extends Fragment {
         }
 
     }
-    /**
-     *
-     * @param picture
-     */
-    public Bitmap blurImage(int picture) {
-        Bitmap blurredImage = BitmapFactory.decodeResource(getResources(), picture);
-        Blur br = new Blur();
-        blurredImage = br.blurImage(getContext(), closestCityObject.getImage().get(0));//blurredImage, 0.2f, 70);
-        return blurredImage;
-    }
+
     /**
      *
      */
@@ -185,29 +152,7 @@ public class ChatFragment extends Fragment {
                     .add(android.R.id.content, new ChatWindowFragment()).commit();
         }
     };
-    /**
-     *
-     * @param currentLocation
-     * @param objectLocation
-     * @param radius
-     * @return
-     */
-    public static boolean inRadius(Location currentLocation, Location objectLocation, int radius) {
-        double earthRadius = 6371000; //meters
-        double dLat = Math.toRadians(currentLocation.getLatitude() - objectLocation.getLatitude());
-        double dLng = Math.toRadians(currentLocation.getLongitude() - objectLocation.getLongitude());
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(objectLocation.getLatitude())) *
-                        Math.cos(Math.toRadians(currentLocation.getLatitude())) *
-                        Math.sin(dLng / 2) * Math.sin(dLng / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        float dist = (float) (earthRadius * c);
-        if (dist <= radius) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
     /**
      *
      */
@@ -220,18 +165,6 @@ public class ChatFragment extends Fragment {
 
         Blur b = new Blur();
             Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(b.getTransformation(getContext(), closestCityObject.getName())).into(imgView);
-
-
-     /*   if (blurredBitmaps.get(closestCityObject.getImage().get(0)) == null){
-            Bitmap bmp = blurImage(closestCityObject.getImage().get(0));
-            blurredBitmaps.put(closestCityObject.getImage().get(0), bmp);
-            imgView.setImageBitmap(blurImage(closestCityObject.getImage().get(0)));
-            idOfBlurredImage = closestCityObject.getImage().get(0);
-        }
-        else{
-            imgView.setImageBitmap(blurredBitmaps.get(closestCityObject.getImage().get(0)));
-        }*/
-
         imgView.setVisibility(View.VISIBLE);
 
         resize.setFillAfter(true);
@@ -263,23 +196,6 @@ public class ChatFragment extends Fragment {
 
     }
 
-    /*private boolean hasImage(@NonNull ImageView view) {
-        boolean hasImage = false;
-        if (view != null){
-            Drawable drawable = view.getDrawable();
-            hasImage = (drawable != null);
-
-            if (hasImage && (drawable instanceof BitmapDrawable)) {
-                hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
-            }
-
-        }
-        return hasImage;
-    }*/
-
-    /**
-     *
-     */
     public void zoomOut() {
         Animation fadeandZoomOut = AnimationUtils.loadAnimation(getContext(), R.anim.fadeoutzoomout);
         Animation fadeandZoomIn = AnimationUtils.loadAnimation(getContext(), R.anim.fadeinzoomout);

@@ -3,21 +3,13 @@ package com.example.gustaf.touchpoint.Fragment;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.TouchDelegate;
@@ -29,7 +21,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -40,10 +31,8 @@ import com.example.gustaf.touchpoint.HelpClasses.Blur;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.R;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -188,7 +177,7 @@ public class InfoFragment extends Fragment
     }
 
     public void findViewsById() {
-        toolbar = (Toolbar) rootView.findViewById(R.id.gustaf_toolbar);
+        toolbar = (Toolbar) rootView.findViewById(R.id.main_toolbar);
         directions = (Button) rootView.findViewById(R.id.directionsButton);
         flipper = (ViewFlipper) rootView.findViewById(R.id.flipper);
         mScrollView = (ScrollView) rootView.findViewById(R.id.infofragment);
