@@ -4,7 +4,6 @@ package com.example.gustaf.touchpoint.Fragment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.AsyncTask;
@@ -26,7 +25,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.gustaf.touchpoint.Adapters.ChatArrayAdapter;
-import com.example.gustaf.touchpoint.BaseActivity;
 import com.example.gustaf.touchpoint.R;
 
 import java.io.BufferedReader;
@@ -79,10 +77,7 @@ public class ChatWindowFragment extends Fragment {
         imgview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), BaseActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(i);
-                view.setVisibility(View.INVISIBLE);
+                removeFragment();
             }
         });
       //  ((BaseActivity)getActivity()).hideNavigationBar(true);
@@ -129,6 +124,11 @@ public class ChatWindowFragment extends Fragment {
 
 
         return view;
+    }
+
+    public void removeFragment(){
+        // getActivity().getSupportFragmentManager().popBackStack();
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 
     private void findViewsById(View container) {

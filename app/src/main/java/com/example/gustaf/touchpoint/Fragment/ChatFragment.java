@@ -3,7 +3,6 @@ package com.example.gustaf.touchpoint.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -12,7 +11,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,14 +26,12 @@ import com.example.gustaf.touchpoint.R;
 import com.skyfishjy.library.RippleBackground;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-
 /**
  *
  */
 public class ChatFragment extends Fragment {
-    LruCache<Integer, Bitmap> blurredBitmaps;
-    LruCache<Integer, Bitmap> circleBitmaps;
+  //  LruCache<Integer, Bitmap> blurredBitmaps;
+  //  LruCache<Integer, Bitmap> circleBitmaps;
 
     /**
 
@@ -68,7 +64,7 @@ public class ChatFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_chat, container, false);
         rippleBackground = (RippleBackground) rootView.findViewById(R.id.content);
 
-        blurredBitmaps = new LruCache<>(4*60*60);
+        //blurredBitmaps = new LruCache<>(4*60*60);
 
 
 
@@ -222,8 +218,11 @@ public class ChatFragment extends Fragment {
 
         final ImageView imgView = (ImageView)rootView.findViewById(R.id.backgroundImage);
 
+        Blur b = new Blur();
+            Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(b.getTransformation(getContext())).into(imgView);
 
-        if (blurredBitmaps.get(closestCityObject.getImage().get(0)) == null){
+
+     /*   if (blurredBitmaps.get(closestCityObject.getImage().get(0)) == null){
             Bitmap bmp = blurImage(closestCityObject.getImage().get(0));
             blurredBitmaps.put(closestCityObject.getImage().get(0), bmp);
             imgView.setImageBitmap(blurImage(closestCityObject.getImage().get(0)));
@@ -231,7 +230,7 @@ public class ChatFragment extends Fragment {
         }
         else{
             imgView.setImageBitmap(blurredBitmaps.get(closestCityObject.getImage().get(0)));
-        }
+        }*/
 
         imgView.setVisibility(View.VISIBLE);
 
@@ -241,6 +240,7 @@ public class ChatFragment extends Fragment {
                 goToChatt.setVisibility(View.VISIBLE);
                 isShown = true;
                 firstTime = false;
+                Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(new CircleImageTransformation()).into(goToChatt);
                // goToChatt.setImageBitmap(getCircularBitmap(closestCityObject.getImage().get(0)));
                 goToChatt2.setVisibility(View.INVISIBLE);
                 drawable = (GradientDrawable) goToChatt.getBackground();
