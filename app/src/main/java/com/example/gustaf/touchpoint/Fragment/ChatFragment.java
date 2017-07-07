@@ -219,7 +219,7 @@ public class ChatFragment extends Fragment {
         final ImageView imgView = (ImageView)rootView.findViewById(R.id.backgroundImage);
 
         Blur b = new Blur();
-            Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(b.getTransformation(getContext())).into(imgView);
+            Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(b.getTransformation(getContext(), closestCityObject.getName())).into(imgView);
 
 
      /*   if (blurredBitmaps.get(closestCityObject.getImage().get(0)) == null){

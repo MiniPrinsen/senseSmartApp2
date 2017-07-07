@@ -183,7 +183,6 @@ public class InfoFragment extends Fragment
         mWrapperFL = (FrameLayout) rootView.findViewById(R.id.flWrapper);
         infoText = (TextView) rootView.findViewById(R.id.infoText);
         background = (BitmapLayout) rootView.findViewById(R.id.blurredBG);
-        background = (ImageView)rootView.findViewById(R.id.blurbitmap);
     }
 
     public void removeFragment(){
