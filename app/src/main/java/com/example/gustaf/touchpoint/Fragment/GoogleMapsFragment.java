@@ -62,7 +62,7 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
             Coordinates loc = cObject.getCoordinates();
             LatLng pos = new LatLng(loc.getLatitude(), loc.getLongitude());
             mMap.addMarker(new MarkerOptions().position(pos).title(cObject.getName()));
-            getInfoWindow(cObject.getImgs().get(0));
+            loadInfoWindow(cObject.getImgs().get(0));
             builder.include(pos);
         }
         LatLngBounds bounds = builder.build();
@@ -84,7 +84,7 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-    public void getInfoWindow(final String url) {
+    public void loadInfoWindow(final String url) {
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
             // Use default InfoWindow frame
@@ -93,15 +93,11 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
                 View v = getActivity().getLayoutInflater().inflate(R.layout.layout_info_window, null);
                 BitmapLayout back = (BitmapLayout) v.findViewById(R.id.bitmapBackground);
                 Picasso.with(getContext()).load(url).into(back);
-               // View v = View.inflate(getContext(), R.layout.layout_info_window,null);
 
-
-                // Returning the view containing InfoWindow contents
                 return v;
 
             }
 
-            // Defines the contents of the InfoWindow
             @Override
             public View getInfoContents(Marker arg0) {
 
