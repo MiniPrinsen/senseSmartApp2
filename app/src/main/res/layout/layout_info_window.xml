@@ -5,7 +5,12 @@
     android:id="@+id/infoWindow"
     android:clickable="false">
 
-    <RelativeLayout
+    <com.example.gustaf.touchpoint.HelpClasses.BitmapLayout
+        android:id="@+id/bitmapBackground"
+        android:layout_width="200dp"
+        android:layout_height="120dp">
+
+        <RelativeLayout
         android:id="@+id/infoBackground"
         android:layout_width="200dp"
         android:layout_height="120dp">
@@ -15,14 +20,15 @@
             android:layout_height="35dp"
             android:background="@drawable/roundcornersmall"
             android:layout_alignParentEnd="true"/>
-    </RelativeLayout>
+            </RelativeLayout>
+    </com.example.gustaf.touchpoint.HelpClasses.BitmapLayout>
 
    <Button
        android:id="@+id/infoButton"
        android:layout_width="match_parent"
        android:layout_height="40dp"
        android:textSize="16sp"
-       android:background="@color/colorGrayMediumLight"
+       android:background="@drawable/infobuttonmap"
        android:gravity="start|center_vertical"
        android:typeface="sans"
        android:paddingStart="10dp"

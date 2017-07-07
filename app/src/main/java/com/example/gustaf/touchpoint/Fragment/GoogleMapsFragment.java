@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.gustaf.touchpoint.BaseActivity;
+import com.example.gustaf.touchpoint.HelpClasses.BitmapLayout;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.HelpClasses.Coordinates;
 import com.example.gustaf.touchpoint.R;
@@ -20,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -60,9 +62,9 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
             Coordinates loc = cObject.getCoordinates();
             LatLng pos = new LatLng(loc.getLatitude(), loc.getLongitude());
             mMap.addMarker(new MarkerOptions().position(pos).title(cObject.getName()));
+            getInfoWindow(cObject.getImgs().get(0));
             builder.include(pos);
         }
-
         LatLngBounds bounds = builder.build();
 
         int width = getResources().getDisplayMetrics().widthPixels;
@@ -78,19 +80,20 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
         catch(SecurityException e) {
             Log.d("Coordinate not accessed", "Security Exception");
         }
-        getInfoWindow();
     }
 
 
 
-    public void getInfoWindow() {
+    public void getInfoWindow(final String url) {
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
             // Use default InfoWindow frame
             @Override
             public View getInfoWindow(Marker arg0) {
                 View v = getActivity().getLayoutInflater().inflate(R.layout.layout_info_window, null);
-                //View v = View.inflate(getContext(), R.layout.layout_info_window,null);
+                BitmapLayout back = (BitmapLayout) v.findViewById(R.id.bitmapBackground);
+                Picasso.with(getContext()).load(url).into(back);
+               // View v = View.inflate(getContext(), R.layout.layout_info_window,null);
 
 
                 // Returning the view containing InfoWindow contents

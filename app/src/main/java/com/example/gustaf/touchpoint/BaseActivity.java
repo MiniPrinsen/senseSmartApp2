@@ -25,7 +25,6 @@ import com.example.gustaf.touchpoint.Fragment.ChatFragment;
 import com.example.gustaf.touchpoint.Fragment.GoogleMapsFragment;
 import com.example.gustaf.touchpoint.Fragment.ListFragment;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
-import com.example.gustaf.touchpoint.HelpClasses.Coordinates;
 import com.example.gustaf.touchpoint.HelpClasses.GetCityObjects;
 import com.example.gustaf.touchpoint.HelpClasses.GetLocation;
 import com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager;
