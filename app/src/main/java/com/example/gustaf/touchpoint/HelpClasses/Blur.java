@@ -9,6 +9,8 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
+import android.widget.ImageView;
+
 
 
 public class Blur {
@@ -38,10 +40,15 @@ public class Blur {
             width = Math.round(width/BITMAP_SCALE);
             height = Math.round(height/BITMAP_SCALE);
 
-
             outputBitmap = Bitmap.createScaledBitmap(outputBitmap, width, height,
                     false);
             return outputBitmap;
+        }
+
+        public void gaussianBlur(Context context, ImageView imageView){
+            //GaussianBlur.with(context).size(300).radius(10).put(R.mipmap.your_image, imageView);
+            //GaussianBlur.with(context).put();
+
         }
 
     public static Bitmap fastblur(Bitmap sentBitmap, float scale, int radius) {
@@ -321,8 +328,8 @@ public class Blur {
 
         return outputBitmap;//Bitmap.createScaledBitmap(outputBitmap, width, height, false);
     }
-        public BlurTransformation getTransformation(Context context){
-            return new BlurTransformation(context);
+        public BlurTransformation getTransformation(Context context, String key){
+            return new BlurTransformation(context, key);
         }
 
         /**
@@ -331,9 +338,11 @@ public class Blur {
          */
         public class BlurTransformation implements com.squareup.picasso.Transformation {
             Context context;
-            public BlurTransformation(Context context){
+            private String key;
+            public BlurTransformation(Context context, String key){
                 super();
                 this.context = context;
+                this.key = key;
             }
 
             @Override
@@ -349,7 +358,7 @@ public class Blur {
 
             @Override
             public String key () {
-                return "customTransformation" + "12312312oifs";
+                return key;
             }
         }
 
