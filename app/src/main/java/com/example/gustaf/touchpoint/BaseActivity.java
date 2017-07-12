@@ -32,8 +32,6 @@ import com.example.gustaf.touchpoint.HelpClasses.GetLocation;
 import com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 /**
  *  BaseActivity contains the toolbar and navigationbar that
@@ -202,7 +200,7 @@ public class BaseActivity extends AppCompatActivity{
     protected void setToolBarTitle(String title){
         TextView toolbarText = (TextView)findViewById(R.id.toolbar_title);
         toolbarText.setText(title);
-        getSupportActionBar().setTitle("");
+        //getSupportActionBar().setTitle(Html.fromHtml("<font color=\"red\">") + title + "</font>");
 
     }
 

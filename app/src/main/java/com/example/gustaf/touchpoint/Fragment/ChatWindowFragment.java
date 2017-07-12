@@ -1,6 +1,7 @@
 package com.example.gustaf.touchpoint.Fragment;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -76,6 +77,7 @@ public class ChatWindowFragment extends Fragment {
         imgview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard(getContext());
                 removeFragment();
             }
         });
@@ -90,8 +92,7 @@ public class ChatWindowFragment extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(chatText.getWindowToken(), 0);
+                hideKeyboard(getContext());
 
                 return false;
             }
@@ -173,7 +174,7 @@ public class ChatWindowFragment extends Fragment {
                             task.execute(URL);
                             sendChatMessage();
                             chatText.setText("");
-                            chatText.setHint("Skriv ett meddelande...");
+                            chatText.setHint("Enter message...");
                         }
 
                     }
@@ -192,6 +193,18 @@ public class ChatWindowFragment extends Fragment {
         }
     };
 
+    public static void hideKeyboard(Context ctx) {
+        InputMethodManager inputManager = (InputMethodManager) ctx
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // check if no view has focus:
+        View v = ((Activity) ctx).getCurrentFocus();
+        if (v == null)
+            return;
+
+        inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
     private boolean sendChatMessage(){
         chatArrayAdapter.add(new MessageContainer(false, chatText.getText().toString()));
         chatText.setText("");
@@ -201,6 +214,7 @@ public class ChatWindowFragment extends Fragment {
     private void recieveChatMessage(String message){
         if (message != null) {
             chatArrayAdapter.add(new MessageContainer(true, message));
+            listView.setSelection(chatArrayAdapter.getCount() - 1);
         }
 
     }
