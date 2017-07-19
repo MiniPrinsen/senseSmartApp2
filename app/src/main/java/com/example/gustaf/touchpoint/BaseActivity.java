@@ -3,7 +3,9 @@ package com.example.gustaf.touchpoint;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,8 +17,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -48,6 +54,8 @@ public class BaseActivity extends AppCompatActivity{
     private ViewPagerAdapter        viewPagerAdapterDeafult;
     protected AHBottomNavigation           bottomNavigation;
     protected Toolbar                               toolbar;
+    private ImageView                               imgview;
+    private ImageView                            circleview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +142,18 @@ public class BaseActivity extends AppCompatActivity{
 
     }
 
+    public void startChatAnim(ImageView circleImage, Drawable image){
+        Animation moveUp = AnimationUtils.loadAnimation(this,R.anim.move_up);
+        moveUp.setDuration(1000);
+        circleImage.startAnimation(moveUp);
+        moveUp.setFillAfter(true);
+
+        ImageView imgView = new ImageView(this);
+        imgView.setImageDrawable(image);
+        toolbar.addView(imgView);
+        Log.v("START", "ANIMATION HERE...");
+    }
+
     /**
      *
      * @param pos position of the tab we want to display
@@ -197,10 +217,27 @@ public class BaseActivity extends AppCompatActivity{
      * Sets the title for the toolbar
      * @param title
      */
-    protected void setToolBarTitle(String title){
+    public void setToolBarTitle(String title){
         TextView toolbarText = (TextView)findViewById(R.id.toolbar_title);
         toolbarText.setText(title);
         //getSupportActionBar().setTitle(Html.fromHtml("<font color=\"red\">") + title + "</font>");
+
+    }
+    public ImageView addBackButton() {
+        imgview = new ImageView(this);
+        imgview.setImageResource(R.drawable.ic_arrow_back);
+        int color = Color.parseColor("#51ACC7");
+        imgview.setColorFilter(color);
+        imgview.setLayoutParams(new Toolbar.LayoutParams(70,70, Gravity.START));
+        setToolBarTitle(null);
+        toolbar.addView(imgview);
+        return imgview;
+    }
+    public void addCenterCircle(ImageView v) {
+        circleview = new ImageView(this);
+        //circleview.setImageResource(v);
+        circleview.setLayoutParams(new Toolbar.LayoutParams(70,70, Gravity.START));
+        toolbar.addView(circleview);
 
     }
 

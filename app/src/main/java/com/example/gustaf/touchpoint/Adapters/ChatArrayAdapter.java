@@ -62,9 +62,16 @@ public class ChatArrayAdapter extends ArrayAdapter {
         /* Checks if the object should be to the left or right and
          * sets the properties connected to each side
         **/
-        chatText.setBackgroundResource(chatMessageObj.left ? R.drawable.chatbubble_left :
-                R.drawable.chatbubble_right);
+        int chatbubbleuser = R.drawable.chatbubbleuser;
+        int chatbubblebot = R.drawable.chatbubblebot;
+        chatText.setBackgroundResource(chatMessageObj.left ? chatbubblebot :
+                chatbubbleuser);
+        //NinePatch hej = new NinePatch(R.drawable.chatbubbleuser,chatText);
         singleMessageContainer.setGravity(chatMessageObj.left ? Gravity.LEFT : Gravity.RIGHT);
+
+
+
+
 
         int leftTextColor = ContextCompat.getColor(getContext(), R.color.colorGrayDark);
         int rightTextColor = ContextCompat.getColor(getContext(), R.color.colorWhite);

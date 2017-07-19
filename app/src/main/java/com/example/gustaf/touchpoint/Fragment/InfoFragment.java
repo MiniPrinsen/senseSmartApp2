@@ -32,7 +32,6 @@ import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.R;
 import com.squareup.picasso.Picasso;
 
-
 import java.util.ArrayList;
 
 
@@ -92,7 +91,10 @@ public class InfoFragment extends Fragment
             directions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
                     getFragmentManager().beginTransaction()
+                            //.addSharedElement(sharedElement, transitionName)
                             .add(android.R.id.content, new ChatWindowFragment()).commit();
                 }
             });
@@ -107,10 +109,6 @@ public class InfoFragment extends Fragment
                 }
             });
         }
-
-
-
-
 
 
         Picasso.with(getContext()).load(cityObject.getImgs().get(0)).transform(

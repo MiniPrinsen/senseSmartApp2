@@ -1,14 +1,12 @@
 package com.example.gustaf.touchpoint.Fragment;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,9 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 
+import com.example.gustaf.touchpoint.BaseActivity;
 import com.example.gustaf.touchpoint.HelpClasses.Blur;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.R;
@@ -148,8 +146,38 @@ public class ChatFragment extends Fragment {
     {
         public void onClick(View v)
         {
+           /* TranslateAnimation animation = new TranslateAnimation(0, 0, 0, -800);
+            animation.setDuration(500);
+            animation.setFillAfter(false);
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    goToChatt.clearAnimation();
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });*/
+
             getFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                     .add(android.R.id.content, new ChatWindowFragment()).commit();
+            BaseActivity activity = (BaseActivity)getActivity();
+            //activity.setToolBarTitle(null);
+          //  ((RippleBackground)goToChatt.getParent()).removeView(rootView);
+          //  ((RippleBackground)goToChatt2.getParent()).removeView((RippleBackground)goToChatt2.getParent());
+
+            activity.startChatAnim(goToChatt, goToChatt.getDrawable());
+            isShown = false;
+
+
         }
     };
 

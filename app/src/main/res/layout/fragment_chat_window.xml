@@ -4,18 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".BaseActivity"
     android:id="@+id/chat_window_content"
-    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fafafa"
+    android:layout_marginTop="@dimen/bottom_navigation_height"
     android:clickable="true"
     android:orientation="vertical">
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-        <include layout="@layout/toolbar_layout"/>
-    </android.support.design.widget.AppBarLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
