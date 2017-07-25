@@ -2,10 +2,12 @@ package com.example.gustaf.touchpoint.Fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.gustaf.touchpoint.BaseActivity;
 import com.example.gustaf.touchpoint.HelpClasses.BitmapLayout;
@@ -30,6 +32,8 @@ import java.util.ArrayList;
  */
 public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
+    private ArrayList<CityObject> cityObjects;
+    Bundle args;
 
     public GoogleMapsFragment() {
     // Required empty public constructor
@@ -55,16 +59,21 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
     mMap = googleMap;
 
     BaseActivity bs = (BaseActivity)getActivity();
-    ArrayList<CityObject> cityObjects = bs.getCityObjects();
+    cityObjects = bs.getCityObjects();
     LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-        for (CityObject cObject : cityObjects) {
+        for (int i = 0; i<cityObjects.size(); i++){
+            CityObject cObject = cityObjects.get(i);
             Coordinates loc = cObject.getCoordinates();
             LatLng pos = new LatLng(loc.getLatitude(), loc.getLongitude());
             mMap.addMarker(new MarkerOptions().position(pos).title(cObject.getName()));
-            loadInfoWindow(cObject.getImgs().get(0));
+
+
             builder.include(pos);
         }
+
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
+
         LatLngBounds bounds = builder.build();
 
         int width = getResources().getDisplayMetrics().widthPixels;
@@ -82,29 +91,77 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-
-
-    public void loadInfoWindow(final String url) {
+    public void loadInfoWindow() {
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
             // Use default InfoWindow frame
             @Override
             public View getInfoWindow(Marker arg0) {
-                View v = getActivity().getLayoutInflater().inflate(R.layout.layout_info_window, null);
-                BitmapLayout back = (BitmapLayout) v.findViewById(R.id.bitmapBackground);
-                Picasso.with(getContext()).load(url).into(back);
 
-                return v;
+                for (CityObject cityObject : cityObjects){
+                    if (arg0.getTitle().equals(cityObject.getName())){
+                        View v = getActivity().getLayoutInflater().inflate(R.layout.layout_info_window, null);
+                        Button info = (Button) v.findViewById(R.id.infoButton);
+                        info.setText(cityObject.getName());
+                        BitmapLayout back = (BitmapLayout) v.findViewById(R.id.bitmapBackground);
+                        Picasso.with(getContext()).load(cityObject.getImgs().get(0)).into(back);
+                        return v;
+                    }
 
+                }
+                return null;
             }
 
             @Override
             public View getInfoContents(Marker arg0) {
 
-                // Getting view from the layout file info_window_layout
                 return null;
             }
         });
 
+    }
+
+
+    public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter,
+            GoogleMap.OnInfoWindowClickListener{
+        @Override
+        public View getInfoWindow(Marker arg0) {
+
+
+            for (int i = 0; i < cityObjects.size(); i++){
+                CityObject cityObject = cityObjects.get(i);
+                if (arg0.getTitle().equals(cityObject.getName())){
+                    View v = getActivity().getLayoutInflater().inflate(R.layout.layout_info_window, null);
+                    args = new Bundle();
+                    args.putInt("index",i);
+                    Button info = (Button) v.findViewById(R.id.infoButton);
+                    info.setText(cityObject.getName());
+                    BitmapLayout back = (BitmapLayout) v.findViewById(R.id.bitmapBackground);
+                    Picasso.with(getContext()).load(cityObject.getImgs().get(0)).into(back);
+                    mMap.setOnInfoWindowClickListener(this);
+                    return v;
+
+                }
+            }
+            return null;
+        }
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+            android.support.v4.app.FragmentManager fragManager = getActivity().getSupportFragmentManager();
+            InfoFragment infoFragment = new InfoFragment();
+            infoFragment.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_left));
+
+            infoFragment.setArguments(args);
+            fragManager.beginTransaction()
+                    .add(android.R.id.content, infoFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+
+        @Override
+        public View getInfoContents(Marker arg0) {
+
+            return null;
+        }
     }
 }

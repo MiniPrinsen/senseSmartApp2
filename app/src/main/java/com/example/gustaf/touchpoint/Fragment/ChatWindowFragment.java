@@ -5,13 +5,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -19,9 +23,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.gustaf.touchpoint.Adapters.ChatArrayAdapter;
-import com.example.gustaf.touchpoint.BaseActivity;
 import com.example.gustaf.touchpoint.R;
 
 import java.io.BufferedReader;
@@ -56,27 +60,13 @@ public class ChatWindowFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_chat_window, container, false);
         findViewsById(view);
-
-        BaseActivity activity = (BaseActivity) getActivity();
-        final ImageView backBtn = activity.addBackButton();
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideKeyboard(getContext());
-                removeFragment();
-                backBtn.setVisibility(v.GONE);
-                backBtn.setOnClickListener(null);
-            }
-        });
-
-        /*imgview = new ImageView(getContext());
+        imgview = new ImageView(getContext());
         imgview.setImageResource(R.drawable.ic_arrow_back);
         int color = Color.parseColor("#51ACC7");
         imgview.setColorFilter(color);
@@ -88,9 +78,9 @@ public class ChatWindowFragment extends Fragment {
                 hideKeyboard(getContext());
                 removeFragment();
             }
-        });*/
+        });
       //  ((BaseActivity)getActivity()).hideNavigationBar(true);
-        //setToolBarTitle("HEJ", view);
+        setToolBarTitle("HEJ", view);
         buttonSend.setOnClickListener(customListener);
 
         chatArrayAdapter = new ChatArrayAdapter(getContext(), R.layout.chatbubbles_layout);
@@ -106,7 +96,7 @@ public class ChatWindowFragment extends Fragment {
             }
         });
         View parent = view.findViewById(R.id.chat_window_content);
-        /*parent.post(new Runnable() {
+        parent.post(new Runnable() {
             public void run() {
                 // Post in the parent's message queue to make sure the parent
                 // lays out its children before we call getHitRect()
@@ -127,7 +117,7 @@ public class ChatWindowFragment extends Fragment {
                             .setTouchDelegate(expandedArea);
                 }
             };
-        });*/
+        });
 
 
 
@@ -144,17 +134,17 @@ public class ChatWindowFragment extends Fragment {
         //goBackBtn = (Button)container.findViewById(R.id.btn_back);
         chatText = (EditText)container.findViewById(R.id.msgBox);
         listView = (ListView) container.findViewById(R.id.listanmedView);
-       // toolbar = (Toolbar) container.findViewById(R.id.main_toolbar);
+        toolbar = (Toolbar) container.findViewById(R.id.main_toolbar);
 
 
     }
 
-  /*  protected void setToolBarTitle(String title, View view){
+    protected void setToolBarTitle(String title, View view){
         TextView toolbarText = (TextView)view.findViewById(R.id.toolbar_title);
         toolbarText.setText(title);
         toolbar.setTitle("");
 
-    }*/
+    }
 
     /**
      * @param message to show in dialog

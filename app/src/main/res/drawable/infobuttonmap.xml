@@ -6,13 +6,6 @@
         android:color="#FFFFFF" >
     </solid>
 
-    <padding
-        android:left="5dp"
-        android:top="5dp"
-        android:right="5dp"
-        android:bottom="5dp"    >
-    </padding>
-
     <corners
         android:radius="11dp"   >
     </corners>

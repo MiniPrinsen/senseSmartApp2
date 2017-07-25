@@ -9,6 +9,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +19,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import com.example.gustaf.touchpoint.BaseActivity;
 import com.example.gustaf.touchpoint.HelpClasses.Blur;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.R;
@@ -146,37 +147,18 @@ public class ChatFragment extends Fragment {
     {
         public void onClick(View v)
         {
-           /* TranslateAnimation animation = new TranslateAnimation(0, 0, 0, -800);
-            animation.setDuration(500);
-            animation.setFillAfter(false);
-            animation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
+            ChatWindowFragment chat = new ChatWindowFragment();
+            FragmentManager fragManager = getActivity().getSupportFragmentManager();
+            chat.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_size_transform));
+            chat.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_size_transform));
+            chat.setReenterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_size_transform));
+            chat.setExitTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_size_transform));
 
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    goToChatt.clearAnimation();
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });*/
-
-            getFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
-                    .add(android.R.id.content, new ChatWindowFragment()).commit();
-            BaseActivity activity = (BaseActivity)getActivity();
-            //activity.setToolBarTitle(null);
-          //  ((RippleBackground)goToChatt.getParent()).removeView(rootView);
-          //  ((RippleBackground)goToChatt2.getParent()).removeView((RippleBackground)goToChatt2.getParent());
-
-            activity.startChatAnim(goToChatt, goToChatt.getDrawable());
-            isShown = false;
-
+            fragManager
+                    .beginTransaction()
+                    .addToBackStack(null)
+                    .replace(android.R.id.content, chat)
+                    .commit();
 
         }
     };
@@ -202,7 +184,6 @@ public class ChatFragment extends Fragment {
                 isShown = true;
                 firstTime = false;
                 Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(new CircleImageTransformation()).into(goToChatt);
-               // goToChatt.setImageBitmap(getCircularBitmap(closestCityObject.getImage().get(0)));
                 goToChatt2.setVisibility(View.INVISIBLE);
                 drawable = (GradientDrawable) goToChatt.getBackground();
                 drawable.setStroke(8, getResources().getColor(R.color.colorGreenPrimary));

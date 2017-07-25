@@ -43,6 +43,7 @@
                 android:layout_centerInParent="true"
                 android:id="@+id/go_to_chat_btn2"
                 android:layout_centerVertical="true"
+                android:transitionName="chat_circle"
                 android:background="@drawable/roundcorner"
                 android:clickable="true"/>
         </com.skyfishjy.library.RippleBackground>

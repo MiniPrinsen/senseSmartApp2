@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.transition.TransitionInflater;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.TouchDelegate;
@@ -91,11 +92,18 @@ public class InfoFragment extends Fragment
             directions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    ChatWindowFragment chat = new ChatWindowFragment();
+                    chat.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
+                    chat.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
+                    chat.setReenterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
+                    chat.setExitTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
                     //FragmentTransaction ft = getFragmentManager().beginTransaction();
                     //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-                    getFragmentManager().beginTransaction()
-                            //.addSharedElement(sharedElement, transitionName)
-                            .add(android.R.id.content, new ChatWindowFragment()).commit();
+                    getFragmentManager()
+                            .beginTransaction()
+                            .addToBackStack(null)
+                            .add(android.R.id.content, chat)
+                            .commit();
                 }
             });
         }

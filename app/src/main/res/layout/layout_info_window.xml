@@ -3,35 +3,28 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/infoWindow"
+    android:background="@drawable/infobuttonmap"
     android:clickable="false">
-
     <com.example.gustaf.touchpoint.HelpClasses.BitmapLayout
         android:id="@+id/bitmapBackground"
-        android:layout_width="200dp"
-        android:layout_height="120dp">
+        android:layout_width="170dp"
+        android:layout_height="110dp">
 
-        <RelativeLayout
-        android:id="@+id/infoBackground"
-        android:layout_width="200dp"
-        android:layout_height="120dp">
-        <Button
-            android:id="@+id/infoDirection"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@drawable/roundcornersmall"
-            android:layout_alignParentEnd="true"/>
-            </RelativeLayout>
+
+
+
     </com.example.gustaf.touchpoint.HelpClasses.BitmapLayout>
 
-   <Button
-       android:id="@+id/infoButton"
-       android:layout_width="match_parent"
-       android:layout_height="40dp"
-       android:textSize="16sp"
-       android:background="@drawable/infobuttonmap"
-       android:gravity="start|center_vertical"
-       android:typeface="sans"
-       android:paddingStart="10dp"
-       android:paddingEnd="10dp"/>
+    <Button
+        android:id="@+id/infoButton"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:textSize="12sp"
+        android:background="@drawable/infobuttonmap"
+        android:gravity="start|center_vertical"
+        android:typeface="sans"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"/>
+
 
 </LinearLayout>
