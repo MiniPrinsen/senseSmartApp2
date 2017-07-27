@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,7 +27,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.gustaf.touchpoint.Adapters.ChatArrayAdapter;
+import com.example.gustaf.touchpoint.HelpClasses.CircleImageTransformation;
 import com.example.gustaf.touchpoint.R;
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,11 +46,11 @@ import java.net.URLEncoder;
  */
 public class ChatWindowFragment extends Fragment {
     Button buttonSend;
-    boolean askedForName = false;
-    public static final String URL ="";
-    private Button goBackBtn;
+    public static final String URL ="http://35.158.191.6:8080/sensesmart/hey";
     private EditText chatText;
-    ImageView imgview;
+    ImageView backButton;
+    ImageView circleToolbar;
+    ImageView infoButton;
 
 
 
@@ -55,10 +58,9 @@ public class ChatWindowFragment extends Fragment {
     private ListView listView;
     protected Toolbar toolbar;
     View view;
+    private String circleString;
 
-    public ChatWindowFragment() {
-        // Required empty public constructor
-    }
+    public ChatWindowFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,13 +68,52 @@ public class ChatWindowFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_chat_window, container, false);
         findViewsById(view);
-        imgview = new ImageView(getContext());
-        imgview.setImageResource(R.drawable.ic_arrow_back);
+        Bundle bundle = this.getArguments();
+        if(bundle != null) {
+            circleString = bundle.getString("cityobject");
+        }
+        circleToolbar = new ImageView(getContext());
+        Picasso.with(getContext()).load(circleString).transform(new CircleImageTransformation()).into(circleToolbar, new com.squareup.picasso.Callback() {
+            @Override
+            public void onSuccess() {
+
+                int color = Color.parseColor("#54D87C");
+                circleToolbar.setBackgroundColor(color);
+                circleToolbar.setBackgroundResource(R.drawable.roundcorner);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+        infoButton = new ImageView(getContext());
+        infoButton.setImageResource(R.drawable.ic_arrow_back);
+        backButton = new ImageView(getContext());
+        backButton.setImageResource(R.drawable.ic_arrow_back);
         int color = Color.parseColor("#51ACC7");
-        imgview.setColorFilter(color);
-        imgview.setLayoutParams(new Toolbar.LayoutParams(70,70, Gravity.START));
-        toolbar.addView(imgview);
-        imgview.setOnClickListener(new View.OnClickListener() {
+        circleToolbar.setLayoutParams(new Toolbar.LayoutParams(130,130,Gravity.CENTER_HORIZONTAL|Gravity.TOP));
+        infoButton.setColorFilter(color);
+        infoButton.setLayoutParams(new Toolbar.LayoutParams(70,70,Gravity.END));
+
+        toolbar.addView(infoButton);
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InfoChatFragment infoChatFragment = new InfoChatFragment();
+                FragmentManager fragManager = getActivity().getSupportFragmentManager();
+                fragManager
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .replace(android.R.id.content, infoChatFragment)
+                        .commit();
+            }
+        });
+        toolbar.addView(circleToolbar);
+        backButton.setColorFilter(color);
+        backButton.setLayoutParams(new Toolbar.LayoutParams(70,70, Gravity.START));
+        toolbar.addView(backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideKeyboard(getContext());
@@ -80,7 +121,7 @@ public class ChatWindowFragment extends Fragment {
             }
         });
       //  ((BaseActivity)getActivity()).hideNavigationBar(true);
-        setToolBarTitle("HEJ", view);
+        setToolBarTitle(null, view);
         buttonSend.setOnClickListener(customListener);
 
         chatArrayAdapter = new ChatArrayAdapter(getContext(), R.layout.chatbubbles_layout);
@@ -101,7 +142,7 @@ public class ChatWindowFragment extends Fragment {
                 // Post in the parent's message queue to make sure the parent
                 // lays out its children before we call getHitRect()
                 Rect delegateArea = new Rect();
-                ImageView delegate = imgview;
+                ImageView delegate = backButton;
                 delegate.getHitRect(delegateArea);
                 delegateArea.top -= 600;
                 delegateArea.bottom += 300;
@@ -282,8 +323,7 @@ public class ChatWindowFragment extends Fragment {
 
 
             } catch (Exception e) {
-                showDialog("Kunde inte nå servern, kontrollera din internetuppkoppling.");
-                recieveChatMessage("HEJ GOS");
+                showDialog("Something went wrong, try again");
             }
         }
     }

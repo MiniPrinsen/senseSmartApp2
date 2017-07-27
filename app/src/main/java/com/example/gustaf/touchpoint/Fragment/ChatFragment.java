@@ -1,11 +1,5 @@
 package com.example.gustaf.touchpoint.Fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.example.gustaf.touchpoint.HelpClasses.Blur;
+import com.example.gustaf.touchpoint.HelpClasses.CircleImageTransformation;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.R;
 import com.skyfishjy.library.RippleBackground;
@@ -148,10 +143,13 @@ public class ChatFragment extends Fragment {
         public void onClick(View v)
         {
             ChatWindowFragment chat = new ChatWindowFragment();
+            Bundle args = new Bundle();
+            args.putString("cityobject",closestCityObject.getImgs().get(0));
             FragmentManager fragManager = getActivity().getSupportFragmentManager();
+            chat.setArguments(args);
             chat.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_size_transform));
             chat.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_size_transform));
-            chat.setReenterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_size_transform));
+            //chat.setReenterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_size_transform));
             chat.setExitTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_size_transform));
 
             fragManager
@@ -234,9 +232,7 @@ public class ChatFragment extends Fragment {
         firstTime = true;
     }
 
-
-
-    public class CircleImageTransformation implements com.squareup.picasso.Transformation {
+    /*public class CircleImageTransformation implements com.squareup.picasso.Transformation {
 
         @Override
         public Bitmap transform ( final Bitmap source ) {
@@ -285,5 +281,5 @@ public class ChatFragment extends Fragment {
             canvas.drawBitmap(bitmap, rect, rect, paint);
             return output;
         }
-    }
+    }*/
 }

@@ -93,12 +93,14 @@ public class InfoFragment extends Fragment
                 @Override
                 public void onClick(View view) {
                     ChatWindowFragment chat = new ChatWindowFragment();
+                    Bundle args = new Bundle();
+                    args.putString("cityobject",cityObject.getImgs().get(0));
+                    chat.setArguments(args);
                     chat.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
                     chat.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
                     chat.setReenterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
                     chat.setExitTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
-                    //FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+
                     getFragmentManager()
                             .beginTransaction()
                             .addToBackStack(null)
@@ -211,7 +213,7 @@ public class InfoFragment extends Fragment
         flipper.setInAnimation(fadein);
         flipper.setOutAnimation(fadeout);
         flipper.setAutoStart(true);
-        flipper.setFlipInterval(5000);
+        flipper.setFlipInterval(3000);
         flipper.startFlipping();
     }
 

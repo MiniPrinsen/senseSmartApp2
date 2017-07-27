@@ -1,5 +1,6 @@
 package com.example.gustaf.touchpoint.HelpClasses;
 
+import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
@@ -10,19 +11,14 @@ import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-
-import android.os.Handler;
 
 /**
  * Created by gustafwennerstrom on 2017-07-05.
@@ -107,12 +103,10 @@ public class GetCityObjects implements Runnable {
      */
     private String getStringFromInputStream(InputStream inputstream) {
 
-        String UTF8 = "utf8";
         int BUFFER_SIZE = 8192;
 
-        BufferedReader br = null;
+        BufferedReader br;
         StringBuilder sb = new StringBuilder();
-        char tmp;
 
         String line;
         try {
