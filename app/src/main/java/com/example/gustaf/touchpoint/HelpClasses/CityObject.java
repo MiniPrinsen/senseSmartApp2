@@ -2,11 +2,8 @@ package com.example.gustaf.touchpoint.HelpClasses;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Gustaf on 16-08-09.
@@ -150,6 +147,7 @@ public class CityObject implements Parcelable {
         source.readStringList(images);
         _id = new Oid();
         _id.set$oid(source.readString());
+        isOnline = source.readByte() != 0;
     }
 
     @Override
@@ -158,6 +156,7 @@ public class CityObject implements Parcelable {
         parcel.writeString(description);
         parcel.writeStringList(images);
         parcel.writeString(_id.get$oid());
+        parcel.writeByte((byte) (isOnline ? 1 : 0));
 
     }
 
