@@ -49,6 +49,7 @@ public class ChatActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard(ChatActivity.this);
                 TransitionInflater inflater = TransitionInflater.from(getApplicationContext());
                 getWindow().setExitTransition(inflater.inflateTransition(android.R.transition.move).setDuration(400));
                 getWindow().setSharedElementExitTransition(inflater.inflateTransition(android.R.transition.move));
@@ -60,12 +61,12 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 viewPagerDeafult.setCurrentItem(1);
                 hideKeyboard(ChatActivity.this);
-                backButton.setOnClickListener(new View.OnClickListener() {
+               /* backButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         viewPagerDeafult.setCurrentItem(0);
                     }
-                });
+                });*/
             }
         });
 
@@ -87,7 +88,7 @@ public class ChatActivity extends AppCompatActivity {
         final int color = Color.parseColor("#51ACC7");
 
         backButton.setImageResource(R.drawable.ic_arrow_back);
-        infoButton.setImageResource(R.drawable.ic_arrow_back);
+        infoButton.setImageResource(R.drawable.ic_info);
         backButton.setColorFilter(color);
         infoButton.setColorFilter(color);
 

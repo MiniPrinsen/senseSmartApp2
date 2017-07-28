@@ -1,21 +1,18 @@
 package com.example.gustaf.touchpoint;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -23,16 +20,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.example.gustaf.touchpoint.Fragment.InfoFragment;
 import com.example.gustaf.touchpoint.HelpClasses.BitmapLayout;
 import com.example.gustaf.touchpoint.HelpClasses.Blur;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
-import com.example.gustaf.touchpoint.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import static java.security.AccessController.getContext;
 
 public class DetailsActivity extends AppCompatActivity {
     private CityObject              cityObject;
@@ -66,6 +59,7 @@ public class DetailsActivity extends AppCompatActivity {
                 new Blur().getTransformation(getApplicationContext(), cityObject.getName())).into(background);
         /* Set parallel scroll */
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ScrollPositionObserver());
+
 
         /* Set shared element transition */
         TransitionInflater inflater = TransitionInflater.from(getApplicationContext());
