@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.example.viktor.touchpoint"
@@ -29,7 +29,7 @@ dependencies {
     //compile 'com.android.support:design:23.4.0'
     //compile 'org.jetbrains:annotations-java5:15.0'
     //compile 'com.android.support:support-v4:23.4.0'
-    
+
 
     compile 'com.aurelhubert:ahbottomnavigation:2.0.0'
     compile 'com.skyfishjy.ripplebackground:library:1.0.1'
@@ -38,4 +38,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }

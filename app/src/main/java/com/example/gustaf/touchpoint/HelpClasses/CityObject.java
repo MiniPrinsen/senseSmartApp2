@@ -1,13 +1,19 @@
 package com.example.gustaf.touchpoint.HelpClasses;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Gustaf on 16-08-09.
  */
-public class CityObject {
+public class CityObject implements Parcelable {
     String name;
+
     String description;
     Coordinates coordinates;
     float persons_voted;
@@ -127,6 +133,43 @@ public class CityObject {
             return false;
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public CityObject (Parcel source){
+      /*
+       * Reconstruct from the Parcel. Keep same order as in writeToParcel()
+       */
+        name = source.readString();
+        description = source.readString();
+        images = new ArrayList<String>();
+        source.readStringList(images);
+        _id = new Oid();
+        _id.set$oid(source.readString());
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(description);
+        parcel.writeStringList(images);
+        parcel.writeString(_id.get$oid());
+
+    }
+
+    public static final Parcelable.Creator<CityObject> CREATOR
+            = new Parcelable.Creator<CityObject>() {
+        public CityObject createFromParcel(Parcel in) {
+            return new CityObject(in);
+        }
+
+        public CityObject[] newArray(int size) {
+            return new CityObject[size];
+        }
+    };
     /**
      * Mongodb will automatically generate ObjectId
      * @author fhp

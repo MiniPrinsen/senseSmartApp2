@@ -147,10 +147,10 @@ public class ChatFragment extends Fragment {
             args.putString("cityobject",closestCityObject.getImgs().get(0));
             FragmentManager fragManager = getActivity().getSupportFragmentManager();
             chat.setArguments(args);
-            chat.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_size_transform));
-            chat.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_size_transform));
+            chat.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.explode));
+            chat.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.explode));
             //chat.setReenterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_size_transform));
-            chat.setExitTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_size_transform));
+            chat.setExitTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.explode));
 
             fragManager
                     .beginTransaction()

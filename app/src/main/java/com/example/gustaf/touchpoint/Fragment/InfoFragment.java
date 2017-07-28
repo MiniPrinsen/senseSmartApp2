@@ -121,8 +121,7 @@ public class InfoFragment extends Fragment
         }
 
 
-        Picasso.with(getContext()).load(cityObject.getImgs().get(0)).transform(
-                new Blur().getTransformation(getContext(), cityObject.getName())).into(background);
+
         /*Picasso.with(getContext())
                 .load(cityObject.getImgs().get(0))
                 .into(new Target() {
@@ -136,7 +135,6 @@ public class InfoFragment extends Fragment
 */
 
         slideShow();
-        mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ScrollPositionObserver());
         final ImageView imgview = new ImageView(getContext());
 
 

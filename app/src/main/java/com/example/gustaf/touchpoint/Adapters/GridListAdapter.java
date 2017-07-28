@@ -5,9 +5,13 @@ package com.example.gustaf.touchpoint.Adapters;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gustaf.touchpoint.BaseActivity;
+import com.example.gustaf.touchpoint.DetailsActivity;
 import com.example.gustaf.touchpoint.Fragment.InfoFragment;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.HelpClasses.Holder;
@@ -107,6 +112,7 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
 
         container.setLayoutParams(new FrameLayout.LayoutParams(SCREEN_WIDTH/2, SCREEN_WIDTH/2));
         imgView.setLayoutParams(new FrameLayout.LayoutParams(SCREEN_WIDTH/2, SCREEN_WIDTH/2));
+
         //imgView.setImageResource(item.getImage().get(0));
 
         Picasso.with(context).load(item.getImgs().get(0)).into(imgView);
@@ -114,6 +120,8 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
 
         container.setOnClickListener(gridPress);
     }
+
+
 
     View.OnClickListener gridPress = new View.OnClickListener() {
                 @Override
@@ -130,11 +138,13 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
                         }
                     }
 
+                    CityObject item = mItemList.get(pos);
+
                     final BaseActivity activity = (BaseActivity) context;
                     if (infoFragment == null){
                         infoFragment = new InfoFragment();
                     }
-                    Bundle args = new Bundle();
+                    /*Bundle args = new Bundle();
 
 
 
@@ -144,7 +154,21 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
                     infoFragment.setArguments(args);
                     android.support.v4.app.FragmentManager fr = activity.getSupportFragmentManager();
                     fr.beginTransaction()
-                            .add(android.R.id.content, infoFragment).commit();
+                            .add(android.R.id.content, infoFragment).commit();*/
+
+
+                    ImageView sharedImage = pos == 0 ? (ImageView)view.findViewById(R.id.header_image) :
+                            (ImageView)view.findViewById(R.id.grid_image);
+                    sharedImage.setTransitionName("myImage");
+                    //activity.postponeEnterTransition();
+                    Intent i = new Intent(context, DetailsActivity.class);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(activity, sharedImage, "myImage");
+
+                    i.putExtra("cityobject", item);
+                    context.startActivity(i, options.toBundle());
+
+
                 }
     };
 
@@ -162,6 +186,7 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
         TextView title = (TextView) container.findViewById(R.id.gridTextTitle);
         title.setText(itm.getName());
         ImageView imgView = (ImageView)container.findViewById(R.id.header_image);
+
         imgView.setLayoutParams(new FrameLayout.LayoutParams(SCREEN_WIDTH, SCREEN_HEIGHT/2-200));
         holder.itemView.setLayoutParams(new FrameLayout.LayoutParams(SCREEN_WIDTH, SCREEN_HEIGHT/2-200));
         //imgView.setImageResource(itm.getImage().get(0));
