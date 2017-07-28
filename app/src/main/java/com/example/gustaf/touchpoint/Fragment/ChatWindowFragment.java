@@ -5,31 +5,22 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import com.example.gustaf.touchpoint.Adapters.ChatArrayAdapter;
-import com.example.gustaf.touchpoint.HelpClasses.CircleImageTransformation;
 import com.example.gustaf.touchpoint.R;
-import com.squareup.picasso.Picasso;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,15 +39,16 @@ public class ChatWindowFragment extends Fragment {
     Button buttonSend;
     public static final String URL ="http://35.158.191.6:8080/sensesmart/hey";
     private EditText chatText;
-    ImageView backButton;
-    ImageView circleToolbar;
-    ImageView infoButton;
+    RelativeLayout chatBackground;
+    //ImageView backButton;
+    //ImageView circleToolbar;
+    //ImageView infoButton;
 
 
 
     private ChatArrayAdapter chatArrayAdapter;
     private ListView listView;
-    protected Toolbar toolbar;
+    //protected Toolbar toolbar;
     View view;
     private String circleString;
 
@@ -72,7 +64,11 @@ public class ChatWindowFragment extends Fragment {
         if(bundle != null) {
             circleString = bundle.getString("cityobject");
         }
-        circleToolbar = new ImageView(getContext());
+
+        //Picasso.with(getContext()).load(circleString).transform(new Blur().getTransformation(getContext(), circleString)).into(chatBackground);
+
+
+        /*circleToolbar = new ImageView(getContext());
         Picasso.with(getContext()).load(circleString).transform(new CircleImageTransformation()).into(circleToolbar, new com.squareup.picasso.Callback() {
             @Override
             public void onSuccess() {
@@ -119,9 +115,9 @@ public class ChatWindowFragment extends Fragment {
                 hideKeyboard(getContext());
                 removeFragment();
             }
-        });
+        });*/
       //  ((BaseActivity)getActivity()).hideNavigationBar(true);
-        setToolBarTitle(null, view);
+        //setToolBarTitle(null, view);
         buttonSend.setOnClickListener(customListener);
 
         chatArrayAdapter = new ChatArrayAdapter(getContext(), R.layout.chatbubbles_layout);
@@ -136,7 +132,7 @@ public class ChatWindowFragment extends Fragment {
                 return false;
             }
         });
-        View parent = view.findViewById(R.id.chat_window_content);
+        /*View parent = view.findViewById(R.id.chat_window_content);
         parent.post(new Runnable() {
             public void run() {
                 // Post in the parent's message queue to make sure the parent
@@ -158,32 +154,21 @@ public class ChatWindowFragment extends Fragment {
                             .setTouchDelegate(expandedArea);
                 }
             };
-        });
+        });*/
 
 
 
         return view;
     }
 
-    public void removeFragment(){
-        // getActivity().getSupportFragmentManager().popBackStack();
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-    }
-
     private void findViewsById(View container) {
         buttonSend = (Button) container.findViewById(R.id.send_btn);
+        chatBackground = (RelativeLayout) container.findViewById(R.id.chatBackground);
         //goBackBtn = (Button)container.findViewById(R.id.btn_back);
         chatText = (EditText)container.findViewById(R.id.msgBox);
         listView = (ListView) container.findViewById(R.id.listanmedView);
-        toolbar = (Toolbar) container.findViewById(R.id.main_toolbar);
+        //toolbar = (Toolbar) container.findViewById(R.id.main_toolbar);
 
-
-    }
-
-    protected void setToolBarTitle(String title, View view){
-        TextView toolbarText = (TextView)view.findViewById(R.id.toolbar_title);
-        toolbarText.setText(title);
-        toolbar.setTitle("");
 
     }
 

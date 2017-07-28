@@ -1,10 +1,11 @@
 package com.example.gustaf.touchpoint.Fragment;
 
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.transition.TransitionInflater;
+import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.example.gustaf.touchpoint.ChatActivity;
 import com.example.gustaf.touchpoint.HelpClasses.Blur;
 import com.example.gustaf.touchpoint.HelpClasses.CircleImageTransformation;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
@@ -142,7 +144,9 @@ public class ChatFragment extends Fragment {
     {
         public void onClick(View v)
         {
-            ChatWindowFragment chat = new ChatWindowFragment();
+            ChatActivity chatActivity = new ChatActivity();
+            ImageView sharedImage = (ImageView)rootView.findViewById(R.id.go_to_chat_btn2);
+            /*ChatWindowFragment chat = new ChatWindowFragment();
             Bundle args = new Bundle();
             args.putString("cityobject",closestCityObject.getImgs().get(0));
             FragmentManager fragManager = getActivity().getSupportFragmentManager();
@@ -156,14 +160,36 @@ public class ChatFragment extends Fragment {
                     .beginTransaction()
                     .addToBackStack(null)
                     .replace(android.R.id.content, chat)
-                    .commit();
+                    .commit();*/
+            Bundle args = new Bundle();
+            args.putString("cityobject",closestCityObject.getImgs().get(0));
+
+            Intent intent = new Intent(getContext(), ChatActivity.class);
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),sharedImage,ViewCompat.getTransitionName(sharedImage));
+            intent.putExtras(args);
+            startActivity(intent, options.toBundle());
 
         }
     };
+    /*private View.OnClickListener openActivity = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    ImageView sharedImage = (ImageView)root.findViewById(R.id.testImage);
+
+
+                    Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(getActivity(), sharedImage, ViewCompat.getTransitionName(sharedImage));
+                    startActivity(intent, options.toBundle());
+
+
+                }
+    };*/
 
     /**
      *
      */
+
     public void zoomIn() {
         Animation backgroundAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         Animation resize = AnimationUtils.loadAnimation(getContext(), R.anim.fadeinzoomin);

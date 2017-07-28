@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+
+    tools:context=".ChatActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:id="@+id/toolbar"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:theme="@style/AppTheme.AppBarOverlay">
+            <include layout="@layout/toolbar_layout"/>
+        </android.support.design.widget.AppBarLayout>
+        <com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager
+            android:layout_width="match_parent"
+            android:animateLayoutChanges="true"
+            android:visibility="invisible"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
+            android:id="@+id/viewPager_deafultchat">
+        </com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager>
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

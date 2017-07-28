@@ -10,19 +10,13 @@
     android:layout_marginTop="@dimen/bottom_navigation_margin_bottom"
     android:clickable="true"
     android:orientation="vertical">
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-        <include layout="@layout/toolbar_layout"/>
-    </android.support.design.widget.AppBarLayout>
     <RelativeLayout
+        android:id="@+id/chatBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <ListView
         android:divider="@null"
         android:dividerHeight="0dp"
-        android:layout_marginTop="@dimen/bottom_navigation_height"
         android:showDividers="none"
         android:id="@+id/listanmedView"
         android:layout_width="match_parent"
