@@ -166,8 +166,8 @@ public class ChatFragment extends Fragment {
         Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(b.getTransformation(getContext(), closestCityObject.getName())).into(background);
         background.setVisibility(View.VISIBLE);
 
-        ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(goToChatt2, "scaleX", 1.5f).setDuration(1000);
-        ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(goToChatt2, "scaleY", 1.5f).setDuration(1000);
+        ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(goToChatt2, "scaleX", 1.9f).setDuration(1000);
+        ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(goToChatt2, "scaleY", 1.9f).setDuration(1000);
 
         AnimatorSet scaleDown = new AnimatorSet();
         scaleDown.play(scaleUpX).with(scaleUpY);
@@ -176,6 +176,9 @@ public class ChatFragment extends Fragment {
 
 
         isShown = true;
+        firstTime = false;
+
+
         rippleBackground.stopRippleAnimation();
         background.startAnimation(backgroundAnimation);
 
@@ -188,10 +191,6 @@ public class ChatFragment extends Fragment {
     public void zomOut(){
         Animation backgroundAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         final ImageView background = (ImageView)rootView.findViewById(R.id.backgroundImage);
-
-        Blur b = new Blur();
-        Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(b.getTransformation(getContext(), closestCityObject.getName())).into(background);
-        background.setVisibility(View.VISIBLE);
 
         ObjectAnimator scaleBackX = ObjectAnimator.ofFloat(goToChatt2, "scaleX", 1.0f).setDuration(1000);
         ObjectAnimator scaleBackY = ObjectAnimator.ofFloat(goToChatt2, "scaleY", 1.0f).setDuration(1000);
@@ -207,12 +206,27 @@ public class ChatFragment extends Fragment {
 
 
         rippleBackground.startRippleAnimation();
-        background.setBackgroundColor(getResources().getColor(R.color.colorRedPrimary));
 
         drawable = (GradientDrawable)goToChatt2.getBackground();
         drawable.setStroke(8, getResources().getColor(R.color.colorWhite));
         goToChatt2.setClickable(false);
         goToChatt2.setOnClickListener(null);
+
+        final Animation backgroundAnimation2 = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
+        Animation fadeandZoomOut = AnimationUtils.loadAnimation(getContext(), R.anim.fadeoutzoomout);
+
+        fadeandZoomOut.setAnimationListener(new Animation.AnimationListener() {
+            public void onAnimationStart(Animation animation) {
+            }
+            public void onAnimationRepeat(Animation animation) {
+            }
+            public void onAnimationEnd(Animation animation) {
+                backgroundAnim.setVisibility(View.INVISIBLE);
+                drawable.setVisible(true,true);
+            }
+        });
+        backgroundAnim.startAnimation(backgroundAnimation2);
+        backgroundAnimation.setFillAfter(true);
     }
 
    /* public void zoomIn() {

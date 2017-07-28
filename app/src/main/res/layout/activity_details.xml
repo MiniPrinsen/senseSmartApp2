@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--THIS IS THE XML FOR THE INFO PAGE. WE HAVE A SCROLLVIEW AS THE MAIN LAYOUT OF THE FRAGMENT
+SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    layout_height="match_parent">
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detailsView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--INCLUDES THE NAVIGATION BAR SINCE WE WILL INFLATE A BACK BUTTON ON IT IN THE CODE.-->
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true">
+        <include layout="@layout/toolbar_layout"/>
+
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/infofragment"
+        android:clickable="true"
+        android:fillViewport="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <!--THE VIEWFLIPPER IS USED TO GET THE SLIDESHOW ON THE PAGE. IF YOU WANT
+             MORE PICTURES, ADD A NEW IMAGEVIEW INSIDE THIS VIEWFLIPPER.-->
+            <ViewFlipper
+                android:id="@+id/slideShow"
+                android:layout_width="match_parent"
+                android:background="@color/colorGrayMediumDark"
+                android:layout_height="250dp"
+                android:layout_marginTop="@dimen/bottom_navigation_height"
+                >
+            </ViewFlipper>
+
+            <!--THIS IMAGEVIEW IS USED AS THE BLURRED BACKGROUND WHERE THE TEXT IS PUT.-->
+            <com.example.gustaf.touchpoint.HelpClasses.BitmapLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:id="@+id/blurredBG"
+                android:gravity="center_horizontal"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/slideShow"
+                android:background="@color/colorWhite"
+                >
+
+                <!--RATINGBAR INFLATES THE RATING ON THE PAGE.-->
+                <RatingBar
+                    android:id="@+id/ratingbar"
+                    android:numStars="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/myrating"
+                    android:layout_centerHorizontal="true"
+
+                    android:layout_marginTop="25dp"
+                    android:rating="4"
+                    android:layout_below="@+id/slideShow"/>
+                <!--THIS IS THE INFO TEXTVIEW.-->
+                <TextView
+                    android:id="@+id/infoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_below="@+id/ratingbar"
+                    android:layout_marginTop="25dp"
+                    android:layout_gravity="center"
+                    android:textAlignment="inherit"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorWhite"/>
+
+                <!--BUTTON FOR THE DIRECTIONS-->
+                <Button
+                    android:id="@+id/directionsButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="25dp"
+                    android:paddingLeft="10dp"
+                    android:layout_marginBottom="25dp"
+                    android:layout_below="@+id/infoText"
+                    android:paddingRight="10dp"
+                    android:text="VÄGBESKRIVNING"
+                    android:textColor="@color/colorWhite"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/colorPrimary"
+                    />
+            </com.example.gustaf.touchpoint.HelpClasses.BitmapLayout>
+        </RelativeLayout>
+    </ScrollView>
+</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>
