@@ -1,8 +1,10 @@
 package com.example.gustaf.touchpoint;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -67,6 +69,29 @@ public class DetailsActivity extends AppCompatActivity {
         getWindow().setSharedElementExitTransition(inflater.inflateTransition(android.R.transition.move).setDuration(300));
 
         setBackButton();
+
+        if(cityObject.isOnline()) {
+            directions.setBackgroundColor(getResources().getColor(R.color.colorGreenPrimary));
+            directions.setText("CHAT");
+            directions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(getApplicationContext(), ChatActivity.class);
+                    i.putExtra("cityobject",cityObject.getImgs().get(0));
+                    startActivity(i);
+                }
+            });
+        }
+        else {
+            directions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse(direction));
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
 

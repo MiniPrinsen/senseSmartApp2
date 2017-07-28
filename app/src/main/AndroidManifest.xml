@@ -34,13 +34,15 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".DetailsActivity">
+        <activity android:name=".DetailsActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".BaseActivity">
             </meta-data>
         </activity>
-        <activity android:name=".ChatActivity">
+        <activity android:name=".ChatActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

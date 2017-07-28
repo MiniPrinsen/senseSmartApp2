@@ -109,7 +109,7 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         backButton.setLayoutParams(new Toolbar.LayoutParams(70,70, Gravity.START|Gravity.TOP));
-        infoButton.setLayoutParams(new Toolbar.LayoutParams(80,80, Gravity.END|Gravity.TOP));
+        infoButton.setLayoutParams(new Toolbar.LayoutParams(80,80,Gravity.END|Gravity.TOP));
         circleImage.setLayoutParams(new Toolbar.LayoutParams(130,130, Gravity.CENTER_HORIZONTAL|Gravity.TOP));
 
 

@@ -93,7 +93,7 @@ SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
                     android:layout_marginBottom="25dp"
                     android:layout_below="@+id/infoText"
                     android:paddingRight="10dp"
-                    android:text="VÄGBESKRIVNING"
+                    android:text="DIRECTIONS"
                     android:textColor="@color/colorWhite"
                     android:layout_centerHorizontal="true"
                     android:background="@color/colorPrimary"
