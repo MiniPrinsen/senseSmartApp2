@@ -87,7 +87,7 @@ public class ChatActivity extends AppCompatActivity {
         final int color = Color.parseColor("#51ACC7");
 
         backButton.setImageResource(R.drawable.ic_arrow_back);
-        infoButton.setImageResource(R.drawable.ic_info);
+        infoButton.setImageResource(R.drawable.ic_arrow_back);
         backButton.setColorFilter(color);
         infoButton.setColorFilter(color);
 

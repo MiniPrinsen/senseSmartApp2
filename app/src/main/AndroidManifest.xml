@@ -40,6 +40,8 @@
                 android:value=".BaseActivity">
             </meta-data>
         </activity>
+        <activity android:name=".ChatActivity">
+        </activity>
     </application>
 
 </manifest>

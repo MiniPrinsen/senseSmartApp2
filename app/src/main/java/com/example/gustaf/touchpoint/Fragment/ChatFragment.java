@@ -1,11 +1,14 @@
 package com.example.gustaf.touchpoint.Fragment;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,7 +32,6 @@ public class ChatFragment extends Fragment {
     private View                rootView;
     private RippleBackground    rippleBackground;
     private ImageView           backgroundAnim;
-    private ImageView           goToChatt;
     private ImageView           goToChatt2;
     private Boolean             firstTime = true;
     private Boolean             isShown = false;
@@ -53,13 +55,9 @@ public class ChatFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_chat, container, false);
         rippleBackground = (RippleBackground) rootView.findViewById(R.id.content);
-        goToChatt = (ImageView) rootView.findViewById(R.id.go_to_chat_btn);
         goToChatt2 = (ImageView) rootView.findViewById(R.id.go_to_chat_btn2);
-        goToChatt.setOnClickListener(chattObjectListener);
-        goToChatt2.setClickable(false);
-        goToChatt2.setOnTouchListener(onTouchListener);
+        //goToChatt2.setOnTouchListener(onTouchListener);
         backgroundAnim = (ImageView) rootView.findViewById(R.id.backgroundImage);
-        assert goToChatt != null;
         rippleBackground.startRippleAnimation();
 
         return rootView;
@@ -72,7 +70,7 @@ public class ChatFragment extends Fragment {
                 anim.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-                        goToChatt.setVisibility(View.INVISIBLE);
+                        goToChatt2.setVisibility(View.INVISIBLE);
                     }
 
                     @Override
@@ -98,7 +96,7 @@ public class ChatFragment extends Fragment {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        goToChatt.setVisibility(View.VISIBLE);
+                        goToChatt2.setVisibility(View.VISIBLE);
 
                     }
 
@@ -128,10 +126,12 @@ public class ChatFragment extends Fragment {
         closestCityObject = tPoint;
 
         if (tPoint.isOnline() && !isShown) {
-            zoomIn();
+            zomIn();
+           // zoomIn();
         }
         if (!tPoint.isOnline() && !firstTime) {
-            zoomOut();
+            zomOut();
+           // zoomOut();
 
         }
 
@@ -145,52 +145,77 @@ public class ChatFragment extends Fragment {
         public void onClick(View v)
         {
             ChatActivity chatActivity = new ChatActivity();
-            ImageView sharedImage = (ImageView)rootView.findViewById(R.id.go_to_chat_btn2);
-            /*ChatWindowFragment chat = new ChatWindowFragment();
-            Bundle args = new Bundle();
-            args.putString("cityobject",closestCityObject.getImgs().get(0));
-            FragmentManager fragManager = getActivity().getSupportFragmentManager();
-            chat.setArguments(args);
-            chat.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.explode));
-            chat.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.explode));
-            //chat.setReenterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_size_transform));
-            chat.setExitTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.explode));
 
-            fragManager
-                    .beginTransaction()
-                    .addToBackStack(null)
-                    .replace(android.R.id.content, chat)
-                    .commit();*/
             Bundle args = new Bundle();
             args.putString("cityobject",closestCityObject.getImgs().get(0));
 
             Intent intent = new Intent(getContext(), ChatActivity.class);
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),sharedImage,ViewCompat.getTransitionName(sharedImage));
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),goToChatt2,ViewCompat.getTransitionName(goToChatt2));
             intent.putExtras(args);
             startActivity(intent, options.toBundle());
 
         }
     };
-    /*private View.OnClickListener openActivity = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    ImageView sharedImage = (ImageView)root.findViewById(R.id.testImage);
 
 
-                    Intent intent = new Intent(getActivity(), DetailsActivity.class);
-                    ActivityOptionsCompat options = ActivityOptionsCompat.
-                            makeSceneTransitionAnimation(getActivity(), sharedImage, ViewCompat.getTransitionName(sharedImage));
-                    startActivity(intent, options.toBundle());
+    public void zomIn(){
+        Animation backgroundAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        final ImageView background = (ImageView)rootView.findViewById(R.id.backgroundImage);
+
+        Blur b = new Blur();
+        Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(b.getTransformation(getContext(), closestCityObject.getName())).into(background);
+        background.setVisibility(View.VISIBLE);
+
+        ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(goToChatt2, "scaleX", 1.5f).setDuration(1000);
+        ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(goToChatt2, "scaleY", 1.5f).setDuration(1000);
+
+        AnimatorSet scaleDown = new AnimatorSet();
+        scaleDown.play(scaleUpX).with(scaleUpY);
+
+        scaleDown.start();
 
 
-                }
-    };*/
+        isShown = true;
+        rippleBackground.stopRippleAnimation();
+        background.startAnimation(backgroundAnimation);
 
-    /**
-     *
-     */
+        drawable = (GradientDrawable)goToChatt2.getBackground();
+        drawable.setStroke(8, getResources().getColor(R.color.colorGreenPrimary));
+        goToChatt2.setClickable(true);
+        goToChatt2.setOnClickListener(chattObjectListener);
+    }
 
-    public void zoomIn() {
+    public void zomOut(){
+        Animation backgroundAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        final ImageView background = (ImageView)rootView.findViewById(R.id.backgroundImage);
+
+        Blur b = new Blur();
+        Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(b.getTransformation(getContext(), closestCityObject.getName())).into(background);
+        background.setVisibility(View.VISIBLE);
+
+        ObjectAnimator scaleBackX = ObjectAnimator.ofFloat(goToChatt2, "scaleX", 1.0f).setDuration(1000);
+        ObjectAnimator scaleBackY = ObjectAnimator.ofFloat(goToChatt2, "scaleY", 1.0f).setDuration(1000);
+
+        AnimatorSet scaleDown = new AnimatorSet();
+        scaleDown.play(scaleBackX).with(scaleBackY);
+
+        scaleDown.start();
+
+
+        isShown = false;
+        firstTime = true;
+
+
+        rippleBackground.startRippleAnimation();
+        background.setBackgroundColor(getResources().getColor(R.color.colorRedPrimary));
+
+        drawable = (GradientDrawable)goToChatt2.getBackground();
+        drawable.setStroke(8, getResources().getColor(R.color.colorWhite));
+        goToChatt2.setClickable(false);
+        goToChatt2.setOnClickListener(null);
+    }
+
+   /* public void zoomIn() {
         Animation backgroundAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         Animation resize = AnimationUtils.loadAnimation(getContext(), R.anim.fadeinzoomin);
         Animation hej = AnimationUtils.loadAnimation(getContext(), R.anim.fadeoutzoomin);
@@ -204,27 +229,27 @@ public class ChatFragment extends Fragment {
         resize.setFillAfter(true);
         resize.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation animation) {
-                goToChatt.setVisibility(View.VISIBLE);
+                skabort.setVisibility(View.VISIBLE);
                 isShown = true;
                 firstTime = false;
-                Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(new CircleImageTransformation()).into(goToChatt);
+                Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(new CircleImageTransformation()).into(skabort);
                 goToChatt2.setVisibility(View.INVISIBLE);
-                drawable = (GradientDrawable) goToChatt.getBackground();
+                drawable = (GradientDrawable) skabort.getBackground();
                 drawable.setStroke(8, getResources().getColor(R.color.colorGreenPrimary));
             }
             public void onAnimationRepeat(Animation animation) {
             }
             public void onAnimationEnd(Animation animation) {
-                goToChatt.setClickable(true);
+                skabort.setClickable(true);
                 imgView.setVisibility(View.VISIBLE);
                 goToChatt2.setVisibility(View.INVISIBLE);
             }
         });
-        goToChatt.startAnimation(resize);
+        skabort.startAnimation(resize);
         goToChatt2.startAnimation(hej);
         backgroundAnim.startAnimation(backgroundAnimation);
         rippleBackground.stopRippleAnimation();
-        goToChatt.setClickable(true);
+        skabort.setClickable(true);
 
 
     }
@@ -235,7 +260,6 @@ public class ChatFragment extends Fragment {
         final Animation backgroundAnimation2 = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
         fadeandZoomOut.setFillAfter(true);
         rippleBackground.startRippleAnimation();
-        goToChatt.setClickable(false);
 
 
         fadeandZoomOut.setAnimationListener(new Animation.AnimationListener() {
@@ -245,18 +269,15 @@ public class ChatFragment extends Fragment {
             }
             public void onAnimationEnd(Animation animation) {
                 goToChatt2.setVisibility(View.VISIBLE);
-                goToChatt.setVisibility(View.INVISIBLE);
                 backgroundAnim.setVisibility(View.INVISIBLE);
-                goToChatt.setClickable(false);
                 drawable.setVisible(true,true);
             }
         });
         backgroundAnim.startAnimation(backgroundAnimation2);
-        goToChatt.startAnimation(fadeandZoomOut);
         goToChatt2.startAnimation(fadeandZoomIn);
         isShown = false;
         firstTime = true;
-    }
+    }*/
 
     /*public class CircleImageTransformation implements com.squareup.picasso.Transformation {
 

@@ -20,6 +20,7 @@ public class CityObject implements Parcelable {
     float rating;
     private Oid _id;
     int distance;
+    private int RADIUS = 50;
     ArrayList<String> images;
 
     ArrayList<Integer> imgs;
@@ -97,7 +98,7 @@ public class CityObject implements Parcelable {
                         Math.sin(dLng/2) * Math.sin(dLng/2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         distance = (int)(earthRadius * c);
-        if (distance<700){
+        if (distance<RADIUS){
             isOnline = true;
         }
         else{
