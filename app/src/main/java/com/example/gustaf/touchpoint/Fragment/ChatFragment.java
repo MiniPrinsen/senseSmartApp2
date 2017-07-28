@@ -144,8 +144,6 @@ public class ChatFragment extends Fragment {
     {
         public void onClick(View v)
         {
-            ChatActivity chatActivity = new ChatActivity();
-
             Bundle args = new Bundle();
             args.putString("cityobject",closestCityObject.getImgs().get(0));
 
@@ -178,6 +176,7 @@ public class ChatFragment extends Fragment {
         isShown = true;
         firstTime = false;
 
+        background.setVisibility(View.VISIBLE);
 
         rippleBackground.stopRippleAnimation();
         background.startAnimation(backgroundAnimation);
@@ -189,7 +188,8 @@ public class ChatFragment extends Fragment {
     }
 
     public void zomOut(){
-        Animation backgroundAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+
+
         final ImageView background = (ImageView)rootView.findViewById(R.id.backgroundImage);
 
         ObjectAnimator scaleBackX = ObjectAnimator.ofFloat(goToChatt2, "scaleX", 1.0f).setDuration(1000);
@@ -221,12 +221,13 @@ public class ChatFragment extends Fragment {
             public void onAnimationRepeat(Animation animation) {
             }
             public void onAnimationEnd(Animation animation) {
-                backgroundAnim.setVisibility(View.INVISIBLE);
+                background.setVisibility(View.INVISIBLE);
                 drawable.setVisible(true,true);
             }
         });
+        backgroundAnimation2.setFillAfter(true);
+
         backgroundAnim.startAnimation(backgroundAnimation2);
-        backgroundAnimation.setFillAfter(true);
     }
 
    /* public void zoomIn() {
