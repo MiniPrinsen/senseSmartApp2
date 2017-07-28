@@ -49,10 +49,10 @@ public class ChatActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard(ChatActivity.this);
                 TransitionInflater inflater = TransitionInflater.from(getApplicationContext());
                 getWindow().setExitTransition(inflater.inflateTransition(android.R.transition.move).setDuration(400));
                 getWindow().setSharedElementExitTransition(inflater.inflateTransition(android.R.transition.move));
-                hideKeyboard(ChatActivity.this);
                 ChatActivity.this.finish();
             }
         });

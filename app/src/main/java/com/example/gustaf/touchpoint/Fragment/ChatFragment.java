@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -59,6 +58,8 @@ public class ChatFragment extends Fragment {
         //goToChatt2.setOnTouchListener(onTouchListener);
         backgroundAnim = (ImageView) rootView.findViewById(R.id.backgroundImage);
         rippleBackground.startRippleAnimation();
+        drawable = (GradientDrawable)goToChatt2.getBackground();
+        drawable.setStroke(8, getResources().getColor(R.color.colorGreenPrimary));
 
         return rootView;
     }

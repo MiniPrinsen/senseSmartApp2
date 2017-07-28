@@ -1,5 +1,6 @@
 package com.example.gustaf.touchpoint.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.gustaf.touchpoint.BaseActivity;
+import com.example.gustaf.touchpoint.DetailsActivity;
 import com.example.gustaf.touchpoint.HelpClasses.BitmapLayout;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.HelpClasses.Coordinates;
@@ -33,6 +35,7 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private ArrayList<CityObject> cityObjects;
     Bundle args;
+    CityObject cObject;
 
     public GoogleMapsFragment() {
     // Required empty public constructor
@@ -131,8 +134,9 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
                 CityObject cityObject = cityObjects.get(i);
                 if (arg0.getTitle().equals(cityObject.getName())){
                     View v = getActivity().getLayoutInflater().inflate(R.layout.layout_info_window, null);
-                    args = new Bundle();
-                    args.putInt("cityobject",i);
+                   // args = new Bundle();
+                   // args.putInt("cityobject",i);
+                    cObject = cityObject;
                     Button info = (Button) v.findViewById(R.id.infoButton);
                     info.setText(cityObject.getName());
                     BitmapLayout back = (BitmapLayout) v.findViewById(R.id.bitmapBackground);
@@ -147,9 +151,9 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
         @Override
         public void onInfoWindowClick(Marker marker) {
 
-           // Intent i = new Intent(getContext(), DetailsActivity.class);
-           // i.putExtra("cityobject",args);
-           // startActivity(i);
+            Intent i = new Intent(getContext(), DetailsActivity.class);
+            i.putExtra("cityobject",cObject);
+            startActivity(i);
 
         }
 
