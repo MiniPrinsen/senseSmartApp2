@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -122,7 +123,6 @@ public class ChatWindowFragment extends Fragment {
 
         chatArrayAdapter = new ChatArrayAdapter(getContext(), R.layout.chatbubbles_layout);
         listView.setAdapter(chatArrayAdapter);
-
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -160,6 +160,7 @@ public class ChatWindowFragment extends Fragment {
 
         return view;
     }
+
 
     private void findViewsById(View container) {
         buttonSend = (Button) container.findViewById(R.id.send_btn);

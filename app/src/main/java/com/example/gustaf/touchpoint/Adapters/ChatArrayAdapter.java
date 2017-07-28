@@ -31,6 +31,7 @@ public class ChatArrayAdapter extends ArrayAdapter {
 
     public ChatArrayAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
+
     }
 
     public void add(MessageContainer object) {
@@ -53,6 +54,7 @@ public class ChatArrayAdapter extends ArrayAdapter {
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(R.layout.chatbubbles_layout, parent, false);
         }
+
         singleMessageContainer = (LinearLayout) row.findViewById(R.id.singleMessageContainer);
         MessageContainer chatMessageObj = getItem(position);
         chatText = (TextView) row.findViewById(R.id.singleMessage);
@@ -76,6 +78,7 @@ public class ChatArrayAdapter extends ArrayAdapter {
         int leftTextColor = ContextCompat.getColor(getContext(), R.color.colorGrayDark);
         int rightTextColor = ContextCompat.getColor(getContext(), R.color.colorWhite);
         chatText.setTextColor(chatMessageObj.left ? leftTextColor : rightTextColor);
+
 
 
         return row;
