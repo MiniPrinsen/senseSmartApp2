@@ -56,7 +56,7 @@ public class ChatFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_chat, container, false);
         rippleBackground = (RippleBackground) rootView.findViewById(R.id.content);
         goToChatt2 = (ImageView) rootView.findViewById(R.id.go_to_chat_btn2);
-        //goToChatt2.setOnTouchListener(onTouchListener);
+        goToChatt2.setOnTouchListener(onTouchListener);
         backgroundAnim = (ImageView) rootView.findViewById(R.id.backgroundImage);
         rippleBackground.startRippleAnimation();
 
@@ -127,11 +127,9 @@ public class ChatFragment extends Fragment {
 
         if (tPoint.isOnline() && !isShown) {
             zomIn();
-           // zoomIn();
         }
         if (!tPoint.isOnline() && !firstTime) {
             zomOut();
-           // zoomOut();
 
         }
 
@@ -211,6 +209,7 @@ public class ChatFragment extends Fragment {
         drawable.setStroke(8, getResources().getColor(R.color.colorWhite));
         goToChatt2.setClickable(false);
         goToChatt2.setOnClickListener(null);
+        goToChatt2.setOnTouchListener(onTouchListener);
 
         final Animation backgroundAnimation2 = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
         Animation fadeandZoomOut = AnimationUtils.loadAnimation(getContext(), R.anim.fadeoutzoomout);
