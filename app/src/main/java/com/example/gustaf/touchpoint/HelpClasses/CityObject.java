@@ -3,10 +3,8 @@ package com.example.gustaf.touchpoint.HelpClasses;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Gustaf on 16-08-09.
@@ -20,7 +18,7 @@ public class CityObject implements Parcelable {
     float rating;
     private Oid _id;
     int distance;
-    private int RADIUS = 25;
+    private int RADIUS = 50;
     ArrayList<String> images;
 
     ArrayList<Integer> imgs;
