@@ -153,6 +153,7 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
             Intent i = new Intent(getContext(), DetailsActivity.class);
             i.putExtra("cityobject",cObject);
             startActivity(i);
+
         }
 
         @Override
