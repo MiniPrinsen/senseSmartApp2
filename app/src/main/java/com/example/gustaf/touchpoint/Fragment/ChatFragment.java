@@ -3,18 +3,19 @@ package com.example.gustaf.touchpoint.Fragment;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.example.gustaf.touchpoint.ChatActivity;
 import com.example.gustaf.touchpoint.HelpClasses.Blur;
@@ -34,8 +35,12 @@ public class ChatFragment extends Fragment {
     private ImageView                circleImage;
     private Boolean             firstTime = true;
     private Boolean              isShown = false;
-    private GradientDrawable            drawable;
+    private Drawable            drawable;
     private CityObject         closestCityObject;
+    private FrameLayout circleContainer;
+    //private ImageView   rotatingImage;
+    Animation spin;
+    ProgressBar progressbar;
 
 
     public ChatFragment() {
@@ -53,36 +58,29 @@ public class ChatFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_chat, container, false);
-        rippleBackground = (RippleBackground) rootView.findViewById(R.id.content);
+       // rippleBackground = (RippleBackground) rootView.findViewById(R.id.content);
         circleImage = (ImageView) rootView.findViewById(R.id.go_to_chat_btn2);
-        circleImage.setOnTouchListener(onTouchListener);
+        circleImage.setOnClickListener(clickListener);
+        circleContainer = (FrameLayout) rootView.findViewById(R.id.circlecontainer);
+        //rotatingImage = (ImageView) rootView.findViewById(R.id.rotatingcircle);
         backgroundAnim = (ImageView) rootView.findViewById(R.id.backgroundImage);
-        rippleBackground.startRippleAnimation();
-        drawable = (GradientDrawable) circleImage.getBackground();
-        drawable.setStroke(8, getResources().getColor(R.color.colorWhite));
+        progressbar = (ProgressBar) rootView.findViewById(R.id.progressBar);
+        spin = AnimationUtils.loadAnimation(getContext(), R.anim.rotation);
+        spin.setRepeatCount(Animation.INFINITE);
+        progressbar.startAnimation(spin);
+        //rotatingImage.startAnimation(spin);
 
         return rootView;
     }
 
-    public View.OnTouchListener onTouchListener = new View.OnTouchListener() {
-        public boolean onTouch(View view, MotionEvent event) {
-            if (event.getAction() == android.view.MotionEvent.ACTION_DOWN && !isShown) {
-                Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_out_onpress);
-                anim.setFillAfter(true);
-                circleImage.startAnimation(anim);
-
-
-            } else if (event.getAction() == android.view.MotionEvent.ACTION_UP && !isShown) {
-                Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_in_onpress);
-                anim.setFillAfter(true);
-                circleImage.startAnimation(anim);
-
-            }
-            return true;
-
+    public View.OnClickListener clickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            Animation vibrate = AnimationUtils.loadAnimation(getContext(), R.anim.vibrate);
+            vibrate.setFillAfter(false);
+            circleContainer.startAnimation(vibrate);
         }
-    };
 
+    };
 
     /**
      *
@@ -95,10 +93,10 @@ public class ChatFragment extends Fragment {
         closestCityObject = tPoint;
 
         if (tPoint.isOnline() && !isShown) {
-            zomIn();
+            zoomIn();
         }
         if (!tPoint.isOnline() && !firstTime) {
-            zomOut();
+            zoomOut();
 
         }
 
@@ -123,43 +121,44 @@ public class ChatFragment extends Fragment {
     };
 
 
-    public void zomIn(){
+    public void zoomIn(){
         Animation backgroundAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         final ImageView background = (ImageView)rootView.findViewById(R.id.backgroundImage);
 
         Blur b = new Blur();
         Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(b.getTransformation(getContext(), closestCityObject.getName())).into(background);
 
-        ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(circleImage, "scaleX", 1.9f).setDuration(1000);
-        ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(circleImage, "scaleY", 1.9f).setDuration(1000);
+        ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(circleContainer, "scaleX", 1.3f).setDuration(1000);
+        ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(circleContainer, "scaleY", 1.3f).setDuration(1000);
 
         AnimatorSet scaleDown = new AnimatorSet();
         scaleDown.play(scaleUpX).with(scaleUpY);
 
         scaleDown.start();
 
-
         isShown = true;
         firstTime = false;
 
+        //rippleBackground.stopRippleAnimation();
 
-        rippleBackground.stopRippleAnimation();
+        ObjectAnimator progressAnimator;
+        progressAnimator = ObjectAnimator.ofInt(progressbar,"progress",500);
+        progressAnimator.setDuration(7000);
+        progressAnimator.start();
         background.startAnimation(backgroundAnimation);
+        //progressbar.setProgress(100);
+        progressbar.clearAnimation();
 
-        drawable = (GradientDrawable) circleImage.getBackground();
-        drawable.setStroke(8, getResources().getColor(R.color.colorGreenPrimary));
+        //rotatingImage.clearAnimation();
         circleImage.setClickable(true);
         circleImage.setOnTouchListener(null);
         circleImage.setOnClickListener(chattObjectListener);
     }
 
-    public void zomOut(){
+    public void zoomOut(){
 
-
-        final ImageView background = (ImageView)rootView.findViewById(R.id.backgroundImage);
-
-        ObjectAnimator scaleBackX = ObjectAnimator.ofFloat(circleImage, "scaleX", 1.0f).setDuration(1000);
-        ObjectAnimator scaleBackY = ObjectAnimator.ofFloat(circleImage, "scaleY", 1.0f).setDuration(1000);
+        ObjectAnimator scaleBackX = ObjectAnimator.ofFloat(circleContainer, "scaleX", 1.0f).setDuration(1000);
+        ObjectAnimator scaleBackY = ObjectAnimator.ofFloat(circleContainer, "scaleY", 1.0f).setDuration(1000);
 
         AnimatorSet scaleDown = new AnimatorSet();
         scaleDown.play(scaleBackX).with(scaleBackY);
@@ -170,14 +169,12 @@ public class ChatFragment extends Fragment {
         isShown = false;
         firstTime = true;
 
-
-        rippleBackground.startRippleAnimation();
-
-        drawable = (GradientDrawable) circleImage.getBackground();
-        drawable.setStroke(8, getResources().getColor(R.color.colorWhite));
+        //rotatingImage.startAnimation(spin);
+        progressbar.setProgress(10);
+        progressbar.startAnimation(spin);
         circleImage.setClickable(false);
         circleImage.setOnClickListener(null);
-        circleImage.setOnTouchListener(onTouchListener);
+        circleImage.setOnClickListener(clickListener);
 
         final Animation backgroundAnimation2 = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
         Animation fadeandZoomOut = AnimationUtils.loadAnimation(getContext(), R.anim.fadeoutzoomout);
@@ -195,119 +192,4 @@ public class ChatFragment extends Fragment {
 
         backgroundAnim.startAnimation(backgroundAnimation2);
     }
-
-   /* public void zoomIn() {
-        Animation backgroundAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
-        Animation resize = AnimationUtils.loadAnimation(getContext(), R.anim.fadeinzoomin);
-        Animation hej = AnimationUtils.loadAnimation(getContext(), R.anim.fadeoutzoomin);
-
-        final ImageView imgView = (ImageView)rootView.findViewById(R.id.backgroundImage);
-
-        Blur b = new Blur();
-            Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(b.getTransformation(getContext(), closestCityObject.getName())).into(imgView);
-        imgView.setVisibility(View.VISIBLE);
-
-        resize.setFillAfter(true);
-        resize.setAnimationListener(new Animation.AnimationListener() {
-            public void onAnimationStart(Animation animation) {
-                skabort.setVisibility(View.VISIBLE);
-                isShown = true;
-                firstTime = false;
-                Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(new CircleImageTransformation()).into(skabort);
-                circleImage.setVisibility(View.INVISIBLE);
-                drawable = (GradientDrawable) skabort.getBackground();
-                drawable.setStroke(8, getResources().getColor(R.color.colorGreenPrimary));
-            }
-            public void onAnimationRepeat(Animation animation) {
-            }
-            public void onAnimationEnd(Animation animation) {
-                skabort.setClickable(true);
-                imgView.setVisibility(View.VISIBLE);
-                circleImage.setVisibility(View.INVISIBLE);
-            }
-        });
-        skabort.startAnimation(resize);
-        circleImage.startAnimation(hej);
-        backgroundAnim.startAnimation(backgroundAnimation);
-        rippleBackground.stopRippleAnimation();
-        skabort.setClickable(true);
-
-
-    }
-
-    public void zoomOut() {
-        Animation fadeandZoomOut = AnimationUtils.loadAnimation(getContext(), R.anim.fadeoutzoomout);
-        Animation fadeandZoomIn = AnimationUtils.loadAnimation(getContext(), R.anim.fadeinzoomout);
-        final Animation backgroundAnimation2 = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
-        fadeandZoomOut.setFillAfter(true);
-        rippleBackground.startRippleAnimation();
-
-
-        fadeandZoomOut.setAnimationListener(new Animation.AnimationListener() {
-            public void onAnimationStart(Animation animation) {
-            }
-            public void onAnimationRepeat(Animation animation) {
-            }
-            public void onAnimationEnd(Animation animation) {
-                circleImage.setVisibility(View.VISIBLE);
-                backgroundAnim.setVisibility(View.INVISIBLE);
-                drawable.setVisible(true,true);
-            }
-        });
-        backgroundAnim.startAnimation(backgroundAnimation2);
-        circleImage.startAnimation(fadeandZoomIn);
-        isShown = false;
-        firstTime = true;
-    }*/
-
-    /*public class CircleImageTransformation implements com.squareup.picasso.Transformation {
-
-        @Override
-        public Bitmap transform ( final Bitmap source ) {
-            Blur br = new Blur();
-            Bitmap output = getCircularBitmap(source);
-            if (source != output) {
-                source.recycle();
-            }
-
-            return output;
-        }
-
-        @Override
-        public String key () {
-            return "customTransformation" + "12412414";
-        }
-
-        public Bitmap getCircularBitmap(Bitmap bitmap) {
-            Bitmap output;
-
-            if (bitmap.getWidth() > bitmap.getHeight()) {
-                output = Bitmap.createBitmap(bitmap.getHeight(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-            } else {
-                output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getWidth(), Bitmap.Config.ARGB_8888);
-            }
-
-            Canvas canvas = new Canvas(output);
-
-            final int color = 0xff424242;
-            final Paint paint = new Paint();
-            final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-
-            float r = 0;
-
-            if (bitmap.getWidth() > bitmap.getHeight()) {
-                r = bitmap.getHeight() / 2;
-            } else {
-                r = bitmap.getWidth() / 2;
-            }
-
-            paint.setAntiAlias(true);
-            canvas.drawARGB(0, 0, 0, 0);
-            paint.setColor(color);
-            canvas.drawCircle(r, r, r, paint);
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-            canvas.drawBitmap(bitmap, rect, rect, paint);
-            return output;
-        }
-    }*/
 }

@@ -150,11 +150,9 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
         }
         @Override
         public void onInfoWindowClick(Marker marker) {
-
             Intent i = new Intent(getContext(), DetailsActivity.class);
             i.putExtra("cityobject",cObject);
             startActivity(i);
-
         }
 
         @Override

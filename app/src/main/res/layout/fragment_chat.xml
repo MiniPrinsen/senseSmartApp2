@@ -18,34 +18,46 @@
         android:layout_height="fill_parent"
         android:layout_marginBottom="60dp"
         android:layout_marginTop="60dp">
-        <com.skyfishjy.library.RippleBackground
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/content"
-            app:rb_color="@color/colorPrimary"
-            app:rb_radius="32dp"
-            app:rb_rippleAmount="2"
-            app:rb_duration="3500"
-            app:rb_scale="5">
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerInParent="true"
-                android:id="@+id/go_to_chat_btn"
+
+            <FrameLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/circlecontainer"
                 android:layout_centerVertical="true"
-                android:background="@drawable/roundcorner"
-                android:clickable="false"/>
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerInParent="true"
-                android:id="@+id/go_to_chat_btn2"
-                android:layout_centerVertical="true"
-                android:transitionName="chat_circle"
-                android:background="@drawable/roundcorner"
-                android:clickable="true"/>
-        </com.skyfishjy.library.RippleBackground>
+                android:layout_centerHorizontal="true">
+                
+                <RelativeLayout
+                    android:layout_width="150dp"
+                    android:layout_height="150dp">
+                   <!-- <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/rotatingcircle"
+                        android:background="@drawable/roundcorner"/>-->
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:indeterminate="false"
+                        android:progressDrawable="@drawable/circular_progress_bar"
+                        android:background="@drawable/circle_shape"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_gravity="center_horizontal"
+                        android:max="100"
+                        android:progress="10" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="15dp"
+                        android:id="@+id/go_to_chat_btn2"
+                        android:transitionName="chat_circle"
+                        android:clickable="true"/>
+                </RelativeLayout>
+
+            </FrameLayout>
+
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

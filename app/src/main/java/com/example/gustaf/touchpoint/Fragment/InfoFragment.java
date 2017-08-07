@@ -28,7 +28,6 @@ import android.widget.ViewFlipper;
 
 import com.example.gustaf.touchpoint.BaseActivity;
 import com.example.gustaf.touchpoint.HelpClasses.BitmapLayout;
-import com.example.gustaf.touchpoint.HelpClasses.Blur;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.R;
 import com.squareup.picasso.Picasso;
@@ -97,9 +96,6 @@ public class InfoFragment extends Fragment
                     args.putString("cityobject",cityObject.getImgs().get(0));
                     chat.setArguments(args);
                     chat.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
-                    chat.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
-                    chat.setReenterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
-                    chat.setExitTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
 
                     getFragmentManager()
                             .beginTransaction()
@@ -120,20 +116,6 @@ public class InfoFragment extends Fragment
             });
         }
 
-
-
-        /*Picasso.with(getContext())
-                .load(cityObject.getImgs().get(0))
-                .into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        Log.v("BLUR", from.name());
-                    //    background.setScaleType(ImageView.ScaleType.FIT_XY);
-                        background.setImageBitmap(blr.blur(getContext(), bitmap));
-                    }
-
-*/
-
         slideShow();
         final ImageView imgview = new ImageView(getContext());
 
@@ -147,10 +129,6 @@ public class InfoFragment extends Fragment
         imgview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-           //     Intent i = new Intent(getContext(), BaseActivity.class);
-              //  i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                //startActivity(i);
-             //   rootView.setVisibility(View.INVISIBLE);
                 removeFragment();
             }
         });

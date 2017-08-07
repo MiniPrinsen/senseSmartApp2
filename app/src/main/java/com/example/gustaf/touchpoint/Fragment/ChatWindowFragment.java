@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -66,59 +65,7 @@ public class ChatWindowFragment extends Fragment {
             circleString = bundle.getString("cityobject");
         }
 
-        //Picasso.with(getContext()).load(circleString).transform(new Blur().getTransformation(getContext(), circleString)).into(chatBackground);
 
-
-        /*circleToolbar = new ImageView(getContext());
-        Picasso.with(getContext()).load(circleString).transform(new CircleImageTransformation()).into(circleToolbar, new com.squareup.picasso.Callback() {
-            @Override
-            public void onSuccess() {
-
-                int color = Color.parseColor("#54D87C");
-                circleToolbar.setBackgroundColor(color);
-                circleToolbar.setBackgroundResource(R.drawable.roundcorner);
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
-        infoButton = new ImageView(getContext());
-        infoButton.setImageResource(R.drawable.ic_arrow_back);
-        backButton = new ImageView(getContext());
-        backButton.setImageResource(R.drawable.ic_arrow_back);
-        int color = Color.parseColor("#51ACC7");
-        circleToolbar.setLayoutParams(new Toolbar.LayoutParams(130,130,Gravity.CENTER_HORIZONTAL|Gravity.TOP));
-        infoButton.setColorFilter(color);
-        infoButton.setLayoutParams(new Toolbar.LayoutParams(70,70,Gravity.END));
-
-        toolbar.addView(infoButton);
-        infoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InfoChatFragment infoChatFragment = new InfoChatFragment();
-                FragmentManager fragManager = getActivity().getSupportFragmentManager();
-                fragManager
-                        .beginTransaction()
-                        .addToBackStack(null)
-                        .replace(android.R.id.content, infoChatFragment)
-                        .commit();
-            }
-        });
-        toolbar.addView(circleToolbar);
-        backButton.setColorFilter(color);
-        backButton.setLayoutParams(new Toolbar.LayoutParams(70,70, Gravity.START));
-        toolbar.addView(backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideKeyboard(getContext());
-                removeFragment();
-            }
-        });*/
-      //  ((BaseActivity)getActivity()).hideNavigationBar(true);
-        //setToolBarTitle(null, view);
         buttonSend.setOnClickListener(customListener);
 
         chatArrayAdapter = new ChatArrayAdapter(getContext(), R.layout.chatbubbles_layout);
@@ -132,32 +79,6 @@ public class ChatWindowFragment extends Fragment {
                 return false;
             }
         });
-        /*View parent = view.findViewById(R.id.chat_window_content);
-        parent.post(new Runnable() {
-            public void run() {
-                // Post in the parent's message queue to make sure the parent
-                // lays out its children before we call getHitRect()
-                Rect delegateArea = new Rect();
-                ImageView delegate = backButton;
-                delegate.getHitRect(delegateArea);
-                delegateArea.top -= 600;
-                delegateArea.bottom += 300;
-                delegateArea.left -= 600;
-                delegateArea.right += 300;
-                TouchDelegate expandedArea = new TouchDelegate(delegateArea,
-                        delegate);
-                // give the delegate to an ancestor of the view we're
-                // delegating the
-                // area to
-                if (View.class.isInstance(delegate.getParent())) {
-                    ((View) delegate.getParent())
-                            .setTouchDelegate(expandedArea);
-                }
-            };
-        });*/
-
-
-
         return view;
     }
 
