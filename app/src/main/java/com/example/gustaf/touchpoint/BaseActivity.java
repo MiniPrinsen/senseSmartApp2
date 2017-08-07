@@ -118,7 +118,7 @@ public class BaseActivity extends AppCompatActivity{
                         documentaryItem.setDrawable(R.drawable.ic_trophy_empty);
                         break;
                     case 1:
-                        showPage(0, "CHAT");
+                        showPage(0, "NEARBY");
                         crimeItem.setDrawable(R.drawable.ic_map_empty);
                         dramaItem.setDrawable(R.drawable.ic_chat_filled);
                         documentaryItem.setDrawable(R.drawable.ic_trophy_empty);

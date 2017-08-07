@@ -67,6 +67,7 @@ public class ChatFragment extends Fragment {
         progressbar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         spin = AnimationUtils.loadAnimation(getContext(), R.anim.rotation);
         spin.setRepeatCount(Animation.INFINITE);
+        spin.setFillAfter(true);
         progressbar.startAnimation(spin);
         //rotatingImage.startAnimation(spin);
 
@@ -140,14 +141,13 @@ public class ChatFragment extends Fragment {
         firstTime = false;
 
         //rippleBackground.stopRippleAnimation();
-
         ObjectAnimator progressAnimator;
         progressAnimator = ObjectAnimator.ofInt(progressbar,"progress",500);
-        progressAnimator.setDuration(7000);
+        progressAnimator.setDuration(4000);
         progressAnimator.start();
         background.startAnimation(backgroundAnimation);
         //progressbar.setProgress(100);
-        progressbar.clearAnimation();
+        //progressbar.clearAnimation();
 
         //rotatingImage.clearAnimation();
         circleImage.setClickable(true);

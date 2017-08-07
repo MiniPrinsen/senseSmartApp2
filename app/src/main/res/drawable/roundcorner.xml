@@ -2,22 +2,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
     <item>
         <shape android:shape="oval" >
-            <gradient
-                android:angle="180"
-                android:startColor="@color/colorWhiteTransparent"
-                android:endColor="@color/colorGreenPrimary"
-                android:centerColor="@color/colorWhiteTransparent"
-                android:centerX="0.4"
-                android:centerY="0.4"
-                android:type="sweep" />
-            <size android:width="100dp"
-                android:height="100dp"/>
-            <padding
-                android:bottom="5dp"
-                android:left="5dp"
-                android:right="5dp"
-                android:top="5dp"/>
+            <solid android:color="@color/colorGreenPrimary"></solid>
+
         </shape>
+
     </item>
     <item
         android:bottom="2dp"
