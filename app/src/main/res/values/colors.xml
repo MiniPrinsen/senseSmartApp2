@@ -34,7 +34,7 @@
     <color name="colorGrayMediumDark">#ADACAC</color>
     <color name="colorGray">#C6C5C5</color>
     <color name="colorGrayMediumLight">#E0DFDF</color>
-    <color name="colorGrayLight">#F5F5F5</color>
+    <color name="colorGrayMediumTransparent">#80E0DFDF</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorWhiteTransparent">#80FFFFFF</color>
 

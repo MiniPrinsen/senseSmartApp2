@@ -1,20 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Touch Point</string>
-    <string name="settings_name">INSTÄLLNINGAR</string>
-    <string name="map_name">NÄRA DIG</string>
-    <string name="chat_name">CHATT</string>
-    <string name="achievement_name">DINA TROFÈER</string>
-    <string name="messagebox_hint">Skriv ett meddelande...</string>
+    <string name="city">Skellefteå</string>
+
+    <string name="settings_name">Settings</string>
+    <string name="nearby_name">Nearby</string>
+    <string name="chat_name">Chat</string>
+    <string name="achievement_name">Achievements</string>
+    <string name="map_name">Map</string>
+    <string name="info_name">Info</string>
+    <string name="help_text">You must be closer than 50 meters to interact with this object.</string>
+    <string name="chat_active">Online</string>
+
+    <string name="direction">Directions</string>
+
+
+    <string name="messagebox_hint">Message...</string>
+    <string name="send_text">Send</string>
+
     <string name="server_url">http://127.0.0.1:8080/senseSmart/hey</string>
-    <string name="send_text">SKICKA</string>
 
-    <string name="object_bonnstan">BONNSTAN</string>
-    <string name="object_lejonstromsbron">LEJONSTRÖMSBRON</string>
-    <string name="object_johanna_i_parken">JOHANNA I PARKEN</string>
-    <string name="title_activity_map">KARTA</string>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_maps">KARTA</string>
     <string name="server_ip">http://52.28.236.84:8080</string>
 
 

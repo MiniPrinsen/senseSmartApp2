@@ -51,6 +51,20 @@
                         android:layout_gravity="center_horizontal"
                         android:max="100"
                         android:progress="15" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/notificationCircle"
+                        android:elevation="1dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="17dp"
+                        android:layout_marginTop="17dp"
+                        android:gravity="center"
+                        android:background="@drawable/roundcorner"
+                        android:textColor="@color/colorWhite"
+                        android:text="1"
+                        android:textAlignment="center"
+                        android:backgroundTint="@color/colorRedPrimaryMediumDark"/>
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -60,6 +74,7 @@
                         android:id="@+id/go_to_chat_btn2"
                         android:transitionName="chat_circle"
                         android:clickable="true"/>
+
                 </RelativeLayout>
 
             </FrameLayout>

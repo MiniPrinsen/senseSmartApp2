@@ -37,6 +37,7 @@ public class ChatFragment extends Fragment {
     private Animation                       spin;
     private ProgressBar              progressbar;
     private LinearLayout         circleContainer;
+    private TextView          notificationCircle;
 
 
     public ChatFragment() {
@@ -58,10 +59,12 @@ public class ChatFragment extends Fragment {
         circleImage.setOnClickListener(clickListener);
         backgroundAnim = (ImageView) rootView.findViewById(R.id.backgroundImage);
         circleContainer = (LinearLayout) rootView.findViewById(R.id.circlecontainer);
+        notificationCircle = (TextView) rootView.findViewById(R.id.notificationCircle);
         progressbar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         spin = AnimationUtils.loadAnimation(getContext(), R.anim.rotation);
         spin.setRepeatCount(Animation.INFINITE);
         progressbar.startAnimation(spin);
+        notificationCircle.setVisibility(View.INVISIBLE);
 
         return rootView;
     }
@@ -129,7 +132,7 @@ public class ChatFragment extends Fragment {
 
         ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(circleContainer, "scaleX", 1.3f).setDuration(1000);
         ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(circleContainer, "scaleY", 1.3f).setDuration(1000);
-
+        notificationCircle.setVisibility(View.VISIBLE);
         AnimatorSet scaleDown = new AnimatorSet();
         scaleDown.play(scaleUpX).with(scaleUpY);
 
@@ -153,6 +156,7 @@ public class ChatFragment extends Fragment {
 
     public void zoomOut(){
 
+        notificationCircle.setVisibility(View.INVISIBLE);
         ObjectAnimator scaleBackX = ObjectAnimator.ofFloat(circleContainer, "scaleX", 1.0f).setDuration(1000);
         ObjectAnimator scaleBackY = ObjectAnimator.ofFloat(circleContainer, "scaleY", 1.0f).setDuration(1000);
 
