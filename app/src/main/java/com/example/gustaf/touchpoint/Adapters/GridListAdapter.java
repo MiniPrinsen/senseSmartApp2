@@ -6,13 +6,9 @@ package com.example.gustaf.touchpoint.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.telecom.Call;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +18,6 @@ import android.widget.TextView;
 
 import com.example.gustaf.touchpoint.BaseActivity;
 import com.example.gustaf.touchpoint.DetailsActivity;
-import com.example.gustaf.touchpoint.Fragment.InfoFragment;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.HelpClasses.Holder;
 import com.example.gustaf.touchpoint.R;
@@ -40,7 +35,6 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
     private final int      SCREEN_WIDTH;
     private final int     SCREEN_HEIGHT;
     private Context             context;
-    private InfoFragment   infoFragment;
     private String tmpImage = "https://upload.wikimedia.org/wikipedia/en/7/78/Small_scream.png";
 
     public GridListAdapter(List<CityObject> itemList, GridLayoutManager gridLayoutManager, int defaultSpanCount, int width, int height, Context context) {
@@ -141,21 +135,6 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
                     CityObject item = mItemList.get(pos);
 
                     final BaseActivity activity = (BaseActivity) context;
-                    if (infoFragment == null){
-                        infoFragment = new InfoFragment();
-                    }
-                    /*Bundle args = new Bundle();
-
-
-
-                    args.putString("info", mItemList.get(pos).getDescription());
-                    args.putInt("index", pos);
-                    args.putString("title", title);
-                    infoFragment.setArguments(args);
-                    android.support.v4.app.FragmentManager fr = activity.getSupportFragmentManager();
-                    fr.beginTransaction()
-                            .add(android.R.id.content, infoFragment).commit();*/
-
 
                     ImageView sharedImage = pos == 0 ? (ImageView)view.findViewById(R.id.header_image) :
                             (ImageView)view.findViewById(R.id.grid_image);

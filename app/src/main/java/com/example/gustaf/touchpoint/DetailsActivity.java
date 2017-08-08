@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -38,9 +37,8 @@ public class DetailsActivity extends AppCompatActivity {
     private Animation               fadein, fadeout;
     private Button                  directions;
     private ScrollView              mScrollView;
-    FrameLayout                     mWrapperFL;
 
-    private String direction = "https://www.google.se/maps/dir/64.7449073,20.9557912/Lejonströmsbron," +
+    private String direction = "https://www.google.se/maps/dir/64.7449073,20.9557912/TJÄÄÄNA," +
             "+931+44+Skellefteå/@64.7449891,20.914278,14z/" +
             "data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x467e954ff842f71f" +
             ":0x412452cb329526e!2m2!1d20.9157401!2d64.7510032?hl=sv";
@@ -61,7 +59,6 @@ public class DetailsActivity extends AppCompatActivity {
                 new Blur().getTransformation(getApplicationContext(), cityObject.getName())).into(background);
         /* Set parallel scroll */
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ScrollPositionObserver());
-
 
         /* Set shared element transition */
         TransitionInflater inflater = TransitionInflater.from(getApplicationContext());
@@ -100,7 +97,6 @@ public class DetailsActivity extends AppCompatActivity {
         directions = (Button) findViewById(R.id.directionsButton);
         flipper = (ViewFlipper) findViewById(R.id.slideShow);
         mScrollView = (ScrollView) findViewById(R.id.infofragment);
-        mWrapperFL = (FrameLayout) findViewById(R.id.flWrapper);
         infoText = (TextView) findViewById(R.id.infoText);
         background = (BitmapLayout) findViewById(R.id.blurredBG);
     }
@@ -166,6 +162,7 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DetailsActivity.super.finishAfterTransition();
+                //overridePendingTransition(0,0);
             }
         });
 
