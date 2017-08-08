@@ -106,6 +106,7 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
                         Button info = (Button) v.findViewById(R.id.infoButton);
                         info.setText(cityObject.getName());
                         BitmapLayout back = (BitmapLayout) v.findViewById(R.id.bitmapBackground);
+
                         Picasso.with(getContext()).load(cityObject.getImgs().get(0)).into(back);
                         return v;
                     }
@@ -145,14 +146,17 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
                     return v;
 
                 }
+
             }
             return null;
         }
         @Override
         public void onInfoWindowClick(Marker marker) {
             Intent i = new Intent(getContext(), DetailsActivity.class);
+
             i.putExtra("cityobject",cObject);
             startActivity(i);
+            getActivity().overridePendingTransition(R.anim.slide_left,R.anim.empty);
 
         }
 
