@@ -17,7 +17,7 @@ public class CityObject implements Parcelable {
     float rating;
     private Oid _id;
     int distance;
-    private final int RADIUS =  120;
+    private final int RADIUS =  10;
     ArrayList<String> images;
     Coordinates currentLocation;
 

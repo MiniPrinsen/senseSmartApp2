@@ -3,7 +3,6 @@ package com.example.gustaf.touchpoint.Fragment;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -13,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -23,10 +22,7 @@ import com.example.gustaf.touchpoint.HelpClasses.Blur;
 import com.example.gustaf.touchpoint.HelpClasses.CircleImageTransformation;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.R;
-import com.skyfishjy.library.RippleBackground;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 /**
  *
@@ -38,9 +34,9 @@ public class ChatFragment extends Fragment {
     private Boolean             firstTime = true;
     private Boolean              isShown = false;
     private CityObject         closestCityObject;
-    private FrameLayout          circleContainer;
     private Animation                       spin;
     private ProgressBar              progressbar;
+    private LinearLayout         circleContainer;
 
 
     public ChatFragment() {
@@ -58,17 +54,14 @@ public class ChatFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_chat, container, false);
-       // rippleBackground = (RippleBackground) rootView.findViewById(R.id.content);
         circleImage = (ImageView) rootView.findViewById(R.id.go_to_chat_btn2);
         circleImage.setOnClickListener(clickListener);
-        circleContainer = (FrameLayout) rootView.findViewById(R.id.circlecontainer);
-        //rotatingImage = (ImageView) rootView.findViewById(R.id.rotatingcircle);
         backgroundAnim = (ImageView) rootView.findViewById(R.id.backgroundImage);
+        circleContainer = (LinearLayout) rootView.findViewById(R.id.circlecontainer);
         progressbar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         spin = AnimationUtils.loadAnimation(getContext(), R.anim.rotation);
         spin.setRepeatCount(Animation.INFINITE);
         progressbar.startAnimation(spin);
-        //rotatingImage.startAnimation(spin);
 
         return rootView;
     }
