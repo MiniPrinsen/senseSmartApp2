@@ -67,7 +67,6 @@ public class ChatFragment extends Fragment {
         progressbar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         spin = AnimationUtils.loadAnimation(getContext(), R.anim.rotation);
         spin.setRepeatCount(Animation.INFINITE);
-        spin.setFillAfter(true);
         progressbar.startAnimation(spin);
         //rotatingImage.startAnimation(spin);
 
@@ -110,8 +109,10 @@ public class ChatFragment extends Fragment {
     {
         public void onClick(View v)
         {
+            progressbar.setVisibility(View.INVISIBLE);
             Bundle args = new Bundle();
             args.putString("cityobject",closestCityObject.getImgs().get(0));
+
 
             Intent intent = new Intent(getContext(), ChatActivity.class);
             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), circleImage,ViewCompat.getTransitionName(circleImage));
@@ -141,15 +142,13 @@ public class ChatFragment extends Fragment {
         firstTime = false;
 
         //rippleBackground.stopRippleAnimation();
+
         ObjectAnimator progressAnimator;
         progressAnimator = ObjectAnimator.ofInt(progressbar,"progress",500);
-        progressAnimator.setDuration(4000);
+        progressAnimator.setDuration(3000);
         progressAnimator.start();
         background.startAnimation(backgroundAnimation);
-        //progressbar.setProgress(100);
-        //progressbar.clearAnimation();
 
-        //rotatingImage.clearAnimation();
         circleImage.setClickable(true);
         circleImage.setOnTouchListener(null);
         circleImage.setOnClickListener(chattObjectListener);
@@ -170,6 +169,7 @@ public class ChatFragment extends Fragment {
         firstTime = true;
 
         //rotatingImage.startAnimation(spin);
+        progressbar.setVisibility(View.VISIBLE);
         progressbar.setProgress(10);
         progressbar.startAnimation(spin);
         circleImage.setClickable(false);
