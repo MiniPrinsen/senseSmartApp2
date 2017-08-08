@@ -17,8 +17,9 @@ public class CityObject implements Parcelable {
     float rating;
     private Oid _id;
     int distance;
-    private int RADIUS = 10;
+    private final int RADIUS =  120;
     ArrayList<String> images;
+    Coordinates currentLocation;
 
     ArrayList<Integer> imgs;
     boolean isOnline = false;
@@ -33,6 +34,14 @@ public class CityObject implements Parcelable {
         imgs = new ArrayList<>();
         coordinates = new Coordinates();
         images = new ArrayList<>();
+    }
+
+    public void setCurrentLocation(Coordinates cord){
+        this.currentLocation = cord;
+    }
+
+    public Coordinates getCurrentLocation(){
+        return currentLocation;
     }
 
     public ArrayList<String> getImgs(){
@@ -84,14 +93,14 @@ public class CityObject implements Parcelable {
 
     }
 
-    public void setLengthBetween(double lng, double lat) {
+    public void setLengthBetween() {
 
         double earthRadius = 6371000; //meters
-        double dLat = Math.toRadians(lat- coordinates.getLatitude());
-        double dLng = Math.toRadians(lng- coordinates.getLongitude());
+        double dLat = Math.toRadians(currentLocation.getLatitude()- coordinates.getLatitude());
+        double dLng = Math.toRadians(currentLocation.getLongitude()- coordinates.getLongitude());
         double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
                 Math.cos(Math.toRadians(coordinates.getLatitude())) *
-                        Math.cos(Math.toRadians(lat)) *
+                        Math.cos(Math.toRadians(currentLocation.getLatitude())) *
                         Math.sin(dLng/2) * Math.sin(dLng/2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         distance = (int)(earthRadius * c);
@@ -148,6 +157,13 @@ public class CityObject implements Parcelable {
         _id = new Oid();
         _id.set$oid(source.readString());
         isOnline = source.readByte() != 0;
+        coordinates = new Coordinates();
+        coordinates.setLongitude(source.readDouble());
+        coordinates.setLatitude(source.readDouble());
+        currentLocation = new Coordinates();
+        currentLocation.setLongitude(source.readDouble());
+        currentLocation.setLatitude(source.readDouble());
+
     }
 
     @Override
@@ -157,6 +173,10 @@ public class CityObject implements Parcelable {
         parcel.writeStringList(images);
         parcel.writeString(_id.get$oid());
         parcel.writeByte((byte) (isOnline ? 1 : 0));
+        parcel.writeDouble(getCoordinates().getLongitude());
+        parcel.writeDouble(getCoordinates().getLatitude());
+        parcel.writeDouble(getCurrentLocation().getLongitude());
+        parcel.writeDouble(getCurrentLocation().getLatitude());
 
     }
 

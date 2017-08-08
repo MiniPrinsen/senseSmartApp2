@@ -75,7 +75,8 @@ public class GetCityObjects implements Runnable {
                 for (int i = 0; i<array.length(); i++){
                     JSONObject obj = array.getJSONObject(i);
                     CityObject cObject = gson.fromJson(obj.toString(), CityObject.class);
-                    cObject.setLengthBetween(longitude, latitude);
+                    cObject.setCurrentLocation(new Coordinates(latitude, longitude));
+                    cObject.setLengthBetween();
                     temp.add(cObject);
                 }
 

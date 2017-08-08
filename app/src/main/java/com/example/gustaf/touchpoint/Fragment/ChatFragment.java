@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.gustaf.touchpoint.ChatActivity;
 import com.example.gustaf.touchpoint.HelpClasses.Blur;
@@ -25,22 +26,21 @@ import com.example.gustaf.touchpoint.R;
 import com.skyfishjy.library.RippleBackground;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 /**
  *
  */
 public class ChatFragment extends Fragment {
     private View                        rootView;
-    private RippleBackground    rippleBackground;
     private ImageView             backgroundAnim;
     private ImageView                circleImage;
     private Boolean             firstTime = true;
     private Boolean              isShown = false;
-    private Drawable            drawable;
     private CityObject         closestCityObject;
-    private FrameLayout circleContainer;
-    //private ImageView   rotatingImage;
-    Animation spin;
-    ProgressBar progressbar;
+    private FrameLayout          circleContainer;
+    private Animation                       spin;
+    private ProgressBar              progressbar;
 
 
     public ChatFragment() {
@@ -87,18 +87,22 @@ public class ChatFragment extends Fragment {
      */
     public void updateLocation(CityObject tPoint) {
         boolean newTouchPoint = !tPoint.equals(closestCityObject);
+        TextView distance = (TextView)rootView.findViewById(R.id.objectDistance);
+        distance.setText(tPoint.getDistance());
         if (newTouchPoint){
             Picasso.with(getContext()).load(tPoint.getImgs().get(0)).transform(new CircleImageTransformation()).into(circleImage);
+            TextView name = (TextView)rootView.findViewById(R.id.objectName);
+            name.setText(tPoint.getName());
         }
-        closestCityObject = tPoint;
 
+        closestCityObject = tPoint;
         if (tPoint.isOnline() && !isShown) {
             zoomIn();
         }
         if (!tPoint.isOnline() && !firstTime) {
             zoomOut();
-
         }
+
 
     }
 
@@ -179,15 +183,7 @@ public class ChatFragment extends Fragment {
         final Animation backgroundAnimation2 = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
         Animation fadeandZoomOut = AnimationUtils.loadAnimation(getContext(), R.anim.fadeoutzoomout);
 
-        fadeandZoomOut.setAnimationListener(new Animation.AnimationListener() {
-            public void onAnimationStart(Animation animation) {
-            }
-            public void onAnimationRepeat(Animation animation) {
-            }
-            public void onAnimationEnd(Animation animation) {
-                drawable.setVisible(true,true);
-            }
-        });
+
         backgroundAnimation2.setFillAfter(true);
 
         backgroundAnim.startAnimation(backgroundAnimation2);

@@ -1,15 +1,18 @@
 package com.example.gustaf.touchpoint;
 
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.TouchDelegate;
 import android.view.View;
@@ -24,9 +27,11 @@ import android.widget.ViewFlipper;
 import com.example.gustaf.touchpoint.HelpClasses.BitmapLayout;
 import com.example.gustaf.touchpoint.HelpClasses.Blur;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
+import com.example.gustaf.touchpoint.HelpClasses.Coordinates;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class DetailsActivity extends AppCompatActivity {
     private CityObject              cityObject;
@@ -48,6 +53,8 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details);
         cityObject = getIntent().getParcelableExtra("cityobject");
         findViewsById();
+
+
 
         /* Set description, toolbartitle and slideshow images */
         infoText.setText(cityObject.getDescription());
@@ -83,9 +90,28 @@ public class DetailsActivity extends AppCompatActivity {
             directions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                            Uri.parse(direction));
-                    startActivity(intent);
+                    new AlertDialog.Builder(DetailsActivity.this)
+                            .setTitle("Open Google maps")
+                            .setMessage("Get directions to "+cityObject.getName()+".")
+                            .setIcon(R.drawable.ic_google_maps)
+                            .setNegativeButton(android.R.string.cancel, null) // dismisses by default
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override public void onClick(DialogInterface dialog, int which) {
+                                    String test = "https://www.google.com/maps?saddr=My+Location&daddr=%f,%f(%s)&travelmode=walking";
+                                    Coordinates start = cityObject.getCurrentLocation();
+                                    Coordinates end = cityObject.getCoordinates();
+
+                                    String name = cityObject.getName().replace(' ', '+');
+
+                                    String urlString = String.format(test, end.getLatitude(), end.getLongitude(), name);
+
+                                    Log.v("TEST", urlString);
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
+                                    startActivity(intent);
+                                }
+                            })
+                            .create()
+                            .show();
                 }
             });
         }

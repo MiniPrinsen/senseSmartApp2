@@ -29,6 +29,7 @@ import com.example.gustaf.touchpoint.Fragment.ChatFragment;
 import com.example.gustaf.touchpoint.Fragment.GoogleMapsFragment;
 import com.example.gustaf.touchpoint.Fragment.ListFragment;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
+import com.example.gustaf.touchpoint.HelpClasses.Coordinates;
 import com.example.gustaf.touchpoint.HelpClasses.GetCityObjects;
 import com.example.gustaf.touchpoint.HelpClasses.GetLocation;
 import com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager;
@@ -260,7 +261,9 @@ public class BaseActivity extends AppCompatActivity{
             else {
                 ((ListFragment) (viewPagerAdapterTabbed.getItem(0))).recieveLocation(current_position);
                 for (CityObject tPoint : cityObjects) {
-                    tPoint.setLengthBetween(current_position.getLongitude(), current_position.getLatitude());
+                    tPoint.setCurrentLocation(new Coordinates(current_position.getLatitude(),
+                            current_position.getLongitude()));
+                    tPoint.setLengthBetween();
                 }
                 ((ChatFragment) (viewPagerAdapterDeafult.getItem(0))).updateLocation(cityObjects.get(0));
             }
