@@ -1,8 +1,11 @@
 package com.example.gustaf.touchpoint;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
@@ -35,6 +38,7 @@ import com.example.gustaf.touchpoint.HelpClasses.GetLocation;
 import com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  *  BaseActivity contains the toolbar and navigationbar that
@@ -72,6 +76,14 @@ public class BaseActivity extends AppCompatActivity{
     @Override
     public void onStart(){
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("selectedLanguage", Context.MODE_PRIVATE);
+        String pine = sharedPreferences.getString("language", "en");
+        String languageToLoad = pine;
+        Locale locale = new Locale(languageToLoad);//Set Selected Locale
+        Locale.setDefault(locale);//set new locale as default
+        Configuration config = new Configuration();//get Configuration
+        config.locale = locale;//set config locale as selected locale
+        this.getResources().updateConfiguration(config, this.getResources().getDisplayMetrics());
         super.onStart();
 
     }

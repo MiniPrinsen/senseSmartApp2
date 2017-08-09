@@ -1,34 +1,30 @@
-package com.example.gustaf.touchpoint.Fragment;
+package com.example.gustaf.touchpoint;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.gustaf.touchpoint.BaseActivity;
-import com.example.gustaf.touchpoint.R;
 
 import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingsFragment extends Fragment {
+public class SettingsActivity extends Activity {
 
     private Toolbar toolbar;
-    private View view;
     ImageView backButton;
     TextView toolbarText;
     Button swedish;
@@ -36,43 +32,47 @@ public class SettingsFragment extends Fragment {
 
 
 
-    public SettingsFragment() {
+
+    public SettingsActivity() {
         // Required empty public constructor
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_settings, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
         findViewsById();
         setToolbarTitle();
         inflateBackButton();
 
+
         swedish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 setLocale("sv");
             }
         });
         english.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 setLocale("en");
+
             }
         });
         // Inflate the layout for this fragment
-        return view;
     }
 
     public void findViewsById() {
-        swedish = (Button) view.findViewById(R.id.swedish);
-        english = (Button) view.findViewById(R.id.english);
-        toolbar = (Toolbar) view.findViewById(R.id.main_toolbar);
-        backButton = new ImageView(getContext());
-        toolbarText = (TextView) view.findViewById(R.id.toolbar_title);
+        swedish = (Button) findViewById(R.id.swedish);
+        english = (Button) findViewById(R.id.english);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        backButton = new ImageView(this);
     }
     public void setToolbarTitle() {
+        toolbarText = (TextView) findViewById(R.id.toolbar_title);
         toolbarText.setText(R.string.settings_name);
     }
 
@@ -86,10 +86,8 @@ public class SettingsFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                if (fm.getBackStackEntryCount() > 0) {
-                    fm.popBackStack();
-                }
+                SettingsActivity.this.finish();
+
             }
         });
     }
@@ -117,8 +115,14 @@ public class SettingsFragment extends Fragment {
         Configuration conf = res.getConfiguration();
         conf.locale = myLocale;
         res.updateConfiguration(conf, dm);
-        Intent refresh = new Intent(getContext(), BaseActivity.class);
+        SharedPreferences ensharedPreferences = getSharedPreferences("selectedLanguage", Context.MODE_PRIVATE);
+        SharedPreferences.Editor eneditor = ensharedPreferences.edit();
+        eneditor.putString("language", lang);
+        eneditor.apply();
+        SharedPreferences pref = getSharedPreferences(lang,MODE_PRIVATE);
+        Intent refresh = new Intent(this, BaseActivity.class);
+        SettingsActivity.this.finish();
         startActivity(refresh);
+        overridePendingTransition(0,0);
     }
-
 }

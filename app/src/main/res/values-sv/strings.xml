@@ -18,6 +18,7 @@
     <string name="directions_info">Få vägbeskrivning till </string>
     <string name="location_request">Vi behöver din position, \n annars kommer appen inte att fungera!</string>
     <string name="achievement_text">   4 av 12 \n utförda</string>
+    <string name="change_language">Välj språk</string>
 
     <string name="direction">Vägbeskrivning</string>
     <string name="welcome_message">Tjena, hur är läget?</string>

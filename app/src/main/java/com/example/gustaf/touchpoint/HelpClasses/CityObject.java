@@ -17,19 +17,13 @@ public class CityObject implements Parcelable {
     float rating;
     private Oid _id;
     int distance;
-    private final int RADIUS =  50;
+    private final int RADIUS =  200;
     ArrayList<String> images;
     Coordinates currentLocation;
 
     ArrayList<Integer> imgs;
     boolean isOnline = false;
-   /* {     "_id" : { "$oid" : "595524a99e575b7952858fc6" },
-            "name" : "sgksp�",
-            "description" : "kp�k�pk",
-            "coordinates" : { "longitude" : 12.0, "latitude" : 12.0 },
-            "persons_voted" : 0.0,
-            "rating" : 0.0,
-            "images" : ["http://localhost:8080/hello/images/31d907ab-3685-43ee-973c-40dd74056269.png"] }*/
+
     public  CityObject() {
         imgs = new ArrayList<>();
         coordinates = new Coordinates();
@@ -57,14 +51,6 @@ public class CityObject implements Parcelable {
         this.rating = rating;
         this.imgs = images;
     }
-
-   /* public CityObject(String name, int image, String description, Coordinates location){
-        this.name = name;
-        this.image = image;
-        this.description = description;
-        this.location = location;
-
-    }*/
 
    public void addImages(ArrayList<String> images){
        this.images = images;

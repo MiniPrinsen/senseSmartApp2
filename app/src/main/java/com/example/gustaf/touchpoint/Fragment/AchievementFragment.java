@@ -1,6 +1,7 @@
 package com.example.gustaf.touchpoint.Fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.example.gustaf.touchpoint.R;
+import com.example.gustaf.touchpoint.SettingsActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,11 +46,12 @@ public class AchievementFragment extends Fragment {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SettingsFragment settingsFragment= new SettingsFragment();
-                getFragmentManager().beginTransaction()
+                Intent i = new Intent(getContext(),SettingsActivity.class);
+                startActivity(i);
+                /*getFragmentManager().beginTransaction()
                         .replace(android.R.id.content, settingsFragment)
                         .addToBackStack(null)
-                        .commit();
+                        .commit();*/
             }
         });
 
