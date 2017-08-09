@@ -3,11 +3,16 @@ package com.example.gustaf.touchpoint.Fragment;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +29,8 @@ import com.example.gustaf.touchpoint.HelpClasses.Blur;
 import com.example.gustaf.touchpoint.HelpClasses.CircleImageTransformation;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.R;
-import com.skyfishjy.library.RippleBackground;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.w3c.dom.Text;
 
@@ -42,7 +47,7 @@ public class ChatFragment extends Fragment {
     private LinearLayout          circleContainer;
     private Animation                       spin;
     private ProgressBar              progressbar;
-
+    private ColorStateList              oldColors;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -89,7 +94,13 @@ public class ChatFragment extends Fragment {
     public void updateLocation(CityObject tPoint) {
         boolean newTouchPoint = !tPoint.equals(closestCityObject);
         TextView distance = (TextView)rootView.findViewById(R.id.objectDistance);
-        distance.setText(tPoint.getDistance());
+        if (tPoint.isOnline() && firstTime){
+            distance.setText("Click to interact!");
+        }
+        else if (!tPoint.isOnline()){
+            distance.setText(tPoint.getDistance());
+        }
+
         if (newTouchPoint){
             Picasso.with(getContext()).load(tPoint.getImgs().get(0)).transform(new CircleImageTransformation()).into(circleImage);
             TextView name = (TextView)rootView.findViewById(R.id.objectName);
@@ -105,6 +116,13 @@ public class ChatFragment extends Fragment {
         }
 
 
+    }
+
+    public static int getDominantColor(Bitmap bitmap) {
+        Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, 1, 1, true);
+        final int color = newBitmap.getPixel(0, 0);
+        newBitmap.recycle();
+        return color;
     }
 
     /**
@@ -128,13 +146,42 @@ public class ChatFragment extends Fragment {
         }
     };
 
+    public static int getContrastColor(int colorToInvert) {
+        double y = (299 * Color.red(colorToInvert) + 587 * Color.green(colorToInvert) + 114 * Color.blue(colorToInvert)) / 1000;
+        return y >= 128 ? Color.BLACK : Color.WHITE;
+    }
+
+    public static int getComplementaryColor(int colorToInvert) {
+        float[] hsv = new float[3];
+        Color.RGBToHSV(Color.red(colorToInvert), Color.green(colorToInvert),
+                Color.blue(colorToInvert), hsv);
+        hsv[0] = (hsv[0] + 180) % 360;
+        return Color.HSVToColor(hsv);
+    }
+
 
     public void zoomIn(){
         Animation backgroundAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         final ImageView background = (ImageView)rootView.findViewById(R.id.backgroundImage);
 
         Blur b = new Blur();
-        Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(b.getTransformation(getContext(), closestCityObject.getName())).into(background);
+        Picasso.with(getContext()).load(closestCityObject.getImgs().get(0)).transform(b.getTransformation(getContext(), closestCityObject.getName())).into(background, new com.squareup.picasso.Callback() {
+            @Override
+            public void onSuccess() {
+                int color = getDominantColor(((BitmapDrawable)background.getDrawable()).getBitmap());
+                TextView name = (TextView)rootView.findViewById(R.id.objectName);
+                TextView distance = (TextView)rootView.findViewById(R.id.objectDistance);
+                oldColors =  distance.getTextColors();
+                name.setTextColor(getContrastColor(color));
+                distance.setTextColor(getContrastColor(color));
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
 
         ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(circleContainer, "scaleX", 1.3f).setDuration(1000);
         ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(circleContainer, "scaleY", 1.3f).setDuration(1000);
@@ -158,6 +205,9 @@ public class ChatFragment extends Fragment {
         circleImage.setClickable(true);
         circleImage.setOnTouchListener(null);
         circleImage.setOnClickListener(chattObjectListener);
+
+
+
     }
 
     public void zoomOut(){
@@ -184,6 +234,13 @@ public class ChatFragment extends Fragment {
 
         final Animation backgroundAnimation2 = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
         Animation fadeandZoomOut = AnimationUtils.loadAnimation(getContext(), R.anim.fadeoutzoomout);
+
+        TextView name = (TextView)rootView.findViewById(R.id.objectName);
+        TextView distance = (TextView)rootView.findViewById(R.id.objectDistance);
+
+
+        name.setTextColor(oldColors);
+        distance.setTextColor(oldColors);
 
 
         backgroundAnimation2.setFillAfter(true);
