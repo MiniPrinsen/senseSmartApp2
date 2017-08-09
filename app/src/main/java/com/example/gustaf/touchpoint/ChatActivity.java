@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
@@ -51,6 +52,19 @@ public class ChatActivity extends AppCompatActivity {
 
          linear = (LinearLayout) findViewById(R.id.linear);
         linear.setVisibility(View.GONE);
+
+        toolbar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+
+                        linear.setVisibility(View.VISIBLE);
+                }
+                return false;
+            }
+        });
+
 
         Animation slide = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
         toolbar.startAnimation(slide);
@@ -110,7 +124,12 @@ public class ChatActivity extends AppCompatActivity {
         question.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                linear.setVisibility(View.VISIBLE);
+                if (linear.getVisibility() == View.VISIBLE) {
+                    linear.setVisibility(View.GONE);
+                }
+                else {
+                    linear.setVisibility(View.VISIBLE);
+                }
             }
         });
 

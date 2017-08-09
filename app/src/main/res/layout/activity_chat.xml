@@ -78,14 +78,25 @@
                 android:id="@+id/linear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/achievement_text"
-                    android:textColor="@color/colorPrimary"/>
+                    android:text="@string/sample_questions_title"
+                    android:textColor="@color/colorGrayDark"
+                    android:textStyle="bold"
+                    android:paddingBottom="10dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/sample"
+                    android:gravity="center"
+                    android:lineSpacingExtra="10dp"
+                    android:textSize="14sp"
+                    android:text="@string/sample_questions"
+                    android:textColor="@color/colorGrayDark"/>
             </LinearLayout>
         </android.support.design.widget.AppBarLayout>
         <com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager
