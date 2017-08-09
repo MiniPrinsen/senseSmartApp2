@@ -77,9 +77,8 @@ public class BaseActivity extends AppCompatActivity{
     public void onStart(){
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         SharedPreferences sharedPreferences = this.getSharedPreferences("selectedLanguage", Context.MODE_PRIVATE);
-        String pine = sharedPreferences.getString("language", "en");
-        String languageToLoad = pine;
-        Locale locale = new Locale(languageToLoad);//Set Selected Locale
+        String pine = sharedPreferences.getString("language","");
+        Locale locale = new Locale(pine);//Set Selected Locale
         Locale.setDefault(locale);//set new locale as default
         Configuration config = new Configuration();//get Configuration
         config.locale = locale;//set config locale as selected locale

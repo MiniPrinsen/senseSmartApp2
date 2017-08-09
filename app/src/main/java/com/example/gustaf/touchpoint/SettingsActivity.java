@@ -46,6 +46,27 @@ public class SettingsActivity extends Activity {
         setToolbarTitle();
         inflateBackButton();
 
+        SharedPreferences sharedPreferences = this.getSharedPreferences("selectedLanguage", Context.MODE_PRIVATE);
+        String pine = sharedPreferences.getString("language","");
+
+
+        boolean swedishIsSet = pine == "sv" ? true : false;
+
+        if (swedishIsSet){
+            swedish.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+            english.setBackgroundColor(getResources().getColor(R.color.colorGreenPrimary));
+            swedish.setTextColor(getResources().getColor(R.color.colorGreenPrimary));
+            english.setTextColor(getResources().getColor(R.color.colorWhite));
+        }
+        else{
+            swedish.setBackgroundColor(getResources().getColor(R.color.colorGreenPrimary));
+            english.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+            swedish.setTextColor(getResources().getColor(R.color.colorWhite));
+            english.setTextColor(getResources().getColor(R.color.colorGreenPrimary));
+
+
+        }
+
 
         swedish.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,22 +113,6 @@ public class SettingsActivity extends Activity {
         });
     }
 
-   /* public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.english:
-                if (checked)
-                    setLocale("en");
-                    break;
-            case R.id.swedish:
-                if (checked)
-                    setLocale("sv");
-                    break;
-        }
-    }*/
     public void setLocale(String lang) {
         Locale myLocale = new Locale(lang);
         Resources res = getResources();
