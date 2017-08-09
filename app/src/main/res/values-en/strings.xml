@@ -19,6 +19,7 @@
     <string name="directions_info">Get directions to </string>
     <string name="location_request">We need your location,\n otherwise this app won\'t work!</string>
     <string name="achievement_text">   4 out of 12 \n finished</string>
+    <string name="change_language">Choose language</string>
 
     <string name="direction">Directions</string>
     <string name="welcome_message">Hello, how are you?</string>
@@ -34,6 +35,4 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
 </resources>

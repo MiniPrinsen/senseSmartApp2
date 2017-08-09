@@ -1,0 +1,65 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.gustaf.touchpoint.SettingsActivity"
+    android:background="@color/colorWhite">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true">
+        <include layout="@layout/toolbar_layout"/>
+
+
+    </android.support.design.widget.AppBarLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_height="wrap_content"
+        android:text="@string/change_language"
+        android:textColor="@color/colorPrimary"
+        android:textAlignment="center"
+        android:textSize="20sp"/>
+    <Button
+        android:id="@+id/english"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="start"
+        android:background="@color/colorPrimary"
+        android:text="@string/english"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"/>
+
+    <Button
+        android:id="@+id/swedish"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="end"
+        android:background="@color/colorPrimary"
+        android:text="@string/swedish"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"/>
+
+   <!-- <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <RadioButton android:id="@+id/english"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/english" />
+
+        <RadioButton android:id="@+id/swedish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/swedish" />
+    </RadioGroup>-->
+
+</FrameLayout>

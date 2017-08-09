@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Touch Point</string>
+    <string name="city">Skellefteå</string>
+    <string name="swedish">Svenska</string>
+    <string name="english">Engelska</string>
+
+    <string name="settings_name">Inställningar</string>
+    <string name="nearby_name">Nära dig</string>
+    <string name="chat_name">Chatt</string>
+    <string name="achievement_name">Dina Troféer</string>
+    <string name="map_name">Karta</string>
+    <string name="info_name">Info</string>
+    <string name="help_text">Du måste vara inom 50 meter för att kunna prata med objektet.</string>
+    <string name="chat_active">Online</string>
+    <string name="list_name">Lista</string>
+    <string name="open_google">Öppna Google Maps</string>
+    <string name="directions_info">Få vägbeskrivning till </string>
+    <string name="location_request">Vi behöver din position, \n annars kommer appen inte att fungera!</string>
+    <string name="achievement_text">   4 av 12 \n utförda</string>
+    <string name="change_language">Välj språk</string>
+
+    <string name="direction">Vägbeskrivning</string>
+    <string name="welcome_message">Tjena, hur är läget?</string>
+    <string name="POST_error">Något gick snett, försök igen.</string>
+
+    <string name="messagebox_hint">Skriv ett meddelande...</string>
+    <string name="send_text">Skicka</string>
+
+    <string name="server_url">http://127.0.0.1:8080/senseSmart/hey</string>
+
+    <string name="server_ip">http://52.28.236.84:8080</string>
+
+
+</resources>

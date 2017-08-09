@@ -13,6 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".BaseActivity"
+            android:configChanges="layoutDirection|locale"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateHidden|adjustResize">
@@ -35,6 +36,7 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".DetailsActivity"
+            android:configChanges="layoutDirection|locale"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -42,7 +44,11 @@
             </meta-data>
         </activity>
         <activity android:name=".ChatActivity"
-            android:windowSoftInputMode="stateHidden"
+            android:configChanges="layoutDirection|locale"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".SettingsActivity"
+            android:configChanges="layoutDirection|locale"
             android:screenOrientation="portrait">
         </activity>
     </application>

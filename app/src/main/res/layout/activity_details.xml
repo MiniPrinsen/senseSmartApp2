@@ -6,8 +6,7 @@ SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    layout_height="match_parent">
+    android:fitsSystemWindows="true">
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/detailsView"
@@ -93,7 +92,7 @@ SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
                     android:layout_marginBottom="25dp"
                     android:layout_below="@+id/infoText"
                     android:paddingRight="10dp"
-                    android:text="DIRECTIONS"
+                    android:text="@string/direction"
                     android:textColor="@color/colorWhite"
                     android:layout_centerHorizontal="true"
                     android:background="@color/colorPrimary"

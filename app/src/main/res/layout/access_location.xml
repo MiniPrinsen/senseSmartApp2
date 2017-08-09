@@ -21,9 +21,9 @@
             android:textAlignment="center"
             android:textSize="18sp"
             android:layout_height="match_parent"
-            android:text="We need your location.\n Otherwise this app won't work!"
+            android:text="@string/location_request"
 
-            tools:text="We need your location. Otherwise this app won't work!">
+            tools:text="@string/location_request">
 
         </TextView>
         <Button
@@ -38,7 +38,7 @@
             android:textColor="@color/colorPrimary"
             android:layout_height="wrap_content"
 
-            android:text="SETTINGS" />
+            android:text="@string/settings_name" />
     </LinearLayout>
 
 

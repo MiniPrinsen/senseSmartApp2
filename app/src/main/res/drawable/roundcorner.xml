@@ -3,8 +3,7 @@
     <item>
         <shape android:shape="oval" >
 
-            <size android:width="100dp"
-                android:height="100dp"/>
+
             <padding
                 android:bottom="5dp"
                 android:left="5dp"
@@ -20,8 +19,8 @@
         <shape android:shape="oval" >
 
             <size
-                android:width="90dp"
-                android:height="90dp"/>
+                android:width="15dp"
+                android:height="15dp"/>
         </shape>
 
     </item>
