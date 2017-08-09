@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -38,7 +39,7 @@ public class ChatFragment extends Fragment {
     private Boolean             firstTime = true;
     private Boolean              isShown = false;
     private CityObject         closestCityObject;
-    private FrameLayout          circleContainer;
+    private LinearLayout          circleContainer;
     private Animation                       spin;
     private ProgressBar              progressbar;
 
@@ -61,7 +62,7 @@ public class ChatFragment extends Fragment {
        // rippleBackground = (RippleBackground) rootView.findViewById(R.id.content);
         circleImage = (ImageView) rootView.findViewById(R.id.go_to_chat_btn2);
         circleImage.setOnClickListener(clickListener);
-        circleContainer = (FrameLayout) rootView.findViewById(R.id.circlecontainer);
+        circleContainer = (LinearLayout) rootView.findViewById(R.id.chat_content);
         //rotatingImage = (ImageView) rootView.findViewById(R.id.rotatingcircle);
         backgroundAnim = (ImageView) rootView.findViewById(R.id.backgroundImage);
         progressbar = (ProgressBar) rootView.findViewById(R.id.progressBar);
@@ -116,6 +117,7 @@ public class ChatFragment extends Fragment {
             progressbar.setVisibility(View.INVISIBLE);
             Bundle args = new Bundle();
             args.putString("cityobject",closestCityObject.getImgs().get(0));
+            args.putString("name", closestCityObject.getName());
 
 
             Intent intent = new Intent(getContext(), ChatActivity.class);

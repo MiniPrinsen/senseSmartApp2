@@ -42,6 +42,7 @@
             </meta-data>
         </activity>
         <activity android:name=".ChatActivity"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait">
         </activity>
     </application>

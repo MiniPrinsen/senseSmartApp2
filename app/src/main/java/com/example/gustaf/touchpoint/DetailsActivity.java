@@ -82,6 +82,7 @@ public class DetailsActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent i = new Intent(getApplicationContext(), ChatActivity.class);
                     i.putExtra("cityobject",cityObject.getImgs().get(0));
+                    i.putExtra("name", cityObject.getName());
                     startActivity(i);
                 }
             });

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
+    android:fitsSystemWindows="true"
 
     tools:context=".ChatActivity">
     <RelativeLayout
@@ -17,7 +17,63 @@
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
             android:theme="@style/AppTheme.AppBarOverlay">
-            <include layout="@layout/toolbar_layout"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:id="@+id/relativeLayoutToolbar"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/ic_arrow_back"
+                    android:padding="8dp"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/backbutton"
+                    android:tint="@color/colorPrimary"
+                    />
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:tint="@color/colorPrimary"
+                    android:src="@drawable/ic_info"
+                    android:id="@+id/infobutton"
+                    android:padding="8dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignParentEnd="true"
+
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical"
+                    >
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="2dp"
+                        android:scaleType="centerCrop"
+                        android:transitionName="chat_circle"
+                        android:id="@+id/profilePicture"
+                        android:layout_gravity="center_horizontal"
+
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorGrayDark"
+                        android:paddingBottom="10dp"
+                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/name"
+                        />
+
+                </LinearLayout>
+            </RelativeLayout>
         </android.support.design.widget.AppBarLayout>
         <com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager
             android:layout_width="match_parent"

@@ -48,11 +48,18 @@ public class ChatWindowFragment extends Fragment {
 
     private ChatArrayAdapter chatArrayAdapter;
     private ListView listView;
-    //protected Toolbar toolbar;
     View view;
-    private String circleString;
 
     public ChatWindowFragment(){}
+
+    @Override
+    public void onViewCreated(View view, Bundle bundle){
+        //chatText.requestFocus();
+
+
+
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,11 +67,6 @@ public class ChatWindowFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_chat_window, container, false);
         findViewsById(view);
-        Bundle bundle = this.getArguments();
-        if(bundle != null) {
-            circleString = bundle.getString("cityobject");
-        }
-
 
         buttonSend.setOnClickListener(customListener);
 
@@ -86,10 +88,10 @@ public class ChatWindowFragment extends Fragment {
     private void findViewsById(View container) {
         buttonSend = (Button) container.findViewById(R.id.send_btn);
         chatBackground = (RelativeLayout) container.findViewById(R.id.chatBackground);
-        //goBackBtn = (Button)container.findViewById(R.id.btn_back);
         chatText = (EditText)container.findViewById(R.id.msgBox);
         listView = (ListView) container.findViewById(R.id.listanmedView);
-        //toolbar = (Toolbar) container.findViewById(R.id.main_toolbar);
+
+
 
 
     }
