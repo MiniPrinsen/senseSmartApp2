@@ -30,9 +30,6 @@ public class SettingsActivity extends Activity {
     Button swedish;
     Button english;
 
-
-
-
     public SettingsActivity() {
         // Required empty public constructor
     }
@@ -53,17 +50,17 @@ public class SettingsActivity extends Activity {
         boolean swedishIsSet = pine == "sv" ? true : false;
 
         if (swedishIsSet){
-            swedish.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-            english.setBackgroundColor(getResources().getColor(R.color.colorGreenPrimary));
-            swedish.setTextColor(getResources().getColor(R.color.colorGreenPrimary));
-            english.setTextColor(getResources().getColor(R.color.colorWhite));
-        }
-        else{
-            swedish.setBackgroundColor(getResources().getColor(R.color.colorGreenPrimary));
+            swedish.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             english.setBackgroundColor(getResources().getColor(R.color.colorWhite));
             swedish.setTextColor(getResources().getColor(R.color.colorWhite));
-            english.setTextColor(getResources().getColor(R.color.colorGreenPrimary));
+            english.setTextColor(getResources().getColor(R.color.colorPrimary));
 
+        }
+        else{
+            swedish.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+            english.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            swedish.setTextColor(getResources().getColor(R.color.colorPrimary));
+            english.setTextColor(getResources().getColor(R.color.colorWhite));
 
         }
 
