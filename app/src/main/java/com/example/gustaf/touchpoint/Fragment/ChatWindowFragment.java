@@ -230,7 +230,7 @@ public class ChatWindowFragment extends Fragment {
 
 
             } catch (Exception e) {
-                showDialog("Something went wrong, try again");
+                showDialog(getContext().getString(R.string.POST_error));
             }
         }
     }

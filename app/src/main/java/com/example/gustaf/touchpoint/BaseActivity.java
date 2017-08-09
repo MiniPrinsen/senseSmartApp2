@@ -115,19 +115,19 @@ public class BaseActivity extends AppCompatActivity{
             public boolean onTabSelected(int position, boolean wasSelected) {
                 switch (position){
                     case 0:
-                        showTabbed("SKELLEFTEÅ");
+                        showTabbed(getApplicationContext().getString(R.string.city));
                         crimeItem.setDrawable(R.drawable.ic_map_filled);
                         dramaItem.setDrawable(R.drawable.ic_chat_empty);
                         documentaryItem.setDrawable(R.drawable.ic_trophy_empty);
                         break;
                     case 1:
-                        showPage(0, "NEARBY");
+                        showPage(0, getApplicationContext().getString(R.string.nearby_name));
                         crimeItem.setDrawable(R.drawable.ic_map_empty);
                         dramaItem.setDrawable(R.drawable.ic_chat_filled);
                         documentaryItem.setDrawable(R.drawable.ic_trophy_empty);
                         break;
                     case 2:
-                        showPage(1, "ACHIEVEMENTS");
+                        showPage(1, getApplicationContext().getString(R.string.achievement_name));
                         crimeItem.setDrawable(R.drawable.ic_map_empty);
                         dramaItem.setDrawable(R.drawable.ic_chat_empty);
                         documentaryItem.setDrawable(R.drawable.ic_trophy_filled);
@@ -162,7 +162,6 @@ public class BaseActivity extends AppCompatActivity{
         tabLayout.setVisibility(View.VISIBLE);
         setToolBarTitle(title);
     }
-
     /**
      * Creates the list and map fragments
      */
@@ -171,8 +170,8 @@ public class BaseActivity extends AppCompatActivity{
             tabLayout = (TabLayout) findViewById(R.id.tabLayout);
             viewPagerTabbed = (ViewPager) findViewById(R.id.tabbed_viewPager);
             viewPagerAdapterTabbed = new ViewPagerAdapter(getSupportFragmentManager());
-            viewPagerAdapterTabbed.addFragments(new ListFragment(), "LIST");
-            viewPagerAdapterTabbed.addFragments(new GoogleMapsFragment(), "MAP");
+            viewPagerAdapterTabbed.addFragments(new ListFragment(), getApplicationContext().getString(R.string.list_name));
+            viewPagerAdapterTabbed.addFragments(new GoogleMapsFragment(), getApplicationContext().getString(R.string.map_name));
             viewPagerTabbed.setAdapter(viewPagerAdapterTabbed);
             tabLayout.setupWithViewPager(viewPagerTabbed);
         }
@@ -192,8 +191,8 @@ public class BaseActivity extends AppCompatActivity{
         viewPagerTabbed.setVisibility(View.INVISIBLE);
         viewPagerDeafult = (NoSwipeViewPager) findViewById(R.id.viewPager_deafult);
         viewPagerAdapterDeafult = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapterDeafult.addFragments(new ChatFragment(), "CHAT");
-        viewPagerAdapterDeafult.addFragments(new AchievementFragment(), "ACHIEVEMENTS");
+        viewPagerAdapterDeafult.addFragments(new ChatFragment(), getApplicationContext().getString(R.string.chat_name));
+        viewPagerAdapterDeafult.addFragments(new AchievementFragment(), getApplicationContext().getString(R.string.achievement_name));
         viewPagerDeafult.setAdapter(viewPagerAdapterDeafult);
     }
 

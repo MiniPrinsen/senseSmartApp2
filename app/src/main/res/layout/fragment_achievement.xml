@@ -2,13 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/achievementcontainer"
     android:background="@drawable/achievementbackground"
     tools:context="com.example.gustaf.touchpoint.Fragment.AchievementFragment">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="   4 av 12 \n utförda"
+        android:text="@string/achievement_text"
         android:textSize="26sp"
         android:textAllCaps="true"
         android:layout_marginTop="100dp"

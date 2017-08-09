@@ -31,7 +31,6 @@ import com.example.gustaf.touchpoint.HelpClasses.Coordinates;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class DetailsActivity extends AppCompatActivity {
     private CityObject              cityObject;
@@ -76,7 +75,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         if(cityObject.isOnline()) {
             directions.setBackgroundColor(getResources().getColor(R.color.colorGreenPrimary));
-            directions.setText("CHAT");
+            directions.setText(getApplicationContext().getString(R.string.chat_name));
             directions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -91,8 +90,8 @@ public class DetailsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     new AlertDialog.Builder(DetailsActivity.this)
-                            .setTitle("Open Google maps")
-                            .setMessage("Get directions to "+cityObject.getName()+".")
+                            .setTitle(getApplicationContext().getString(R.string.open_google))
+                            .setMessage(getApplicationContext().getString(R.string.directions_info)+cityObject.getName()+".")
                             .setIcon(R.drawable.ic_google_maps)
                             .setNegativeButton(android.R.string.cancel, null) // dismisses by default
                             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

@@ -6,7 +6,6 @@
     android:background="@color/colorWhite"
     android:clickable="true">
     <ImageView
-        android:contentDescription="HEJ"
         android:id="@+id/backgroundImage"
         android:adjustViewBounds="true"
         android:layout_width="match_parent"
@@ -91,7 +90,7 @@
                 android:gravity="center_horizontal"
                 android:id="@+id/objectName"
                 android:layout_centerHorizontal="true"
-                android:text="Bonnstan"
+                android:text="@string/chat_name"
                 android:textSize="28sp"/>
             <TextView
                 android:layout_width="match_parent"
@@ -99,7 +98,6 @@
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
-                android:text="520 meters away"
                 />
         </LinearLayout>
         </LinearLayout>

@@ -41,7 +41,7 @@
             android:padding="8dp"
             android:layout_gravity="center_vertical"
             android:layout_width="291dp"
-            android:hint="Message..."
+            android:hint="@string/messagebox_hint"
             android:layout_margin="6dip"
             android:background="#ffffff"
             android:layout_weight="0.63"

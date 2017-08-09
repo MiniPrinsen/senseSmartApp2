@@ -7,9 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -77,8 +75,8 @@ public class ChatActivity extends AppCompatActivity {
 
         viewPagerDeafult = (NoSwipeViewPager) findViewById(R.id.viewPager_deafultchat);
         viewPagerAdapterDeafult = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapterDeafult.addFragments(new ChatWindowFragment(), "CHAT");
-        viewPagerAdapterDeafult.addFragments(new InfoChatFragment(), "INFO");
+        viewPagerAdapterDeafult.addFragments(new ChatWindowFragment(), getApplicationContext().getString(R.string.chat_name));
+        viewPagerAdapterDeafult.addFragments(new InfoChatFragment(), getApplicationContext().getString(R.string.info_name));
         viewPagerDeafult.setAdapter(viewPagerAdapterDeafult);
         viewPagerDeafult.setVisibility(View.VISIBLE);
     }
