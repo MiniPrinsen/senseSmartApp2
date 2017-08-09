@@ -9,44 +9,27 @@ import java.util.ArrayList;
  * Created by Gustaf on 16-08-09.
  */
 public class CityObject implements Parcelable {
-    String name;
+    private String              name;
+    private String              description;
+    private Coordinates         coordinates;
+    private float               persons_voted;
+    private float               rating;
+    private Oid                 _id;
+    private int                 distance;
+    private final int           RADIUS =  30;
+    private ArrayList<String>   images;
+    private Coordinates         currentLocation;
+    private ArrayList<Integer>  imgs;
+    private boolean             isOnline = false;
 
-    String description;
-    Coordinates coordinates;
-    float persons_voted;
-    float rating;
-    private Oid _id;
-    int distance;
-    private final int RADIUS =  30;
-    ArrayList<String> images;
-    Coordinates currentLocation;
 
-    ArrayList<Integer> imgs;
-    boolean isOnline = false;
-   /* {     "_id" : { "$oid" : "595524a99e575b7952858fc6" },
-            "name" : "sgksp�",
-            "description" : "kp�k�pk",
-            "coordinates" : { "longitude" : 12.0, "latitude" : 12.0 },
-            "persons_voted" : 0.0,
-            "rating" : 0.0,
-            "images" : ["http://localhost:8080/hello/images/31d907ab-3685-43ee-973c-40dd74056269.png"] }*/
     public  CityObject() {
         imgs = new ArrayList<>();
         coordinates = new Coordinates();
         images = new ArrayList<>();
     }
 
-    public void setCurrentLocation(Coordinates cord){
-        this.currentLocation = cord;
-    }
 
-    public Coordinates getCurrentLocation(){
-        return currentLocation;
-    }
-
-    public ArrayList<String> getImgs(){
-        return images;
-    }
 
     public CityObject(String name, String description, Coordinates coordinates, float persons_voted
     , float rating, ArrayList<Integer> images) {
@@ -58,25 +41,7 @@ public class CityObject implements Parcelable {
         this.imgs = images;
     }
 
-   /* public CityObject(String name, int image, String description, Coordinates location){
-        this.name = name;
-        this.image = image;
-        this.description = description;
-        this.location = location;
-
-    }*/
-
-   public void addImages(ArrayList<String> images){
-       this.images = images;
-   }
-
-    public void setDistance(float distance){
-
-        this.distance = (int)distance;
-    }
-
     public String getDistance(){
-
         if (distance<1000){
             return distance +" M";
         }
@@ -89,8 +54,6 @@ public class CityObject implements Parcelable {
         else{
             return distance/10000+" MIL";
         }
-
-
     }
 
     public void setLengthBetween() {
@@ -177,7 +140,6 @@ public class CityObject implements Parcelable {
         parcel.writeDouble(getCoordinates().getLatitude());
         parcel.writeDouble(getCurrentLocation().getLongitude());
         parcel.writeDouble(getCurrentLocation().getLatitude());
-
     }
 
     public static final Parcelable.Creator<CityObject> CREATOR
@@ -207,23 +169,14 @@ public class CityObject implements Parcelable {
 
     }
 
-   /* public class Coordinates{
-        double longitude;
-        double latitude;
-
-        public double getLongitude(){
-            return this.longitude;
-            }
-        public void setLongitude(double longitude){
-            this.longitude = longitude;
-        }
-        public double getLatitude(){
-            return this.latitude;
-        }
-
-        public void setLatitude(double latitude){
-            this.latitude = latitude;
+    public void setCurrentLocation(Coordinates cord){
+        this.currentLocation = cord;
     }
-    }*/
+    public Coordinates getCurrentLocation(){
+        return currentLocation;
+    }
+    public ArrayList<String> getImgs(){
+        return images;
+    }
 
 }
