@@ -35,7 +35,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:tint="@color/colorPrimary"
-                    android:src="@drawable/ic_info"
+                    android:src="@drawable/questionmark"
                     android:id="@+id/infobutton"
                     android:padding="8dp"
                     android:gravity="center_vertical"
