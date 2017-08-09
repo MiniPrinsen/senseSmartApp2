@@ -74,6 +74,19 @@
 
                 </LinearLayout>
             </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/linear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/achievement_text"
+                    android:textColor="@color/colorPrimary"/>
+            </LinearLayout>
         </android.support.design.widget.AppBarLayout>
         <com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager
             android:layout_width="match_parent"

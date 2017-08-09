@@ -5,6 +5,7 @@
     tools:context=".BaseActivity"
     android:background="@color/colorWhite"
     android:clickable="true">
+
     <ImageView
         android:contentDescription="HEJ"
         android:id="@+id/backgroundImage"

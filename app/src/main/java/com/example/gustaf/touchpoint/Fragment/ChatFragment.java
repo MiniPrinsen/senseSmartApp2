@@ -7,22 +7,21 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gustaf.touchpoint.ChatActivity;
 import com.example.gustaf.touchpoint.HelpClasses.Blur;
@@ -30,9 +29,6 @@ import com.example.gustaf.touchpoint.HelpClasses.CircleImageTransformation;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.R;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-
-import org.w3c.dom.Text;
 
 /**
  *
@@ -84,6 +80,19 @@ public class ChatFragment extends Fragment {
             Animation vibrate = AnimationUtils.loadAnimation(getContext(), R.anim.vibrate);
             vibrate.setFillAfter(false);
             circleContainer.startAnimation(vibrate);
+
+            TextView hej = new TextView(getContext());
+            hej.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            hej.setText(getString(R.string.help_text));
+            hej.setTextColor(getResources().getColor(R.color.colorGrayDark));
+            hej.setTextSize(14);
+
+                Toast toast = new Toast(getContext());
+                //toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
+                toast.setGravity(Gravity.CENTER_HORIZONTAL,0,-500);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(hej);
+                toast.show();
         }
 
     };
@@ -95,7 +104,7 @@ public class ChatFragment extends Fragment {
         boolean newTouchPoint = !tPoint.equals(closestCityObject);
         TextView distance = (TextView)rootView.findViewById(R.id.objectDistance);
         if (tPoint.isOnline() && firstTime){
-            distance.setText("Click to interact!");
+            distance.setText(getString(R.string.interact_text));
         }
         else if (!tPoint.isOnline()){
             distance.setText(tPoint.getDistance());

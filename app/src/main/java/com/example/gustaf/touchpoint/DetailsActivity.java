@@ -90,9 +90,10 @@ public class DetailsActivity extends AppCompatActivity {
             directions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String message = getApplicationContext().getString(R.string.directions_info).toString();
                     new AlertDialog.Builder(DetailsActivity.this)
                             .setTitle(getApplicationContext().getString(R.string.open_google))
-                            .setMessage(getApplicationContext().getString(R.string.directions_info)+cityObject.getName()+".")
+                            .setMessage(String.format(message, cityObject.getName()+"?"))
                             .setIcon(R.drawable.ic_google_maps)
                             .setNegativeButton(android.R.string.cancel, null) // dismisses by default
                             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

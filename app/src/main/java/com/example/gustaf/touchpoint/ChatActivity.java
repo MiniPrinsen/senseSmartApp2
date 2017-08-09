@@ -2,21 +2,18 @@ package com.example.gustaf.touchpoint;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.transition.TransitionInflater;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.gustaf.touchpoint.Adapters.ViewPagerAdapter;
@@ -32,6 +29,7 @@ public class ChatActivity extends AppCompatActivity {
     private ViewPagerAdapter viewPagerAdapterDeafult;
     private AppBarLayout toolbar;
     private boolean keyBoardvisible = false;
+    private LinearLayout linear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +48,9 @@ public class ChatActivity extends AppCompatActivity {
         getWindow().setSharedElementEnterTransition(inflater.inflateTransition(android.R.transition.move).setDuration(400));
         getWindow().setSharedElementExitTransition(inflater.inflateTransition(android.R.transition.move));
         getWindow().setExitTransition(inflater.inflateTransition(android.R.transition.move).setDuration(400));
+
+         linear = (LinearLayout) findViewById(R.id.linear);
+        linear.setVisibility(View.GONE);
 
         Animation slide = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
         toolbar.startAnimation(slide);
@@ -103,6 +104,15 @@ public class ChatActivity extends AppCompatActivity {
     }
     public void inflateToolbar(String imageurl) {
         ImageView circleImage = (ImageView)findViewById(R.id.profilePicture);
+        ImageView question = (ImageView) findViewById(R.id.infobutton);
+
+
+        question.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linear.setVisibility(View.VISIBLE);
+            }
+        });
 
         Picasso.with(this).load(imageurl).transform(new CircleImageTransformation())
                 .into(circleImage);
