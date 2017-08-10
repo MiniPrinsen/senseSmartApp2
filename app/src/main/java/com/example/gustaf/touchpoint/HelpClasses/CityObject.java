@@ -17,10 +17,9 @@ public class CityObject implements Parcelable {
     float rating;
     private Oid _id;
     int distance;
-    private final int RADIUS = 200;
+    private final int RADIUS = 50;
     ArrayList<String> images;
     Coordinates currentLocation;
-
     ArrayList<Integer> imgs;
     boolean isOnline = false;
    /* {     "_id" : { "$oid" : "595524a99e575b7952858fc6" },

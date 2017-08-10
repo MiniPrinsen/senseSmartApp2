@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
@@ -22,23 +21,19 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.example.gustaf.touchpoint.Adapters.ViewPagerAdapter;
-import com.example.gustaf.touchpoint.Fragment.AchievementFragment;
 import com.example.gustaf.touchpoint.Fragment.ChatFragment;
 import com.example.gustaf.touchpoint.Fragment.GoogleMapsFragment;
 import com.example.gustaf.touchpoint.Fragment.ListFragment;
+import com.example.gustaf.touchpoint.Fragment.SettingsFragment;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
 import com.example.gustaf.touchpoint.HelpClasses.Coordinates;
 import com.example.gustaf.touchpoint.HelpClasses.GetCityObjects;
@@ -54,7 +49,7 @@ import java.util.Locale;
  *  is used by many of the activities in the app.
  */
 public class BaseActivity extends AppCompatActivity{
-    private static final int                      CITY_DIST = 50000;
+    private static int                      CITY_DIST = 50000;
     private TabLayout                            tabLayout;
     private android.location.Location      current_position;
     private ViewPager                       viewPagerTabbed;
@@ -64,6 +59,7 @@ public class BaseActivity extends AppCompatActivity{
     private ViewPagerAdapter        viewPagerAdapterDeafult;
     protected AHBottomNavigation           bottomNavigation;
     protected Toolbar                               toolbar;
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +67,6 @@ public class BaseActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_base);
-
 
         /* Implements the toolbar */
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
@@ -84,6 +79,14 @@ public class BaseActivity extends AppCompatActivity{
 
     @Override
     public void onStart(){
+        Intent intent = getIntent();
+        if(intent != null) {
+             position = intent.getIntExtra("position",0);
+
+        }
+        SharedPreferences cityDistance = this.getSharedPreferences("cityDistance", Context.MODE_PRIVATE);
+        int mProgress = cityDistance.getInt("seekBarProgress", 0);
+        CITY_DIST = mProgress;
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         SharedPreferences sharedPreferences = this.getSharedPreferences("selectedLanguage", Context.MODE_PRIVATE);
         String pine = sharedPreferences.getString("language","");
@@ -103,11 +106,11 @@ public class BaseActivity extends AppCompatActivity{
     {
         /*Creates the items*/
         final AHBottomNavigationItem crimeItem = new AHBottomNavigationItem(
-                getResources().getString(R.string.map_name), R.drawable.ic_map_empty);
+                getResources().getString(R.string.map_name).toUpperCase(), R.drawable.ic_map_empty);
         final AHBottomNavigationItem dramaItem = new AHBottomNavigationItem(
                 getResources().getString(R.string.chat_name), R.drawable.ic_chat_empty);
         final AHBottomNavigationItem documentaryItem = new AHBottomNavigationItem(
-                getResources().getString(R.string.achievement_name), R.drawable.ic_trophy_empty);
+                getResources().getString(R.string.settings_name).toUpperCase(), R.drawable.ic_settings_empty);
 
         /*Adds the items to the bar*/
         bottomNavigation.addItem(crimeItem);
@@ -127,7 +130,7 @@ public class BaseActivity extends AppCompatActivity{
         /*Sets the current position*/
 
         bottomNavigation.setBehaviorTranslationEnabled(false);
-        bottomNavigation.setCurrentItem(0);
+        bottomNavigation.setCurrentItem(position);
         crimeItem.setDrawable(R.drawable.ic_map_filled);
 
         //HIDE
@@ -138,27 +141,34 @@ public class BaseActivity extends AppCompatActivity{
             public boolean onTabSelected(int position, boolean wasSelected) {
                 switch (position){
                     case 0:
-                        showTabbed(getApplicationContext().getString(R.string.city));
+                        showTabbed(getApplicationContext().getString(R.string.city).toUpperCase());
                         crimeItem.setDrawable(R.drawable.ic_map_filled);
                         dramaItem.setDrawable(R.drawable.ic_chat_empty);
-                        documentaryItem.setDrawable(R.drawable.ic_trophy_empty);
+                        documentaryItem.setDrawable(R.drawable.ic_settings_empty);
                         break;
                     case 1:
-                        showPage(0, getApplicationContext().getString(R.string.nearby_name));
+                        showPage(0, getApplicationContext().getString(R.string.nearby_name).toUpperCase());
                         crimeItem.setDrawable(R.drawable.ic_map_empty);
                         dramaItem.setDrawable(R.drawable.ic_chat_filled);
-                        documentaryItem.setDrawable(R.drawable.ic_trophy_empty);
+                        documentaryItem.setDrawable(R.drawable.ic_settings_empty);
                         break;
                     case 2:
-                        showPage(1, getApplicationContext().getString(R.string.achievement_name));
+                        showPage(1, getApplicationContext().getString(R.string.settings_name).toUpperCase());
                         crimeItem.setDrawable(R.drawable.ic_map_empty);
                         dramaItem.setDrawable(R.drawable.ic_chat_empty);
-                        documentaryItem.setDrawable(R.drawable.ic_trophy_filled);
+                        documentaryItem.setDrawable(R.drawable.ic_settings_filled);
                         break;
                 }
                 return true;
             }
         });
+    }
+
+    public void refreshActivity() {
+        Intent intent = new Intent(this, BaseActivity.class);
+        intent.putExtra("position", 2);
+        startActivity(intent);
+        overridePendingTransition(R.anim.fade_in,R.anim.empty);
 
     }
 
@@ -173,6 +183,7 @@ public class BaseActivity extends AppCompatActivity{
         tabLayout.setVisibility(View.GONE);
         viewPagerTabbed.setVisibility(View.INVISIBLE);
         setToolBarTitle(title);
+
     }
 
     /**
@@ -193,8 +204,8 @@ public class BaseActivity extends AppCompatActivity{
             tabLayout = (TabLayout) findViewById(R.id.tabLayout);
             viewPagerTabbed = (ViewPager) findViewById(R.id.tabbed_viewPager);
             viewPagerAdapterTabbed = new ViewPagerAdapter(getSupportFragmentManager());
-            viewPagerAdapterTabbed.addFragments(new ListFragment(), getApplicationContext().getString(R.string.list_name));
-            viewPagerAdapterTabbed.addFragments(new GoogleMapsFragment(), getApplicationContext().getString(R.string.map_name));
+            viewPagerAdapterTabbed.addFragments(new ListFragment(), getApplicationContext().getString(R.string.list_name).toUpperCase());
+            viewPagerAdapterTabbed.addFragments(new GoogleMapsFragment(), getApplicationContext().getString(R.string.map_name).toUpperCase());
             viewPagerTabbed.setAdapter(viewPagerAdapterTabbed);
             tabLayout.setupWithViewPager(viewPagerTabbed);
         }
@@ -204,18 +215,20 @@ public class BaseActivity extends AppCompatActivity{
         viewPagerTabbed.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.VISIBLE);
 
+
+
     }
 
     /**
-     * Open achievement and chat fragments
+     * Open settings and chat fragments
      */
     public void addPages(){
         tabLayout.setVisibility(View.GONE);
         viewPagerTabbed.setVisibility(View.INVISIBLE);
         viewPagerDeafult = (NoSwipeViewPager) findViewById(R.id.viewPager_deafult);
         viewPagerAdapterDeafult = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapterDeafult.addFragments(new ChatFragment(), getApplicationContext().getString(R.string.chat_name));
-        viewPagerAdapterDeafult.addFragments(new AchievementFragment(), getApplicationContext().getString(R.string.achievement_name));
+        viewPagerAdapterDeafult.addFragments(new ChatFragment(), getApplicationContext().getString(R.string.chat_name).toUpperCase());
+        viewPagerAdapterDeafult.addFragments(new SettingsFragment(), getApplicationContext().getString(R.string.settings_name).toUpperCase());
         viewPagerDeafult.setAdapter(viewPagerAdapterDeafult);
     }
 
@@ -309,7 +322,13 @@ public class BaseActivity extends AppCompatActivity{
                     app.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down));
                     addTabs();
                     addPages();
-                    showTabbed("SKELLEFTEÅ");
+                    if (position == 2){
+                        showPage(1, getString(R.string.settings_name));
+                        bottomNavigation.setCurrentItem(position);
+                    }
+                    else{
+                        showTabbed("SKELLEFTEÅ");
+                    }
                     ((ChatFragment) (viewPagerAdapterDeafult.getItem(0))).updateLocation(cityObjects.get(0));
 
                 }

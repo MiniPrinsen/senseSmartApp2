@@ -21,11 +21,12 @@
     <string name="directions_info">Få vägbeskrivning till %s</string>
     <string name="location_request">Vi behöver din position, \n annars kommer appen inte att fungera!</string>
     <string name="achievement_text">   4 av 12 \n utförda</string>
-    <string name="change_language">Välj språk</string>
+    <string name="change_language">Språk</string>
     <string name="interact_text">Klicka för att interagera!</string>
     <string name="sample_questions">Tell me something interesting \n Tell me a joke \n How old are you? \n
     How are you? \n </string>
     <string name="sample_questions_title">En del saker du kan fråga mig:</string>
+    <string name="search_radius">Maxavstånd</string>
 
     <string name="direction">Vägbeskrivning</string>
     <string name="welcome_message">Tjena, hur är läget?</string>

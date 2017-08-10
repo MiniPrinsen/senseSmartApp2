@@ -1,0 +1,66 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/achievementcontainer"
+    tools:context="com.example.gustaf.touchpoint.Fragment.SettingsFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_height="wrap_content"
+        android:text="@string/change_language"
+        android:textColor="@color/colorGrayDark"
+        android:textAlignment="center"
+        android:textSize="16sp"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/border"
+        android:layout_marginTop="100dp">
+        <Button
+            android:id="@+id/english"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:text="@string/english"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/swedish"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:text="@string/swedish"
+            android:textAlignment="center" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginTop="220dp"
+        android:layout_height="wrap_content"
+        android:text="@string/search_radius"
+        android:textColor="@color/colorGrayDark"
+        android:textAlignment="viewStart"
+        android:layout_gravity="start"
+        android:layout_marginStart="40dp"
+        android:textSize="16sp"/>
+    <SeekBar
+        android:layout_width="match_parent"
+        android:id="@+id/searchingdistance"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginTop="260dp"
+        android:id="@+id/searchingdistancetext"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorGrayDark"
+        android:textAlignment="viewEnd"
+        android:layout_gravity="end"
+        android:layout_marginEnd="40dp"
+        android:textSize="16sp"/>
+
+</FrameLayout>

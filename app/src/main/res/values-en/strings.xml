@@ -20,11 +20,12 @@
     <string name="directions_info">Get directions to %s</string>
     <string name="location_request">We need your location,\n otherwise this app won\'t work!</string>
     <string name="achievement_text">   4 out of 12 \n finished</string>
-    <string name="change_language">Choose language</string>
+    <string name="change_language">Language</string>
     <string name="interact_text">Click to interact!</string>
     <string name="sample_questions">Tell me something interesting \n Tell me a joke \n How old are you? \n
     How are you? \n </string>
     <string name="sample_questions_title">Some things you can ask me:</string>
+    <string name="search_radius">Max distance</string>
 
     <string name="direction">Directions</string>
     <string name="welcome_message">Hello, how are you?</string>
