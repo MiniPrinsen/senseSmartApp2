@@ -5,8 +5,10 @@ import android.os.Message;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.Excluder;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
@@ -17,6 +19,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
@@ -44,55 +47,60 @@ public class GetCityObjects implements Runnable {
 
     @Override
     public void run() {
+        HttpURLConnection urlConnection = null;
+        ArrayList<CityObject> temp = new ArrayList<>();
         try {
             String urlParameters = "longitude=" + longitude + "&latitude=" +
                     latitude + "&distance=" + distance;
-            Log.v("CITYOBJ", urlParameters);
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
             URL url = new URL(HOST);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            ArrayList<CityObject> temp = new ArrayList<>();
-
-            try {
-
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setChunkedStreamingMode(0);
-
-                urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
+            urlConnection = (HttpURLConnection) url.openConnection();
 
 
-                OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setChunkedStreamingMode(0);
 
-                out.write(postData);
-                out.flush();
+            urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
 
 
-                int status = (urlConnection).getResponseCode();
+            OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
 
-                String json = getStringFromInputStream(urlConnection.getInputStream());
-                JSONArray array = new JSONArray(json);
-                Gson gson = new Gson();
-                for (int i = 0; i<array.length(); i++){
-                    JSONObject obj = array.getJSONObject(i);
-                    CityObject cObject = gson.fromJson(obj.toString(), CityObject.class);
-                    cObject.setCurrentLocation(new Coordinates(latitude, longitude));
-                    cObject.setLengthBetween();
-                    temp.add(cObject);
-                }
+            out.write(postData);
+            out.flush();
 
-            } finally {
-                Message msg = handler.obtainMessage();
-                if (temp.size() != 0) {
-                    msg.obj = temp;
-                    handler.sendMessage(msg);
-                }
-                urlConnection.disconnect();
 
+            int status = (urlConnection).getResponseCode();
+
+            String json = getStringFromInputStream(urlConnection.getInputStream());
+            JSONArray array = new JSONArray(json);
+            Gson gson = new Gson();
+            for (int i = 0; i<array.length(); i++){
+                JSONObject obj = array.getJSONObject(i);
+                CityObject cObject = gson.fromJson(obj.toString(), CityObject.class);
+                cObject.setCurrentLocation(new Coordinates(latitude, longitude));
+                cObject.setLengthBetween();
+                temp.add(cObject);
             }
-        } catch (Exception e) {
+
+        }
+        catch(IOException e) {
+            Log.v("ERRORJA", "IO - "+e.getMessage());
+            Message msg = handler.obtainMessage();
+            msg.obj = e;
+            handler.sendMessage(msg);
+        } catch (JSONException e) {
             e.printStackTrace();
+        } finally {
+            Message msg = handler.obtainMessage();
+            if (temp.size() != 0) {
+                msg.obj = temp;
+                handler.sendMessage(msg);
+            }
+            urlConnection.disconnect();
+
         }
     }
+
 
 
     /**

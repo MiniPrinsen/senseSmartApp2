@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -20,8 +22,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -37,6 +45,7 @@ import com.example.gustaf.touchpoint.HelpClasses.GetCityObjects;
 import com.example.gustaf.touchpoint.HelpClasses.GetLocation;
 import com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -120,6 +129,9 @@ public class BaseActivity extends AppCompatActivity{
         bottomNavigation.setBehaviorTranslationEnabled(false);
         bottomNavigation.setCurrentItem(0);
         crimeItem.setDrawable(R.drawable.ic_map_filled);
+
+        //HIDE
+        bottomNavigation.hideBottomNavigation(false);
 
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
@@ -287,14 +299,29 @@ public class BaseActivity extends AppCompatActivity{
     private Handler receiveFromDb = new Handler(){
         @Override
         public void handleMessage(Message msg){
-            cityObjects = (ArrayList<CityObject>)msg.obj;
-            if (cityObjects != null) {
-                addTabs();
-                addPages();
-                showTabbed("SKELLEFTEÅ");
-                ((ChatFragment) (viewPagerAdapterDeafult.getItem(0))).updateLocation(cityObjects.get(0));
+
+            if (msg.obj instanceof java.util.ArrayList){
+                cityObjects = (ArrayList<CityObject>)msg.obj;
+                if (cityObjects != null) {
+                    bottomNavigation.restoreBottomNavigation(true);
+                    AppBarLayout app = (AppBarLayout)findViewById(R.id.toolbar);
+                    app.setVisibility(View.VISIBLE);
+                    app.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down));
+                    addTabs();
+                    addPages();
+                    showTabbed("SKELLEFTEÅ");
+                    ((ChatFragment) (viewPagerAdapterDeafult.getItem(0))).updateLocation(cityObjects.get(0));
+
+                }
+            }
+            else if(msg.obj instanceof IOException){
+                LinearLayout error = (LinearLayout)findViewById(R.id.error_container);
+                error.setVisibility(View.VISIBLE);
+
 
             }
+
+
         }
     };
 

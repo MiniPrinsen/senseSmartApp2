@@ -5,6 +5,7 @@
 
     <string name="swedish">Swedish</string>
     <string name="english">English</string>
+    <string name="no_internet_access">Touchpoint cannot find a connection to the internet.</string>
 
     <string name="settings_name">Settings</string>
     <string name="nearby_name">Nearby</string>

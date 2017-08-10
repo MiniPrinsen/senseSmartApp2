@@ -5,6 +5,9 @@
     <string name="swedish">Svenska</string>
     <string name="english">Engelska</string>
 
+    <string name="no_internet_access">Touchpoint kunde inte ansluta till internet.</string>
+
+
     <string name="settings_name">Inställningar</string>
     <string name="nearby_name">Nära dig</string>
     <string name="chat_name">Chatt</string>
