@@ -1,13 +1,13 @@
 package com.example.gustaf.touchpoint.HelpClasses;
 
 /**
- * Created by Gustaf on 16-08-09.
+ * Class for coordinates. This class only includes the getter and setter for long and lat.
  */
 public class Coordinates {
-    double longitude;
-    double latitude;
+   private double longitude;
+   private double latitude;
 
-    public Coordinates() {
+    Coordinates() {
 
     }
 
@@ -22,7 +22,7 @@ public class Coordinates {
     public double getLatitude(){
         return latitude;
     }
-    public void setLongitude(double longitude){this.longitude = longitude;}
-    public void setLatitude(double latitude){this.latitude = latitude;}
+    void setLongitude(double longitude){this.longitude = longitude;}
+    void setLatitude(double latitude){this.latitude = latitude;}
 
 }

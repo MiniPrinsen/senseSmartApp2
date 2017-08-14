@@ -6,29 +6,22 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
- * Created by Gustaf on 16-08-09.
+ * CityObject is what it says, a whole City Object. When we get all the city objects from the server
+ * , we store each one of them into a CityObject. This holds everything relevant for a city object.
  */
 public class CityObject implements Parcelable {
-    String name;
 
-    String description;
-    Coordinates coordinates;
-    float persons_voted;
-    float rating;
-    private Oid _id;
-    int distance;
-    private final int RADIUS = 50;
-    ArrayList<String> images;
-    Coordinates currentLocation;
-    ArrayList<Integer> imgs;
-    boolean isOnline = false;
-   /* {     "_id" : { "$oid" : "595524a99e575b7952858fc6" },
-            "name" : "sgksp�",
-            "description" : "kp�k�pk",
-            "coordinates" : { "longitude" : 12.0, "latitude" : 12.0 },
-            "persons_voted" : 0.0,
-            "rating" : 0.0,
-            "images" : ["http://localhost:8080/hello/images/31d907ab-3685-43ee-973c-40dd74056269.png"] }*/
+    private                     String name;
+    private String              description;
+    private Coordinates         coordinates;
+    private Oid                         _id;
+    private int                    distance;
+    private static final int    RADIUS = 50;
+    private ArrayList<String>        images;
+    private Coordinates     currentLocation;
+    private ArrayList<Integer>         imgs;
+    private boolean        isOnline = false;
+
     public  CityObject() {
         imgs = new ArrayList<>();
         coordinates = new Coordinates();
@@ -39,7 +32,7 @@ public class CityObject implements Parcelable {
         this.currentLocation = cord;
     }
 
-    public Coordinates getCurrentLocation(){
+    private Coordinates getCurrentLocation(){
         return currentLocation;
     }
 
@@ -47,33 +40,27 @@ public class CityObject implements Parcelable {
         return images;
     }
 
+    /**
+     * As we mentioned above, this is all the relevant information we need for a city object.
+     * @param name title of the city object
+     * @param description descriptive text of the city object. Will be shown in the details.
+     * @param coordinates coordinates of the city object. This includes latitude and longitude.
+     * @param persons_voted Number of persons which have voted on the city object.
+     * @param rating Rating of the city object.
+     * @param images An arraylist of images of the city object.
+     */
     public CityObject(String name, String description, Coordinates coordinates, float persons_voted
     , float rating, ArrayList<Integer> images) {
         this.name = name;
         this.description = description;
         this.coordinates = coordinates;
-        this.persons_voted = persons_voted;
-        this.rating = rating;
         this.imgs = images;
     }
 
-   /* public CityObject(String name, int image, String description, Coordinates location){
-        this.name = name;
-        this.image = image;
-        this.description = description;
-        this.location = location;
-
-    }*/
-
-   public void addImages(ArrayList<String> images){
-       this.images = images;
-   }
-
-    public void setDistance(float distance){
-
-        this.distance = (int)distance;
-    }
-
+    /**
+     * Since we don't want to return "43000 M", we format the text to show M, KM or MIL.
+     * @return the appropreate format of the distance.
+     */
     public String getDistance(){
 
         if (distance<1000){
@@ -92,6 +79,11 @@ public class CityObject implements Parcelable {
 
     }
 
+    /**
+     * Function to get the coordinates into meters. This makes it possible for us to actually show
+     * the distance to the object. This and being able to set the distance which is required to
+     * chat with the object. EXTREMELY IMPORTANT.
+     */
     public void setLengthBetween() {
 
         double earthRadius = 6371000; //meters
@@ -145,13 +137,13 @@ public class CityObject implements Parcelable {
         return 0;
     }
 
-    public CityObject (Parcel source){
+    private CityObject (Parcel source){
       /*
        * Reconstruct from the Parcel. Keep same order as in writeToParcel()
        */
         name = source.readString();
         description = source.readString();
-        images = new ArrayList<String>();
+        images = new ArrayList<>();
         source.readStringList(images);
         _id = new Oid();
         _id.set$oid(source.readString());
@@ -162,9 +154,11 @@ public class CityObject implements Parcelable {
         currentLocation = new Coordinates();
         currentLocation.setLongitude(source.readDouble());
         currentLocation.setLatitude(source.readDouble());
-
     }
 
+    /**
+     * Funcion to make it possible to parse a city object.
+     */
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
@@ -194,35 +188,15 @@ public class CityObject implements Parcelable {
      * @author fhp
      *
      */
-    public class Oid{
+    private class Oid{
         String $oid;
-        public String get$oid() {
+        String get$oid() {
             return $oid;
         }
 
-        public void set$oid(String $oid) {
+        void set$oid(String $oid) {
             this.$oid = $oid;
         }
 
     }
-
-   /* public class Coordinates{
-        double longitude;
-        double latitude;
-
-        public double getLongitude(){
-            return this.longitude;
-            }
-        public void setLongitude(double longitude){
-            this.longitude = longitude;
-        }
-        public double getLatitude(){
-            return this.latitude;
-        }
-
-        public void setLatitude(double latitude){
-            this.latitude = latitude;
-    }
-    }*/
-
 }

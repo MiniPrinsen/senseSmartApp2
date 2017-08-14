@@ -1,66 +1,36 @@
 package com.example.gustaf.touchpoint.HelpClasses;
 
-import android.app.ActivityManager;
-import android.app.KeyguardManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PowerManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 /**
- * Created by Soulstorm on 2/4/2015.
+ * This is the class were we actually get a location on our device. What it does is that it sends
+ * a location request to Google. If it doesn't work, there are a lot of auto generated functions
+ * which handles this. When the location is "accepted", getLocation holds the last known position
+ * and checks if the position has changes.
  */
 public class GetLocation implements LocationListener, GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks, Runnable {
 
-    private static final long ONE_MIN = 1000 * 60;
-    private static final long CITY_DIST = 50000;
-    private static final long TWO_MIN = ONE_MIN * 2;
-    private static final long FIVE_MIN = ONE_MIN * 5;
-    private static final long POLLING_FREQ = 1000 * 30;
-    private static final long FASTEST_UPDATE_FREQ = 1000 * 5;
-    private static final float MIN_ACCURACY = 25.0f;
-    private static final float MIN_LAST_READ_ACCURACY = 500.0f;
-
-    Context mContext;
-    GoogleApiClient mGoogleApiClient;
-    LocationRequest mLocationRequest;
-
-
-    Location mCurrentPosition;
-    Handler handler;
-    boolean visited = false;
-
-    boolean arPaPlats = false;
-
+    private static final long           POLLING_FREQ = 1000 * 30;
+    private static final long           FASTEST_UPDATE_FREQ = 1000 * 5;
+    private Context                     mContext;
+    private GoogleApiClient             mGoogleApiClient;
+    private LocationRequest             mLocationRequest;
+    private Handler                     handler;
 
     public GetLocation(Context mContext, Handler handler) {
 
@@ -73,21 +43,6 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
         createLocationRequest();
     }
 
-    public boolean checkApp(){
-        ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-
-        // get the info from the currently running task
-        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-
-        ComponentName componentInfo = taskInfo.get(0).topActivity;
-        if (componentInfo.getPackageName().equalsIgnoreCase("com.example.gustaf.touchpoint.menutest")) {
-            return true;
-        }
-        else {
-                return false;
-            }
-    }
-
     @Override
     public void onConnected(Bundle bundle) {
         // Get first reading. Get additional location updates if necessary
@@ -95,8 +50,6 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
             // Get best last location measurement meeting criteria
             //Log.v("LOCATION", String.valueOf(mCurrentPosition.getLatitude()));
             bestLastKnownLocation();
-
-
         }
     }
 
@@ -106,8 +59,6 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
 
     @Override
     public void onLocationChanged(Location location) {
-
-        mCurrentPosition = location;
 
         Message msg = handler.obtainMessage();
         msg.obj = location;
@@ -120,22 +71,12 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
 
     }
 
-    public double getLatitude() {
-
-        return mCurrentPosition.getLatitude();
-    }
-    public double getLongitude() {
-
-       return mCurrentPosition.getLongitude();
-    }
-
-
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult){
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult){
 
     }
 
-    protected synchronized void buildGoogleApiClient() {
+    private synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -143,7 +84,7 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
                 .build();
     }
 
-    protected void createLocationRequest() {
+    private void createLocationRequest() {
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(POLLING_FREQ);
@@ -163,7 +104,7 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
     }
 
     private boolean servicesAvailable() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext);
+        int resultCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(mContext);
 
         if (ConnectionResult.SUCCESS == resultCode) {
             return true;
@@ -172,10 +113,6 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
                     " to get location.", Toast.LENGTH_LONG).show();
             return false;
         }
-    }
-
-    public void removeLocationUpdates () {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
     /**

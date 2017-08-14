@@ -8,13 +8,18 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 
 /**
- * Created by Viktor on 2017-07-26.
+ * CircleImageTransformation is used to transform the Picasso image to make it a circle as well
+ * as cache the image so we don't have to reload it every time.
  */
 public class CircleImageTransformation implements com.squareup.picasso.Transformation {
 
+    /**
+     *
+     * @param source the image which will be cached
+     * @return the image
+     */
     @Override
     public Bitmap transform (final Bitmap source ) {
-        Blur br = new Blur();
         Bitmap output = getCircularBitmap(source);
         if (source != output) {
             source.recycle();
@@ -28,7 +33,12 @@ public class CircleImageTransformation implements com.squareup.picasso.Transform
         return "customTransformation" + "12412414";
     }
 
-    public Bitmap getCircularBitmap(Bitmap bitmap) {
+    /**
+     *
+     * @param bitmap Bitmap which will be transformed
+     * @return the transformed image
+     */
+    private Bitmap getCircularBitmap(Bitmap bitmap) {
         Bitmap output;
 
         if (bitmap.getWidth() > bitmap.getHeight()) {
@@ -43,7 +53,7 @@ public class CircleImageTransformation implements com.squareup.picasso.Transform
         final Paint paint = new Paint();
         final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
 
-        float r = 0;
+        float r;
 
         if (bitmap.getWidth() > bitmap.getHeight()) {
             r = bitmap.getHeight() / 2;

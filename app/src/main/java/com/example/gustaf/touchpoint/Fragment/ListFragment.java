@@ -1,20 +1,18 @@
 package com.example.gustaf.touchpoint.Fragment;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.gustaf.touchpoint.Adapters.GridListAdapter;
 import com.example.gustaf.touchpoint.BaseActivity;
-import com.example.gustaf.touchpoint.HelpClasses.Coordinates;
 import com.example.gustaf.touchpoint.HelpClasses.CityObject;
+import com.example.gustaf.touchpoint.HelpClasses.Coordinates;
 import com.example.gustaf.touchpoint.R;
 
 import java.util.ArrayList;
@@ -22,11 +20,11 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Class for holding the Grid with all the city objects. ListFragment and GlidListAdapter goes
+ * hand in hand with eachother.
  */
 public class ListFragment extends Fragment  {
     private static final int DEFAULT_SPAN_COUNT = 2;
-    private RecyclerView mRecyclerView;
     private GridListAdapter mAdapter;
 
     private ArrayList<CityObject> cityObjects;
@@ -36,6 +34,9 @@ public class ListFragment extends Fragment  {
         // Required empty public constructor
     }
 
+    /**
+     * Inflates the List layout.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,13 +50,11 @@ public class ListFragment extends Fragment  {
 
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerViewList);
+        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerViewList);
         mRecyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         mRecyclerView.setHasFixedSize(true);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), DEFAULT_SPAN_COUNT);
-
-
 
         /*Load the touchpoint objects from BaseActivity*/
         BaseActivity bs = (BaseActivity)getActivity();
@@ -74,8 +73,7 @@ public class ListFragment extends Fragment  {
 
     /*
     * Receives new location from GPS
-    *
-    * */
+    */
     public void recieveLocation(android.location.Location loc){
         current_location = loc;
         cityObjects = sortedTouchPoints(false);
@@ -85,9 +83,9 @@ public class ListFragment extends Fragment  {
 
 
     /**
-     * Sort the touchpoint depening on which one is closest
+     * Sort the touchpoint depending on which one is closest
      * to the device
-     * */
+     */
     private ArrayList<CityObject> sortedTouchPoints(boolean isFirst) {
 
         if (cityObjects == null){
@@ -115,10 +113,12 @@ public class ListFragment extends Fragment  {
         return cityObjects;
     }
 
-    public ArrayList<CityObject> getCityObjects(){
-        return cityObjects;
-    }
-
+    /**
+     * Function to change coordinates to actual meters between different coordinates.
+     * @param currentLocation where the user is at.
+     * @param objectCoordinates where the city object is at.
+     * @return distance between the two.
+     */
     private float lengthBetween(android.location.Location currentLocation, Coordinates objectCoordinates) {
 
         double earthRadius = 6371000; //meters
@@ -128,9 +128,8 @@ public class ListFragment extends Fragment  {
                 Math.cos(Math.toRadians(objectCoordinates.getLatitude())) * Math.cos(Math.toRadians(currentLocation.getLatitude())) *
                         Math.sin(dLng/2) * Math.sin(dLng/2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        float dist = (float) (earthRadius * c);
 
-        return dist;
+        return (float)(earthRadius * c);
 
 
     }

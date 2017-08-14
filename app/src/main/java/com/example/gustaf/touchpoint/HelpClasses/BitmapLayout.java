@@ -11,9 +11,9 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 /**
- * Created by gustafwennerstrom on 2017-07-06.
+ * This class is used to make the loading of the bitmap more dynamic. If the bitmap fails, we can
+ * then set a backup image to load instead of the one we're getting from the server.
  */
-
 public class BitmapLayout extends LinearLayout implements Target {
 
     public BitmapLayout(Context context) {
@@ -27,7 +27,6 @@ public class BitmapLayout extends LinearLayout implements Target {
     public BitmapLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
-
 
     @Override
     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {

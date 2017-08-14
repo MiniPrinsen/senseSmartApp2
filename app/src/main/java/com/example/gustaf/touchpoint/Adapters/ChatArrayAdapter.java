@@ -1,10 +1,8 @@
 package com.example.gustaf.touchpoint.Adapters;
 
-/**
- * Created by Gustaf on 16-07-07.
- */
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,20 +20,23 @@ import java.util.List;
 
 
 /**
- * Adapter to display messages
+ * Adapter for displaying messages.
  */
 public class ChatArrayAdapter extends ArrayAdapter {
-    private TextView chatText;
-    private List<MessageContainer> chatMessageList = new ArrayList<>();
-    private LinearLayout singleMessageContainer;
+    private List<MessageContainer>      chatMessageList = new ArrayList<>();
 
     public ChatArrayAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
 
     }
 
+    /**
+     * Adding a message to the list.
+     * @param object MessageContainer
+     */
     public void add(MessageContainer object) {
-        super.add(object);
+
+
         chatMessageList.add(object);
     }
 
@@ -47,7 +48,13 @@ public class ChatArrayAdapter extends ArrayAdapter {
         return this.chatMessageList.get(index);
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    /**
+     * This is where we add the messages to the list. We are also checking who wrote the message
+     * and by that changing the gravity of the view we want to inflate. If the user wrote the mess,
+     * set the gravity to RIGHT. otherwise, set the gravity to LEFT.
+     */
+    public @NonNull
+    View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View row = convertView;
         if (row == null) {
             LayoutInflater inflater = (LayoutInflater) this.getContext().
@@ -55,32 +62,33 @@ public class ChatArrayAdapter extends ArrayAdapter {
             row = inflater.inflate(R.layout.chatbubbles_layout, parent, false);
         }
 
-        singleMessageContainer = (LinearLayout) row.findViewById(R.id.singleMessageContainer);
+        LinearLayout singleMessageContainer = (LinearLayout) row.findViewById(R.id.singleMessageContainer);
         MessageContainer chatMessageObj = getItem(position);
-        chatText = (TextView) row.findViewById(R.id.singleMessage);
-        chatText.setText(chatMessageObj.message);
+        TextView chatText = (TextView) row.findViewById(R.id.singleMessage);
+
 
 
         /* Checks if the object should be to the left or right and
          * sets the properties connected to each side
         **/
-        int chatbubbleuser = R.drawable.chatbubbleuser;
-        int chatbubblebot = R.drawable.chatbubblebot;
-        chatText.setBackgroundResource(chatMessageObj.left ? chatbubblebot :
-                chatbubbleuser);
-        //NinePatch hej = new NinePatch(R.drawable.chatbubbleuser,chatText);
-        singleMessageContainer.setGravity(chatMessageObj.left ? Gravity.LEFT : Gravity.RIGHT);
+        int chatbubbleuser = R.drawable.chatbubble_user;
 
-
-
-
-
+        int chatbubblebot = R.drawable.chatbubble_bot;
+        LinearLayout.LayoutParams userChatMessage = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams botChatMessage = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        botChatMessage.setMargins(30,0,300,0);
+        userChatMessage.setMargins(300,0,30,0);
         int leftTextColor = ContextCompat.getColor(getContext(), R.color.colorGrayDark);
         int rightTextColor = ContextCompat.getColor(getContext(), R.color.colorWhite);
-        chatText.setTextColor(chatMessageObj.left ? leftTextColor : rightTextColor);
 
-
-
+        if(chatMessageObj != null) {
+            chatText.setText(chatMessageObj.message);
+            chatText.setBackgroundResource(chatMessageObj.left ? chatbubblebot :
+                    chatbubbleuser);
+            chatText.setLayoutParams(chatMessageObj.left ? botChatMessage : userChatMessage);
+            singleMessageContainer.setGravity(chatMessageObj.left ? Gravity.START : Gravity.END);
+            chatText.setTextColor(chatMessageObj.left ? leftTextColor : rightTextColor);
+        }
         return row;
     }
 }

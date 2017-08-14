@@ -44,7 +44,6 @@
             android:hint="@string/messagebox_hint"
             android:layout_margin="6dip"
             android:background="#ffffff"
-
             android:layout_weight="0.63"
             android:textSize="14sp"/>
         <Button android:id="@+id/send_btn"

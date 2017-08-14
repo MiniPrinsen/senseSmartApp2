@@ -7,11 +7,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 
 /**
- * Created by Gustaf on 16-08-02.
+ * Adapter for adding fragments into a viewpager. Also used for enabling different animations
+ * between fragments.
  */
 public class ViewPagerAdapter extends FragmentPagerAdapter {
-    ArrayList<Fragment> fragments = new ArrayList<>();
-    ArrayList<String> tabTitles = new ArrayList<>();
+    private ArrayList<Fragment>             fragments = new ArrayList<>();
+    private ArrayList<String>               tabTitles = new ArrayList<>();
 
     public ViewPagerAdapter(FragmentManager fm){
         super(fm);

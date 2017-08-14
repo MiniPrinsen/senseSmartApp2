@@ -17,9 +17,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import com.example.gustaf.touchpoint.Adapters.ChatArrayAdapter;
+import com.example.gustaf.touchpoint.ChatActivity;
 import com.example.gustaf.touchpoint.R;
 
 import java.io.BufferedReader;
@@ -33,34 +33,22 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This is the chat window page. It is here we show the chat to the user.
  */
 public class ChatWindowFragment extends Fragment {
-    Button buttonSend;
-    public static final String URL ="http://35.158.191.6:8080/sensesmart/hey";
-    private EditText chatText;
-    RelativeLayout chatBackground;
-    //ImageView backButton;
-    //ImageView circleToolbar;
-    //ImageView infoButton;
-
-
-
-    private ChatArrayAdapter chatArrayAdapter;
-    private ListView listView;
-    View view;
+    private Button                          buttonSend;
+    public static final String              URL ="http://35.158.191.6:8080/sensesmart/hey";
+    private EditText                        chatText;
+    private ChatArrayAdapter                chatArrayAdapter;
+    private ListView                        listView;
+    View                                    view;
+    ChatActivity                            chat;
 
     public ChatWindowFragment(){}
 
-    @Override
-    public void onViewCreated(View view, Bundle bundle){
-        //chatText.requestFocus();
-
-
-
-
-    }
-
+    /**
+     * Here we are inflating the view and sets the behavior of send button etc.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,6 +57,12 @@ public class ChatWindowFragment extends Fragment {
         findViewsById(view);
 
         buttonSend.setOnClickListener(customListener);
+        chatText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chat.hideInfo();
+            }
+        });
 
         chatArrayAdapter = new ChatArrayAdapter(getContext(), R.layout.chatbubbles_layout);
         listView.setAdapter(chatArrayAdapter);
@@ -76,6 +70,8 @@ public class ChatWindowFragment extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
+
+                chat.hideInfo();
                 hideKeyboard(getContext());
 
                 return false;
@@ -85,9 +81,13 @@ public class ChatWindowFragment extends Fragment {
     }
 
 
+    /**
+     * Function to cluster all the findviewsbyId.
+     * @param container main view
+     */
     private void findViewsById(View container) {
         buttonSend = (Button) container.findViewById(R.id.send_btn);
-        chatBackground = (RelativeLayout) container.findViewById(R.id.chatBackground);
+        chat = (ChatActivity) getActivity();
         chatText = (EditText)container.findViewById(R.id.msgBox);
         listView = (ListView) container.findViewById(R.id.listanmedView);
 
@@ -112,11 +112,16 @@ public class ChatWindowFragment extends Fragment {
         alert.show();
     }
 
+    /**
+     * It's here we are defining what happens if we press the send button.
+     */
     private View.OnClickListener customListener = new View.OnClickListener() {
         public void onClick(View v) {
             switch (v.getId() /*to get clicked view id**/) {
                 case R.id.send_btn:
                     try {
+                        //If the field contains something, we can actually send the message
+                        //and reset the field.
                         if (chatText.length() != 0) {
                             GetXMLTask task = new GetXMLTask();
                             task.execute(URL);
@@ -141,6 +146,10 @@ public class ChatWindowFragment extends Fragment {
         }
     };
 
+    /**
+     * Function to hide the keyboard.
+     * @param ctx Context
+     */
     public static void hideKeyboard(Context ctx) {
         InputMethodManager inputManager = (InputMethodManager) ctx
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -153,6 +162,10 @@ public class ChatWindowFragment extends Fragment {
         inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
+    /**
+     * Function to send the chat message.
+     * @return true
+     */
     private boolean sendChatMessage(){
         chatArrayAdapter.add(new MessageContainer(false, chatText.getText().toString()));
         chatText.setText("");
@@ -160,6 +173,10 @@ public class ChatWindowFragment extends Fragment {
         return true;
     }
 
+    /**
+     * Function to recieve the response from the server and inflate it onto the view.
+     * @param message the message
+     */
     private void recieveChatMessage(String message){
         if (message != null) {
             chatArrayAdapter.add(new MessageContainer(true, message));
@@ -168,7 +185,7 @@ public class ChatWindowFragment extends Fragment {
 
     }
     /**
-     * Klass för att hämta data från server
+     * Class to retrieve data from the server. This is where we get the response from the bot.
      */
     private class GetXMLTask extends AsyncTask<String, Void, String> {
 
@@ -182,12 +199,12 @@ public class ChatWindowFragment extends Fragment {
         }
 
         private String getOutputFromUrl(String url) {
-            StringBuffer output = new StringBuffer("");
+            StringBuilder output = new StringBuilder("");
             try {
                 InputStream stream = getHttpConnection(url);
                 BufferedReader buffer = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
 
-                String s = "";
+                String s;
                 while ((s = buffer.readLine()) != null)
                     output.append(s);
             } catch (Exception e1) {
@@ -198,16 +215,14 @@ public class ChatWindowFragment extends Fragment {
         }
 
         // Makes HttpURLConnection and returns InputStream
+        // It is here we send the message the user types into the app.
         private InputStream getHttpConnection(String urlString)
                 throws IOException {
             InputStream stream = null;
-            //EditText message = (EditText) findViewById(R.id.msgBox);
             String sendMessage = chatText.getText().toString();
             String requestURL = urlString + "?message=" + URLEncoder.encode(sendMessage, "UTF-8");
             java.net.URL url = new URL(requestURL);
-            requestURL = URLDecoder.decode(requestURL, "UTF-8");
             URLConnection connection = url.openConnection();
-
 
             try {
                 HttpURLConnection httpConnection = (HttpURLConnection) connection;
@@ -223,6 +238,10 @@ public class ChatWindowFragment extends Fragment {
             return stream;
         }
 
+        /**
+         * Recieves the chat message.
+         * @param output chat message
+         */
         @Override
         protected void onPostExecute(String output) {
             try {

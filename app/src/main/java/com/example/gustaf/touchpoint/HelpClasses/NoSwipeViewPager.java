@@ -5,6 +5,9 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+/**
+ * This Class is used to make the swipe animation of a normal ViewPager dissapear.
+ */
 public class NoSwipeViewPager extends ViewPager {
 
     public NoSwipeViewPager(Context context) {

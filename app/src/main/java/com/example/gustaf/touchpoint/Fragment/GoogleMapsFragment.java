@@ -29,12 +29,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This is where we inflate the google maps API and adds the info windows.
  */
 public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private ArrayList<CityObject> cityObjects;
-    Bundle args;
     CityObject cObject;
 
     public GoogleMapsFragment() {
@@ -42,6 +41,9 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
+    /**
+     * Inflates the view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
     Bundle savedInstanceState) {
@@ -56,6 +58,12 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         }
 
+    /**
+     * Defines the google maps with markers and all that.
+     * The foor-loop loops through all the city objects and sets a marker at each specific location.
+     * We set the camera update(zoom) and enables your own position.
+     * @param googleMap the map to be inflated
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
     mMap = googleMap;
@@ -93,39 +101,14 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    public void loadInfoWindow() {
-        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
-            // Use default InfoWindow frame
-            @Override
-            public View getInfoWindow(Marker arg0) {
-
-                for (CityObject cityObject : cityObjects){
-                    if (arg0.getTitle().equals(cityObject.getName())){
-                        View v = getActivity().getLayoutInflater().inflate(R.layout.layout_info_window, null);
-                        Button info = (Button) v.findViewById(R.id.infoButton);
-                        info.setText(cityObject.getName());
-                        BitmapLayout back = (BitmapLayout) v.findViewById(R.id.bitmapBackground);
-
-                        Picasso.with(getContext()).load(cityObject.getImgs().get(0)).into(back);
-                        return v;
-                    }
-
-                }
-                return null;
-            }
-
-            @Override
-            public View getInfoContents(Marker arg0) {
-
-                return null;
-            }
-        });
-
-    }
-
-
-    public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter,
+    /**
+     * Since we want an image and the title of the object we need to inflate our own InfoWindow.
+     * We loop through all the city objects and adds a custom info window to each one of them.
+     * Google maps InfoWindow doesn't allow different clicks on it, instead it takes a "screenshot"
+     * of the info window and then adds that image onto the map.
+     */
+    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter,
             GoogleMap.OnInfoWindowClickListener{
         @Override
         public View getInfoWindow(Marker arg0) {
@@ -134,9 +117,11 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
             for (int i = 0; i < cityObjects.size(); i++){
                 CityObject cityObject = cityObjects.get(i);
                 if (arg0.getTitle().equals(cityObject.getName())){
-                    View v = getActivity().getLayoutInflater().inflate(R.layout.layout_info_window, null);
-                   // args = new Bundle();
-                   // args.putInt("cityobject",i);
+
+                    //Doing View.inflate instead of inflater because of warning when passing null
+                    // with inflater.
+                    View v = View.inflate(getContext(), R.layout.layout_info_window, null);
+                    //View v = getActivity().getLayoutInflater().inflate(R.layout.layout_info_window, null);
                     cObject = cityObject;
                     Button info = (Button) v.findViewById(R.id.infoButton);
                     info.setText(cityObject.getName());
@@ -150,6 +135,13 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
             }
             return null;
         }
+
+        /**
+         * Sets the clickListener to the info window. Here we put a bundle as information on which
+         * window we are clicking on. We are doing this to specify which details window we want to
+         * open.
+         * @param marker that has been clicked.
+         */
         @Override
         public void onInfoWindowClick(Marker marker) {
             Intent i = new Intent(getContext(), DetailsActivity.class);

@@ -5,7 +5,6 @@ import android.os.Message;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.internal.Excluder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,20 +18,20 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
- * Created by gustafwennerstrom on 2017-07-05.
+ * This is the java class which talks to the server.
+ * We call this class when we start BaseActivity to load all the relevant city objects.
+ * We send a POST request to the server and gets a response.
  */
-
 public class GetCityObjects implements Runnable {
-    private final String HOST = "http://35.158.191.6:8080/sensesmart/hey";
-    private double longitude;
-    private double latitude;
-    private int distance;
-    private Handler handler;
+    private static final String             HOST = "http://35.158.191.6:8080/sensesmart/hey";
+    private double                          longitude;
+    private double                          latitude;
+    private int                             distance;
+    private Handler                         handler;
 
     public GetCityObjects(double lng, double lat, int dist, Handler handler){
         this.longitude = lng;
@@ -41,10 +40,11 @@ public class GetCityObjects implements Runnable {
         this.handler = handler;
     }
 
-    public void startThread(){
-
-    }
-
+    /**
+     * Thread to talk to the server. We add our coordinates and distance with the URL to
+     * set some restrictions of what to get. For example, if we are in sweden it is worthless for us
+     * to get a touch point in Australia. This is what those parameters restrains.
+     */
     @Override
     public void run() {
         HttpURLConnection urlConnection = null;
@@ -68,9 +68,8 @@ public class GetCityObjects implements Runnable {
             out.write(postData);
             out.flush();
 
-
-            int status = (urlConnection).getResponseCode();
-
+            // Retrieve the server response after we send the POST request.
+            // As we can see, we store each city object in a CityObject instance.
             String json = getStringFromInputStream(urlConnection.getInputStream());
             JSONArray array = new JSONArray(json);
             Gson gson = new Gson();
@@ -84,7 +83,7 @@ public class GetCityObjects implements Runnable {
 
         }
         catch(IOException e) {
-            Log.v("ERRORJA", "IO - "+e.getMessage());
+            Log.v("ERROR", "IO - "+e.getMessage());
             Message msg = handler.obtainMessage();
             msg.obj = e;
             handler.sendMessage(msg);
@@ -96,6 +95,7 @@ public class GetCityObjects implements Runnable {
                 msg.obj = temp;
                 handler.sendMessage(msg);
             }
+            //Closes the connection
             urlConnection.disconnect();
 
         }
@@ -107,8 +107,6 @@ public class GetCityObjects implements Runnable {
      *
      * Creates a string from inputstream
      *
-     * @param inputstream
-     * @return
      */
     private String getStringFromInputStream(InputStream inputstream) {
 

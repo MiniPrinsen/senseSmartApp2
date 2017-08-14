@@ -3,7 +3,7 @@
     <string name="app_name">Touch Point</string>
     <string name="city">Skellefteå</string>
 
-    <string name="swedish">Swedish</string>
+    <string name="swedish">Svenska</string>
     <string name="english">English</string>
     <string name="no_internet_access">Touchpoint cannot find a connection to the internet.</string>
 
@@ -26,6 +26,7 @@
     How are you? \n </string>
     <string name="sample_questions_title">Some things you can ask me:</string>
     <string name="search_radius">Max distance</string>
+    <string name="length_kilometers">%d KM</string>
 
     <string name="direction">Directions</string>
     <string name="welcome_message">Hello, how are you?</string>

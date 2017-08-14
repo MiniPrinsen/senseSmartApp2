@@ -1,9 +1,5 @@
 package com.example.gustaf.touchpoint.Adapters;
 
-/**
- * Created by Gustaf on 16-08-04.
- */
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -26,8 +22,9 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- *
- */
+ * This class is used to make the grid work as it does. If the user gets closer to another
+        * cityobject, it will become a headerItem and therefore move to the top of the grid.
+        */
 public class GridListAdapter extends RecyclerView.Adapter<Holder> {
 
     private final int mDefaultSpanCount;
@@ -35,7 +32,6 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
     private final int      SCREEN_WIDTH;
     private final int     SCREEN_HEIGHT;
     private Context             context;
-    private String tmpImage = "https://upload.wikimedia.org/wikipedia/en/7/78/Small_scream.png";
 
     public GridListAdapter(List<CityObject> itemList, GridLayoutManager gridLayoutManager, int defaultSpanCount, int width, int height, Context context) {
         mItemList = itemList;
@@ -53,9 +49,12 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
     }
 
     private boolean isHeaderType(int position) {
-        return position == 0 ? true : false;
+        return position == 0;
     }
 
+    /**
+     * Inflates the header or the item depending on the position.
+     */
     @Override
     public Holder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
@@ -72,6 +71,9 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
     }
 
 
+    /**
+     * Binds the header if the position is 0, otherwise binds the item.
+     */
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         if(position == 0) {
@@ -83,9 +85,6 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
 
     /**
      * This method is used to bind grid item value
-     *
-     * @param holder
-     * @param position
      */
     private void bindGridItem(Holder holder, final int position) {
         final View container = holder.itemView;
@@ -94,10 +93,7 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
         imgView = (ImageView)container.findViewById(R.id.grid_image);
 
 
-
-
-
-        final CityObject item = (CityObject) mItemList.get(position);
+        final CityObject item = mItemList.get(position);
         TextView txtView = (TextView)container.findViewById(R.id.gridTextTitle);
         txtView.setText(item.getName());
 
@@ -116,18 +112,20 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
     }
 
 
-
-    View.OnClickListener gridPress = new View.OnClickListener() {
+    /**
+     * Sets the clickListener to the appropreate grid item. Defines the shared element transition
+     * for the specified grid item.
+     */
+    private View.OnClickListener gridPress = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     TextView txtView = (TextView)view.findViewById(R.id.gridTextTitle);
 
                     int pos = -1;
-                    String title = "";
                     String itemText = txtView.getText().toString();
                     for (int i = 0; i<mItemList.size(); i++){
-                        if (mItemList.get(i).getName() == itemText){
-                            title = mItemList.get(i).getName();
+                        if (mItemList.get(i).getName().equals(itemText)){
+                            mItemList.get(i).getName();
                             pos = i;
                         }
                     }
@@ -139,7 +137,6 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
                     ImageView sharedImage = pos == 0 ? (ImageView)view.findViewById(R.id.header_image) :
                             (ImageView)view.findViewById(R.id.grid_image);
                     sharedImage.setTransitionName("myImage");
-                    //activity.postponeEnterTransition();
                     Intent i = new Intent(context, DetailsActivity.class);
                     ActivityOptionsCompat options = ActivityOptionsCompat.
                             makeSceneTransitionAnimation(activity, sharedImage, "myImage");
@@ -153,9 +150,6 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
 
     /**
      * This method is used to bind the header with the corresponding item position information
-     *
-     * @param holder
-     * @param position
      */
     private void bindHeaderItem(Holder holder, int position) {
         final CityObject itm = mItemList.get(position);
@@ -191,14 +185,6 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
 
     }
 
-
-    public void swapItems(CityObject item1, CityObject item2) {
-        //Collections.swap(mItemList, mItemList.indexOf(item2), mItemList.indexOf(item1));
-        notifyDataSetChanged();
-    }
-
-
-
     @Override
     public int getItemViewType(int position) {
         return position;
@@ -208,26 +194,4 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
     public int getItemCount() {
         return mItemList.size();
     }
-
-    /**
-     * This method is used to add an item into the recyclerview list
-     *
-     * @param item
-     */
-    public void addItem(CityObject item) {
-        mItemList.add(item);
-        notifyDataSetChanged();
-    }
-
-    /**
-     * This method is used to remove items from the list
-     *
-     * @param item {@link CityObject}
-     */
-    public void removeItem(CityObject item) {
-        mItemList.remove(item);
-        notifyDataSetChanged();
-    }
-
-
 }

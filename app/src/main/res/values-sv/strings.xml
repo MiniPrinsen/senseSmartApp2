@@ -3,7 +3,7 @@
     <string name="app_name">Touch Point</string>
     <string name="city">Skellefteå</string>
     <string name="swedish">Svenska</string>
-    <string name="english">Engelska</string>
+    <string name="english">English</string>
 
     <string name="no_internet_access">Touchpoint kunde inte ansluta till internet.</string>
 
@@ -27,6 +27,7 @@
     How are you? \n </string>
     <string name="sample_questions_title">En del saker du kan fråga mig:</string>
     <string name="search_radius">Maxavstånd</string>
+    <string name="length_kilometers">%d KM</string>
 
     <string name="direction">Vägbeskrivning</string>
     <string name="welcome_message">Tjena, hur är läget?</string>

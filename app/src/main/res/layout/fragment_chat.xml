@@ -7,7 +7,7 @@
     android:clickable="true">
 
     <ImageView
-        android:contentDescription="HEJ"
+        android:contentDescription="@string/chat_name"
         android:id="@+id/backgroundImage"
         android:adjustViewBounds="true"
         android:layout_width="match_parent"
@@ -37,11 +37,6 @@
                 <RelativeLayout
                     android:layout_width="150dp"
                     android:layout_height="150dp">
-                   <!-- <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/rotatingcircle"
-                        android:background="@drawable/roundcorner"/>-->
                     <ProgressBar
                         android:id="@+id/progressBar"
                         android:layout_width="match_parent"
@@ -67,8 +62,6 @@
         <LinearLayout
             android:layout_width="match_parent"
 
-            android:layout_below="@id/circlecontainer"
-            android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
@@ -76,8 +69,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:id="@+id/objectName"
-                android:layout_centerHorizontal="true"
-                android:text="Bonnstan"
                 android:textSize="28sp"/>
             <TextView
                 android:layout_width="match_parent"
@@ -85,7 +76,6 @@
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
-                android:text="520 meters away"
                 />
         </LinearLayout>
         </LinearLayout>

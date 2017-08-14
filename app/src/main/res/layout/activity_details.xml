@@ -30,7 +30,7 @@ SINCE THE WHOLE PAGE WILL BE SCROLLABLE.-->
         android:fillViewport="true">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             >
 
             <!--THE VIEWFLIPPER IS USED TO GET THE SLIDESHOW ON THE PAGE. IF YOU WANT

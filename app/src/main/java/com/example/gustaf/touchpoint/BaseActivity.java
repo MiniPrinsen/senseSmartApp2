@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -45,11 +46,13 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 /**
- *  BaseActivity contains the toolbar and navigationbar that
- *  is used by many of the activities in the app.
+ *  BaseActivity is the starting activity of the entire application. This is where we Initialize
+ *  the navigation for all pages as well as the toolbar for all the fragments that BaseActivity
+ *  holds. BaseActivity also updates the location of the device to be able to dynamically change
+ *  to the closest city object etc.
  */
 public class BaseActivity extends AppCompatActivity{
-    private static int                      CITY_DIST = 50000;
+    private static int                      CITY_DIST;
     private TabLayout                            tabLayout;
     private android.location.Location      current_position;
     private ViewPager                       viewPagerTabbed;
@@ -61,6 +64,12 @@ public class BaseActivity extends AppCompatActivity{
     protected Toolbar                               toolbar;
     int position;
 
+    /**
+     *
+     * @param savedInstanceState
+     * Starts by setting the splash screen, and when the app is loaded, changes that to the layout
+     * of BaseActivity. This is where we call the functions to inflate the toolbar and navigationbar
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
@@ -77,6 +86,13 @@ public class BaseActivity extends AppCompatActivity{
         initializeNavigationBar();
     }
 
+    /**
+     * Here we are checking the parameters we are changing in SettingsFragment.
+     * cityDistance is the slider we have in Settings. So, when the user changes the distance, we
+     * pass the variable by using SharedPreferences. This also applies to the language.
+     * We are doing it this way since we need to restart the entire app to be able to change
+     * language etc. so this is the best way to do that.
+     */
     @Override
     public void onStart(){
         Intent intent = getIntent();
@@ -85,8 +101,7 @@ public class BaseActivity extends AppCompatActivity{
 
         }
         SharedPreferences cityDistance = this.getSharedPreferences("cityDistance", Context.MODE_PRIVATE);
-        int mProgress = cityDistance.getInt("seekBarProgress", 0);
-        CITY_DIST = mProgress;
+        CITY_DIST = cityDistance.getInt("seekBarProgress", 50000);
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         SharedPreferences sharedPreferences = this.getSharedPreferences("selectedLanguage", Context.MODE_PRIVATE);
         String pine = sharedPreferences.getString("language","");
@@ -100,7 +115,11 @@ public class BaseActivity extends AppCompatActivity{
     }
 
     /**
-     * Implements the bottom navigation
+     * Implements the bottom navigation as well as setting the proper behavior of it.
+     * This includes unselected/selected, size, color, no text.
+     * We are using AHBottomNavigation which can be found
+     * at: https://github.com/aurelhubert/ahbottomnavigation. The version we are using is 2.0 which
+     * is specified in the Gradle(app).
      */
     protected void initializeNavigationBar()
     {
@@ -127,8 +146,8 @@ public class BaseActivity extends AppCompatActivity{
         bottomNavigation.setTitleTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         bottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
         bottomNavigation.setTitleTextSize(24, 24);
-        /*Sets the current position*/
 
+        /*Sets the current position*/
         bottomNavigation.setBehaviorTranslationEnabled(false);
         bottomNavigation.setCurrentItem(position);
         crimeItem.setDrawable(R.drawable.ic_map_filled);
@@ -164,6 +183,11 @@ public class BaseActivity extends AppCompatActivity{
         });
     }
 
+    /**
+     * This function is used in SettingsFragment to refresh BaseActivity which is required to
+     * be able to change language/max distance. The animations are set to make it look like we
+     * are only refreshing the settings page.
+     */
     public void refreshActivity() {
         Intent intent = new Intent(this, BaseActivity.class);
         intent.putExtra("position", 2);
@@ -176,6 +200,8 @@ public class BaseActivity extends AppCompatActivity{
      *
      * @param pos position of the tab we want to display
      * @param title title of the tab we want to open
+     * This function shows the selected page from the bottom navigation. This only includes settings
+     * and chat. The listFragment is of type tabLayout which we set as GONE here.
      */
     public void showPage(int pos, String title){
         viewPagerDeafult.setCurrentItem(pos, false);
@@ -188,7 +214,9 @@ public class BaseActivity extends AppCompatActivity{
 
     /**
      *
-     * @param title
+     * @param title title of the tab we want to open
+     * This function shows the selected tab from the toolbar. This only includes the MAP and LIST
+     * since chat and settings are of the type viewPagerDefault.
      */
     public void showTabbed(String title){
         viewPagerTabbed.setVisibility(View.VISIBLE);
@@ -197,7 +225,7 @@ public class BaseActivity extends AppCompatActivity{
         setToolBarTitle(title);
     }
     /**
-     * Creates the list and map fragments
+     * Creates the list and map fragments by adding them to the viewPagerAdapterTabbed.
      */
     public void addTabs(){
         if (tabLayout == null) {
@@ -220,7 +248,7 @@ public class BaseActivity extends AppCompatActivity{
     }
 
     /**
-     * Open settings and chat fragments
+     * Adds settings and chat fragments by adding them to viewPagerAdapterDefault.
      */
     public void addPages(){
         tabLayout.setVisibility(View.GONE);
@@ -235,29 +263,30 @@ public class BaseActivity extends AppCompatActivity{
 
     /**
      * Sets the title for the toolbar
-     * @param title
+     * @param title title of the page we want to open.
      */
     public void setToolBarTitle(String title){
         TextView toolbarText = (TextView)findViewById(R.id.toolbar_title);
         toolbarText.setText(title);
-        //getSupportActionBar().setTitle(Html.fromHtml("<font color=\"red\">") + title + "</font>");
 
     }
 
     /**
-     * Checks permission to use location
+     * Checks permission to use location. This is shown the first time we open the app.
      */
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case 1: {
-                // If the app have permission to use location we will start using it
+                // If the app have permission to use location we will start using it and therefore
+                // load the app.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.v("perms", "first If");
                     Thread background = new Thread(new GetLocation(getApplicationContext(), locationHandler));
                     background.start();
                 }
-                /* if not a new layout is loaded which says we need the location to use the app */
+                // if not a new layout is loaded which says we need the location to use the app.
+                // The user gets a button which redirects to the settings for Touch Point.
                 else {
                     Log.v("perms", "2nd If");
                     setContentView(R.layout.access_location);
@@ -270,29 +299,30 @@ public class BaseActivity extends AppCompatActivity{
                             Uri uri = Uri.fromParts("package", getPackageName(), null);
                             intent.setData(uri);
                             startActivity(intent);
-                            //startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
 
                         }
                     });
                 }
-                return;
             }
         }
     }
 
 
     /**
-     * Gets called when location changes and updates the other fragments.
+     * Gets called when location changes and updates the other fragments to show the appropriate
+     * information.
      */
     private Handler locationHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             current_position = (android.location.Location) msg.obj;
             super.handleMessage(msg);
+            //If it's the first time we open the app, get the city objects.
             if(cityObjects == null){
                 new Thread(new GetCityObjects(current_position.getLongitude(),
                         current_position.getLatitude(), CITY_DIST, receiveFromDb)).start();
             }
+            //Updating
             else {
                 ((ListFragment) (viewPagerAdapterTabbed.getItem(0))).recieveLocation(current_position);
                 for (CityObject tPoint : cityObjects) {
@@ -315,7 +345,7 @@ public class BaseActivity extends AppCompatActivity{
 
             if (msg.obj instanceof java.util.ArrayList){
                 cityObjects = (ArrayList<CityObject>)msg.obj;
-                if (cityObjects != null) {
+
                     bottomNavigation.restoreBottomNavigation(true);
                     AppBarLayout app = (AppBarLayout)findViewById(R.id.toolbar);
                     app.setVisibility(View.VISIBLE);
@@ -327,11 +357,11 @@ public class BaseActivity extends AppCompatActivity{
                         bottomNavigation.setCurrentItem(position);
                     }
                     else{
-                        showTabbed("SKELLEFTEÅ");
+                        showTabbed(getString(R.string.city));
                     }
                     ((ChatFragment) (viewPagerAdapterDeafult.getItem(0))).updateLocation(cityObjects.get(0));
 
-                }
+
             }
             else if(msg.obj instanceof IOException){
                 LinearLayout error = (LinearLayout)findViewById(R.id.error_container);
@@ -344,9 +374,6 @@ public class BaseActivity extends AppCompatActivity{
         }
     };
 
-    public CityObject getCityObject(int i){
-        return cityObjects.get(i);
-    }
     public ArrayList<CityObject> getCityObjects(){ return cityObjects; }
     public Location getCurrentPosition(){ return current_position; }
 

@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +18,6 @@ import android.view.Gravity;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -32,20 +32,24 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+/**
+ * DetailsActivity is the activity which inflates the info page. We use this instead of a fragment
+ * since we need the Activity to be able to do the animation we want.
+ */
 public class DetailsActivity extends AppCompatActivity {
     private CityObject              cityObject;
     private BitmapLayout            background;
     private Toolbar                 toolbar;
     private TextView                infoText;
     private ViewFlipper             flipper;
-    private Animation               fadein, fadeout;
     private Button                  directions;
     private ScrollView              mScrollView;
 
-    private String direction = "https://www.google.se/maps/dir/64.7449073,20.9557912/TJÄÄÄNA," +
-            "+931+44+Skellefteå/@64.7449891,20.914278,14z/" +
-            "data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x467e954ff842f71f" +
-            ":0x412452cb329526e!2m2!1d20.9157401!2d64.7510032?hl=sv";
+    /**
+     * Inflating the layout of DetailsActivity. as it says in the comments, we inflate the toolbar
+     * and starts the slideshow, sets the blurry background, adds parallax scrolling and defines
+     * the shared transition.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,9 +76,10 @@ public class DetailsActivity extends AppCompatActivity {
         getWindow().setSharedElementExitTransition(inflater.inflateTransition(android.R.transition.move).setDuration(300));
 
         setBackButton();
-
+        //If the cityObject you click to read about is online, we set the "directions" button
+        // to show "chat" instead.
         if(cityObject.isOnline()) {
-            directions.setBackgroundColor(getResources().getColor(R.color.colorGreenPrimary));
+            directions.setBackgroundColor(ContextCompat.getColor(this, R.color.colorGreenPrimary));
             directions.setText(getApplicationContext().getString(R.string.chat_name));
             directions.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -86,11 +91,13 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             });
         }
+        // Sets the button to "directions" and adds the google maps URL to the right position.
+        // We are also adding the "are you sure" popup to make sure the user didn't press wrong.
         else {
             directions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String message = getApplicationContext().getString(R.string.directions_info).toString();
+                    String message = getApplicationContext().getString(R.string.directions_info);
                     new AlertDialog.Builder(DetailsActivity.this)
                             .setTitle(getApplicationContext().getString(R.string.open_google))
                             .setMessage(String.format(message, cityObject.getName()+"?"))
@@ -99,11 +106,9 @@ public class DetailsActivity extends AppCompatActivity {
                             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override public void onClick(DialogInterface dialog, int which) {
                                     String test = "https://www.google.com/maps?saddr=My+Location&daddr=%f,%f(%s)&travelmode=walking";
-                                    Coordinates start = cityObject.getCurrentLocation();
                                     Coordinates end = cityObject.getCoordinates();
 
                                     String name = cityObject.getName().replace(' ', '+');
-
                                     String urlString = String.format(test, end.getLatitude(), end.getLongitude(), name);
 
                                     Log.v("TEST", urlString);
@@ -119,6 +124,9 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Function to cluster the findviewbyID.
+     */
     public void findViewsById() {
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         directions = (Button) findViewById(R.id.directionsButton);
@@ -128,55 +136,79 @@ public class DetailsActivity extends AppCompatActivity {
         background = (BitmapLayout) findViewById(R.id.blurredBG);
     }
 
+    /**
+     * Adds all the images from the server for 1 cityObject into a viewFlipper. We then define the
+     * viewflipper with the animation and time.
+     * @param images ArrayList of the images for 1 specific cityObject
+     */
     private void createSlideShow(ArrayList<String> images){
-    /*    for (String url : images) {
+      /*  for (String url : images) {
             ImageView slideImage = new ImageView(this);
             Picasso.with(getApplicationContext()).load(url).into(slideImage);
             slideImage.setScaleType(ImageView.ScaleType.FIT_XY);
             flipper.addView(slideImage);
 
-        }
-*/
+        }*/
+
         ImageView slideImage = new ImageView(this);
         slideImage.setTransitionName("myImage");
         Picasso.with(getApplicationContext()).load(images.get(0)).into(slideImage);
         slideImage.setScaleType(ImageView.ScaleType.FIT_XY);
         flipper.addView(slideImage);
 
-       /* fadein = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+        /*fadein = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         fadeout = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
         flipper.setInAnimation(fadein);
         flipper.setOutAnimation(fadeout);
         flipper.setAutoStart(true);
-        flipper.setFlipInterval(3000);
+        flipper.setFlipInterval(4000);
         flipper.startFlipping();*/
 
     }
 
+    /**
+     * Sets the title for the toolbar.
+     * @param title title of the toolbar
+     */
     public void setToolbarTitle(String title){
         TextView toolbarText = (TextView)findViewById(R.id.toolbar_title);
         toolbarText.setText(title.toUpperCase());
     }
 
+    /**
+     * This class is used to get the parallax scrolling effect. Parallax scrolling is
+     * a feature to make the scrolling look more alive. The whole point of it is to make the
+     * image which will get the effect scroll at half of the speed the rest of the page is
+     * scrolling.
+     */
     private class ScrollPositionObserver implements ViewTreeObserver.OnScrollChangedListener {
 
         private int mImageViewHeight;
 
-        public ScrollPositionObserver() {
+        /**
+         * checks the height of the photo.
+         */
+        private ScrollPositionObserver() {
             mImageViewHeight = getResources().getDimensionPixelSize(R.dimen.info_photo_height);
         }
 
+        /**
+         * Here we set the viewFlipper to scroll at half of the speed the rest is scrolling.
+         */
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onScrollChanged() {
             int scrollY = Math.min(Math.max(mScrollView.getScrollY(), 0), mImageViewHeight);
 
-            // changing position of ImageView
             flipper.setTranslationY(scrollY / 2);
 
         }
     }
 
+    /**
+     * Inflates the back button. (parent) is used to increase the clickable area for the button
+     * to be clicked.
+     */
     private void setBackButton(){
         final ImageView backBtn = new ImageView(this);
 
@@ -189,7 +221,6 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DetailsActivity.super.finishAfterTransition();
-                //overridePendingTransition(0,0);
             }
         });
 
@@ -199,22 +230,21 @@ public class DetailsActivity extends AppCompatActivity {
                 // Post in the parent's message queue to make sure the parent
                 // lays out its children before we call getHitRect()
                 Rect delegateArea = new Rect();
-                ImageView delegate = backBtn;
-                delegate.getHitRect(delegateArea);
+                backBtn.getHitRect(delegateArea);
                 delegateArea.top -= 600;
                 delegateArea.bottom += 300;
                 delegateArea.left -= 600;
                 delegateArea.right += 300;
                 TouchDelegate expandedArea = new TouchDelegate(delegateArea,
-                        delegate);
+                        backBtn);
                 // give the delegate to an ancestor of the view we're
                 // delegating the
                 // area to
-                if (View.class.isInstance(delegate.getParent())) {
-                    ((View) delegate.getParent())
+                if (View.class.isInstance(backBtn.getParent())) {
+                    ((View) backBtn.getParent())
                             .setTouchDelegate(expandedArea);
                 }
-            };
+            }
         });
 
     }
