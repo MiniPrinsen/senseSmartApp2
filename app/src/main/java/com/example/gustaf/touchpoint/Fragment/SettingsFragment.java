@@ -59,7 +59,7 @@ public class SettingsFragment extends Fragment {
     /**
      * Function to setup the Buttons for language selection.
      */
-    public void setupLanguageSelection() {
+    private void setupLanguageSelection() {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("selectedLanguage", Context.MODE_PRIVATE);
         String pine = sharedPreferences.getString("language","");
 
@@ -96,7 +96,7 @@ public class SettingsFragment extends Fragment {
     /**
      * Function to setup the Seekbar for changing the city radius.
      */
-    public void setupCityDistance(){
+    private void setupCityDistance(){
         SharedPreferences cityDistance = getActivity().getSharedPreferences("cityDistance", Context.MODE_PRIVATE);
         int mProgress = cityDistance.getInt("seekBarProgress", 50000);
         distance.setMax(45000);
@@ -129,7 +129,7 @@ public class SettingsFragment extends Fragment {
     /**
      * Function to cluster the findviewsbyId.
      */
-    public void findViewsById() {
+    private void findViewsById() {
         swedish = (Button) view.findViewById(R.id.swedish);
         english = (Button) view.findViewById(R.id.english);
         distance = (SeekBar) view.findViewById(R.id.searchingdistance);
@@ -139,7 +139,7 @@ public class SettingsFragment extends Fragment {
     /**
      * Function to hold the chosen radius. Sends this to BaseActivity for update.
      */
-    public void setCITY_DIST() {
+    private void setCITY_DIST() {
         SharedPreferences mSharedPrefs = getActivity().getSharedPreferences("cityDistance", MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPrefs.edit();
         mEditor.putInt("seekBarProgress", CITY_DIST).apply();
@@ -151,7 +151,7 @@ public class SettingsFragment extends Fragment {
      * Function to hold the chosen language. Sends this to BaseActivity for update.
      * @param lang language
      */
-    public void setLocale(String lang) {
+    private void setLocale(String lang) {
         Locale myLocale = new Locale(lang);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -164,6 +164,7 @@ public class SettingsFragment extends Fragment {
         eneditor.apply();
         BaseActivity base = (BaseActivity) getActivity();
         base.refreshActivity();
+        base.finish();
     }
 
 }

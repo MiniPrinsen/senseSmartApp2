@@ -18,8 +18,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/border"
+        style="?android:attr/buttonBarStyle"
         android:layout_marginTop="100dp">
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/english"
             android:layout_width="100dp"
             android:layout_height="40dp"
@@ -28,6 +30,7 @@
             android:textAlignment="center" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/swedish"
             android:layout_width="100dp"
             android:layout_height="40dp"

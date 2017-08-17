@@ -8,6 +8,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,7 +25,7 @@ import java.util.List;
  * Adapter for displaying messages.
  */
 public class ChatArrayAdapter extends ArrayAdapter {
-    private List<MessageContainer>      chatMessageList = new ArrayList<>();
+    private final List<MessageContainer>      chatMessageList = new ArrayList<>();
 
     public ChatArrayAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
@@ -65,6 +67,12 @@ public class ChatArrayAdapter extends ArrayAdapter {
         LinearLayout singleMessageContainer = (LinearLayout) row.findViewById(R.id.singleMessageContainer);
         MessageContainer chatMessageObj = getItem(position);
         TextView chatText = (TextView) row.findViewById(R.id.singleMessage);
+
+        //Might be better to delete this
+        Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        anim.setDuration(250);
+        singleMessageContainer.setAnimation(anim);
+        singleMessageContainer.startAnimation(anim);
 
 
 

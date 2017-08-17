@@ -34,7 +34,7 @@ import java.util.ArrayList;
 public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private ArrayList<CityObject> cityObjects;
-    CityObject cObject;
+    private CityObject cObject;
 
     public GoogleMapsFragment() {
     // Required empty public constructor
@@ -60,7 +60,7 @@ public class GoogleMapsFragment extends Fragment implements OnMapReadyCallback {
 
     /**
      * Defines the google maps with markers and all that.
-     * The foor-loop loops through all the city objects and sets a marker at each specific location.
+     * The for-loop loops through all the city objects and sets a marker at each specific location.
      * We set the camera update(zoom) and enables your own position.
      * @param googleMap the map to be inflated
      */

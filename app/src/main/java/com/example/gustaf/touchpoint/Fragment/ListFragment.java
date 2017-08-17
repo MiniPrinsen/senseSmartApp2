@@ -20,15 +20,15 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * Class for holding the Grid with all the city objects. ListFragment and GlidListAdapter goes
- * hand in hand with eachother.
+ * Class for holding the Grid with all the city objects. ListFragment and GridListAdapter goes
+ * hand in hand with each other.
  */
 public class ListFragment extends Fragment  {
     private static final int DEFAULT_SPAN_COUNT = 2;
     private GridListAdapter mAdapter;
 
     private ArrayList<CityObject> cityObjects;
-    android.location.Location current_location;
+    private android.location.Location current_location;
 
     public ListFragment() {
         // Required empty public constructor
@@ -74,7 +74,7 @@ public class ListFragment extends Fragment  {
     /*
     * Receives new location from GPS
     */
-    public void recieveLocation(android.location.Location loc){
+    public void receiveLocation(android.location.Location loc){
         current_location = loc;
         cityObjects = sortedTouchPoints(false);
 

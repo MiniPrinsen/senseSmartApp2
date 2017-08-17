@@ -88,13 +88,8 @@ public class ChatActivity extends AppCompatActivity {
                 // if keypad is shown, the r.bottom is smaller than that before.
                 int keypadHeight = screenHeight - r.bottom;
 
-                if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
-                    keyBoardvisible = true;
-                }
-                else {
-                    keyBoardvisible = false;
+                keyBoardvisible = keypadHeight > screenHeight * 0.15;
 
-                }
             }
         });
     }
@@ -104,7 +99,7 @@ public class ChatActivity extends AppCompatActivity {
      * Here we check if the keyboard is visible or not. If it is, the back button click is set
      * to just hide the keyboard. If it's not , we set the click to exit the activity.
      */
-    View.OnClickListener goBack = new View.OnClickListener() {
+    private final View.OnClickListener goBack = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             if (!keyBoardvisible){
@@ -129,12 +124,12 @@ public class ChatActivity extends AppCompatActivity {
     /**
      * Here we inflate the ViewPager with the fragment.
      */
-    public void addPages(){
-        NoSwipeViewPager viewPagerDeafult = (NoSwipeViewPager) findViewById(R.id.viewPager_deafultchat);
-        ViewPagerAdapter viewPagerAdapterDeafult = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapterDeafult.addFragments(new ChatWindowFragment(), getApplicationContext().getString(R.string.chat_name));
-        viewPagerDeafult.setAdapter(viewPagerAdapterDeafult);
-        viewPagerDeafult.setVisibility(View.VISIBLE);
+    private void addPages(){
+        NoSwipeViewPager viewPagerDefault = (NoSwipeViewPager) findViewById(R.id.viewPager_deafultchat);
+        ViewPagerAdapter viewPagerAdapterDefault = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapterDefault.addFragments(new ChatWindowFragment(), getApplicationContext().getString(R.string.chat_name));
+        viewPagerDefault.setAdapter(viewPagerAdapterDefault);
+        viewPagerDefault.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -142,7 +137,7 @@ public class ChatActivity extends AppCompatActivity {
      * backbutton and the title of the cityObject.
      * @param imageurl URL to the image which is shown as the small circle
      */
-    public void inflateToolbar(String imageurl) {
+    private void inflateToolbar(String imageurl) {
         ImageView circleImage = (ImageView)findViewById(R.id.profilePicture);
         ImageView question = (ImageView) findViewById(R.id.infobutton);
 
@@ -170,7 +165,7 @@ public class ChatActivity extends AppCompatActivity {
     /**
      * Function to hide the keyboard.
      */
-    public  void hideKeyboard() {
+    private void hideKeyboard() {
         InputMethodManager inputManager = (InputMethodManager) this
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
 

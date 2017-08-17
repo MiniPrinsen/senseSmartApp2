@@ -37,12 +37,12 @@ import java.net.URLEncoder;
  */
 public class ChatWindowFragment extends Fragment {
     private Button                          buttonSend;
-    public static final String              URL ="http://35.158.191.6:8080/sensesmart/hey";
+    private static final String              URL ="http://35.158.191.6:8080/sensesmart/hey";
     private EditText                        chatText;
     private ChatArrayAdapter                chatArrayAdapter;
     private ListView                        listView;
-    View                                    view;
-    ChatActivity                            chat;
+
+    private ChatActivity                            chat;
 
     public ChatWindowFragment(){}
 
@@ -53,7 +53,7 @@ public class ChatWindowFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_chat_window, container, false);
+        View view = inflater.inflate(R.layout.fragment_chat_window, container, false);
         findViewsById(view);
 
         buttonSend.setOnClickListener(customListener);
@@ -115,7 +115,7 @@ public class ChatWindowFragment extends Fragment {
     /**
      * It's here we are defining what happens if we press the send button.
      */
-    private View.OnClickListener customListener = new View.OnClickListener() {
+    private final View.OnClickListener customListener = new View.OnClickListener() {
         public void onClick(View v) {
             switch (v.getId() /*to get clicked view id**/) {
                 case R.id.send_btn:
@@ -150,7 +150,7 @@ public class ChatWindowFragment extends Fragment {
      * Function to hide the keyboard.
      * @param ctx Context
      */
-    public static void hideKeyboard(Context ctx) {
+    private static void hideKeyboard(Context ctx) {
         InputMethodManager inputManager = (InputMethodManager) ctx
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -164,21 +164,19 @@ public class ChatWindowFragment extends Fragment {
 
     /**
      * Function to send the chat message.
-     * @return true
      */
-    private boolean sendChatMessage(){
+    private void sendChatMessage(){
         chatArrayAdapter.add(new MessageContainer(false, chatText.getText().toString()));
         chatText.setText("");
-
-        return true;
     }
 
     /**
-     * Function to recieve the response from the server and inflate it onto the view.
+     * Function to receive the response from the server and inflate it onto the view.
      * @param message the message
      */
-    private void recieveChatMessage(String message){
+    private void receiveChatMessage(String message){
         if (message != null) {
+
             chatArrayAdapter.add(new MessageContainer(true, message));
             listView.setSelection(chatArrayAdapter.getCount() - 1);
         }
@@ -239,14 +237,14 @@ public class ChatWindowFragment extends Fragment {
         }
 
         /**
-         * Recieves the chat message.
+         * Receives the chat message.
          * @param output chat message
          */
         @Override
         protected void onPostExecute(String output) {
             try {
                 output = URLDecoder.decode(output, "UTF-8");
-                recieveChatMessage(output);
+                receiveChatMessage(output);
 
 
 

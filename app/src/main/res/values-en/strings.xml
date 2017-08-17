@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Touch Point</string>
+    <string name="app_name">TouchPoint</string>
     <string name="city">Skellefteå</string>
 
     <string name="swedish">Svenska</string>
     <string name="english">English</string>
     <string name="no_internet_access">Touchpoint cannot find a connection to the internet.</string>
+    <string name="back_button">Back Button</string>
+    <string name="grid_image">Grid Image</string>
 
     <string name="settings_name">Settings</string>
     <string name="nearby_name">Nearby</string>
     <string name="chat_name">Chat</string>
-    <string name="achievement_name">Achievements</string>
     <string name="map_name">Map</string>
     <string name="info_name">Info</string>
     <string name="help_text">Walk within 50 meters to interact with this object.</string>
@@ -19,7 +20,6 @@
     <string name="open_google">Open Google Maps</string>
     <string name="directions_info">Get directions to %s</string>
     <string name="location_request">We need your location,\n otherwise this app won\'t work!</string>
-    <string name="achievement_text">   4 out of 12 \n finished</string>
     <string name="change_language">Language</string>
     <string name="interact_text">Click to interact!</string>
     <string name="sample_questions">Tell me something interesting \n Tell me a joke \n How old are you? \n
@@ -29,17 +29,11 @@
     <string name="length_kilometers">%d KM</string>
 
     <string name="direction">Directions</string>
-    <string name="welcome_message">Hello, how are you?</string>
     <string name="POST_error">Something went wrong, try again.</string>
+    <string formatted="false" name="directions_URL">https://www.google.com/maps?saddr=My+Location&amp;daddr=%f,%f(%s)&amp;travelmode=walking</string>
 
 
-    <string name="messagebox_hint">Message...</string>
-    <string name="send_text">Send</string>
+    <string name="messagebox_hint">Message&#8230;</string>
 
-    <string name="server_url">http://127.0.0.1:8080/senseSmart/hey</string>
 
-    <string name="server_ip">http://52.28.236.84:8080</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

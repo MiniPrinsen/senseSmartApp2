@@ -27,10 +27,10 @@ public class GetLocation implements LocationListener, GoogleApiClient.OnConnecti
 
     private static final long           POLLING_FREQ = 1000 * 30;
     private static final long           FASTEST_UPDATE_FREQ = 1000 * 5;
-    private Context                     mContext;
+    private final Context                     mContext;
     private GoogleApiClient             mGoogleApiClient;
     private LocationRequest             mLocationRequest;
-    private Handler                     handler;
+    private final Handler                     handler;
 
     public GetLocation(Context mContext, Handler handler) {
 

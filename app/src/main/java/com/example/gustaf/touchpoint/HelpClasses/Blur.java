@@ -57,8 +57,8 @@ public class Blur {
          * after transformation.
          */
         private class BlurTransformation implements com.squareup.picasso.Transformation {
-            Context context;
-            private String key;
+            final Context context;
+            private final String key;
             BlurTransformation(Context context, String key){
                 super();
                 this.context = context;

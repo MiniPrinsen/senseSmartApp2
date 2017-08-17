@@ -5,8 +5,8 @@ package com.example.gustaf.touchpoint.Fragment;
  * LEFT if it's the bot that writes, or right if it is the user.
  */
 public class MessageContainer {
-    public boolean left;
-    public String message;
+    public final boolean left;
+    public final String message;
 
     /*
      * @param left if the bot wrote the message

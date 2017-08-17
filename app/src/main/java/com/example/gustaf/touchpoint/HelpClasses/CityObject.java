@@ -11,22 +11,22 @@ import java.util.ArrayList;
  */
 public class CityObject implements Parcelable {
 
-    private                     String name;
-    private String              description;
-    private Coordinates         coordinates;
-    private Oid                         _id;
+    private final                     String name;
+    private final String              description;
+    private final Coordinates         coordinates;
+    private final Oid                         _id;
     private int                    distance;
     private static final int    RADIUS = 50;
-    private ArrayList<String>        images;
+    private final ArrayList<String>        images;
     private Coordinates     currentLocation;
-    private ArrayList<Integer>         imgs;
+    //private ArrayList<Integer>         imgs;
     private boolean        isOnline = false;
 
-    public  CityObject() {
+    /*public  CityObject() {
         imgs = new ArrayList<>();
         coordinates = new Coordinates();
         images = new ArrayList<>();
-    }
+    }*/
 
     public void setCurrentLocation(Coordinates cord){
         this.currentLocation = cord;
@@ -40,26 +40,18 @@ public class CityObject implements Parcelable {
         return images;
     }
 
-    /**
-     * As we mentioned above, this is all the relevant information we need for a city object.
-     * @param name title of the city object
-     * @param description descriptive text of the city object. Will be shown in the details.
-     * @param coordinates coordinates of the city object. This includes latitude and longitude.
-     * @param persons_voted Number of persons which have voted on the city object.
-     * @param rating Rating of the city object.
-     * @param images An arraylist of images of the city object.
-     */
-    public CityObject(String name, String description, Coordinates coordinates, float persons_voted
+
+    /*public CityObject(String name, String description, Coordinates coordinates, float persons_voted
     , float rating, ArrayList<Integer> images) {
         this.name = name;
         this.description = description;
         this.coordinates = coordinates;
         this.imgs = images;
-    }
+    }*/
 
     /**
      * Since we don't want to return "43000 M", we format the text to show M, KM or MIL.
-     * @return the appropreate format of the distance.
+     * @return the appropriate format of the distance.
      */
     public String getDistance(){
 
@@ -95,12 +87,9 @@ public class CityObject implements Parcelable {
                         Math.sin(dLng/2) * Math.sin(dLng/2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         distance = (int)(earthRadius * c);
-        if (distance<RADIUS){
-            isOnline = true;
-        }
-        else{
-            isOnline = false;
-        }
+
+        isOnline = distance<RADIUS;
+
 
     }
 
@@ -114,9 +103,9 @@ public class CityObject implements Parcelable {
     public String getDescription(){
         return description;
     }
-    public ArrayList<Integer> getImage(){
+   /* public ArrayList<Integer> getImage(){
         return imgs;
-    }
+    }*/
     public Coordinates getCoordinates(){
         return coordinates;
     }
@@ -157,7 +146,7 @@ public class CityObject implements Parcelable {
     }
 
     /**
-     * Funcion to make it possible to parse a city object.
+     * Function to make it possible to parse a city object.
      */
     @Override
     public void writeToParcel(Parcel parcel, int i) {

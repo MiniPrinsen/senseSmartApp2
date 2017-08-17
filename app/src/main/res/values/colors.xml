@@ -3,36 +3,36 @@
 
     <!-- BLUE COLORS -->
     <color name="colorPrimaryDark">#3294B0</color>
-    <color name="colorPrimaryMediumDark">#3294B0</color>
+    <!--<color name="colorPrimaryMediumDark">#3294B0</color>-->
     <color name="colorPrimary">#51ACC7</color>
-    <color name="colorPrimaryMediumLight">#79C7DC</color>
+    <!--<color name="colorPrimaryMediumLight">#79C7DC</color>-->
     <color name="colorPrimaryLight">#AEE1F0</color>
 
     <!-- YELLOW COLORS -->
-    <color name="colorYellowPrimaryDark">#FAB618</color>
+    <!--<color name="colorYellowPrimaryDark">#FAB618</color>
     <color name="colorYellowPrimaryMediumDark">#FFC642</color>
     <color name="colorYellowPrimary">#FFD063</color>
     <color name="colorYellowPrimaryMediumLight">#FFDB88</color>
-    <color name="colorYellowPrimaryLight">#FFE9B7</color>
+    <color name="colorYellowPrimaryLight">#FFE9B7</color>-->
 
     <!-- RED COLORS -->
-    <color name="colorRedPrimaryDark">#FA3718</color>
+   <!-- <color name="colorRedPrimaryDark">#FA3718</color>
     <color name="colorRedPrimaryMediumDark">#FF5B42</color>
     <color name="colorRedPrimary">#FF7863</color>
     <color name="colorRedPrimaryMediumLight">#FF9888</color>
-    <color name="colorRedPrimaryLight">#FFC1B7</color>
+    <color name="colorRedPrimaryLight">#FFC1B7</color>-->
 
     <!-- GREEN COLORS -->
-    <color name="colorGreenPrimaryDark">#12B944</color>
-    <color name="colorGreenPrimaryMediumDark">#34C861</color>
+    <!--<color name="colorGreenPrimaryDark">#12B944</color>
+    <color name="colorGreenPrimaryMediumDark">#34C861</color>-->
     <color name="colorGreenPrimary">#54D87C</color>
-    <color name="colorGreenPrimaryMediumLight">#7CE79C</color>
-    <color name="colorGreenPrimaryLight">#AFF4C4</color>
+    <!--<color name="colorGreenPrimaryMediumLight">#7CE79C</color>
+    <color name="colorGreenPrimaryLight">#AFF4C4</color>-->
 
     <!-- GRAY COLORS -->
     <color name="colorGrayDark">#6D6C6C</color>
     <color name="colorGrayMediumDark">#ADACAC</color>
-    <color name="colorGray">#C6C5C5</color>
+    <!--<color name="colorGray">#C6C5C5</color>-->
     <color name="colorGrayMediumLight">#E0DFDF</color>
     <color name="colorGrayMediumTransparent">#80E0DFDF</color>
     <color name="colorWhite">#FFFFFF</color>

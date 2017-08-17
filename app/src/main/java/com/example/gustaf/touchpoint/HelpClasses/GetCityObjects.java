@@ -28,10 +28,10 @@ import java.util.ArrayList;
  */
 public class GetCityObjects implements Runnable {
     private static final String             HOST = "http://35.158.191.6:8080/sensesmart/hey";
-    private double                          longitude;
-    private double                          latitude;
-    private int                             distance;
-    private Handler                         handler;
+    private final double                          longitude;
+    private final double                          latitude;
+    private final int                             distance;
+    private final Handler                         handler;
 
     public GetCityObjects(double lng, double lat, int dist, Handler handler){
         this.longitude = lng;
@@ -96,12 +96,12 @@ public class GetCityObjects implements Runnable {
                 handler.sendMessage(msg);
             }
             //Closes the connection
-            urlConnection.disconnect();
+            if(urlConnection != null) {
+                urlConnection.disconnect();
+            }
 
         }
     }
-
-
 
     /**
      *

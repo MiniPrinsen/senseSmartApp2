@@ -52,33 +52,30 @@ import java.util.Locale;
  *  to the closest city object etc.
  */
 public class BaseActivity extends AppCompatActivity{
-    private static int                      CITY_DIST;
-    private TabLayout                            tabLayout;
+    private static int                            CITY_DIST;
+    private TabLayout                             tabLayout;
     private android.location.Location      current_position;
     private ViewPager                       viewPagerTabbed;
-    private NoSwipeViewPager               viewPagerDeafult;
+    private NoSwipeViewPager               viewPagerDefault;
     private ArrayList<CityObject>               cityObjects;
     private ViewPagerAdapter         viewPagerAdapterTabbed;
-    private ViewPagerAdapter        viewPagerAdapterDeafult;
-    protected AHBottomNavigation           bottomNavigation;
-    protected Toolbar                               toolbar;
-    int position;
+    private ViewPagerAdapter        viewPagerAdapterDefault;
+    private AHBottomNavigation             bottomNavigation;
+    private int                                    position;
 
     /**
      *
      * @param savedInstanceState
-     * Starts by setting the splash screen, and when the app is loaded, changes that to the layout
-     * of BaseActivity. This is where we call the functions to inflate the toolbar and navigationbar
+     *  This is where we call the functions to inflate the toolbar and navigationbar.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_base);
 
         /* Implements the toolbar */
-        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         /*Defines the navigationbar*/
@@ -121,7 +118,7 @@ public class BaseActivity extends AppCompatActivity{
      * at: https://github.com/aurelhubert/ahbottomnavigation. The version we are using is 2.0 which
      * is specified in the Gradle(app).
      */
-    protected void initializeNavigationBar()
+    private void initializeNavigationBar()
     {
         /*Creates the items*/
         final AHBottomNavigationItem crimeItem = new AHBottomNavigationItem(
@@ -188,10 +185,12 @@ public class BaseActivity extends AppCompatActivity{
      * be able to change language/max distance. The animations are set to make it look like we
      * are only refreshing the settings page.
      */
+
     public void refreshActivity() {
         Intent intent = new Intent(this, BaseActivity.class);
         intent.putExtra("position", 2);
         startActivity(intent);
+        finish();
         overridePendingTransition(R.anim.fade_in,R.anim.empty);
 
     }
@@ -203,9 +202,9 @@ public class BaseActivity extends AppCompatActivity{
      * This function shows the selected page from the bottom navigation. This only includes settings
      * and chat. The listFragment is of type tabLayout which we set as GONE here.
      */
-    public void showPage(int pos, String title){
-        viewPagerDeafult.setCurrentItem(pos, false);
-        viewPagerDeafult.setVisibility(View.VISIBLE);
+    private void showPage(int pos, String title){
+        viewPagerDefault.setCurrentItem(pos, false);
+        viewPagerDefault.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.GONE);
         viewPagerTabbed.setVisibility(View.INVISIBLE);
         setToolBarTitle(title);
@@ -218,16 +217,16 @@ public class BaseActivity extends AppCompatActivity{
      * This function shows the selected tab from the toolbar. This only includes the MAP and LIST
      * since chat and settings are of the type viewPagerDefault.
      */
-    public void showTabbed(String title){
+    private void showTabbed(String title){
         viewPagerTabbed.setVisibility(View.VISIBLE);
-        viewPagerDeafult.setVisibility(View.INVISIBLE);
+        viewPagerDefault.setVisibility(View.INVISIBLE);
         tabLayout.setVisibility(View.VISIBLE);
         setToolBarTitle(title);
     }
     /**
      * Creates the list and map fragments by adding them to the viewPagerAdapterTabbed.
      */
-    public void addTabs(){
+    private void addTabs(){
         if (tabLayout == null) {
             tabLayout = (TabLayout) findViewById(R.id.tabLayout);
             viewPagerTabbed = (ViewPager) findViewById(R.id.tabbed_viewPager);
@@ -237,8 +236,8 @@ public class BaseActivity extends AppCompatActivity{
             viewPagerTabbed.setAdapter(viewPagerAdapterTabbed);
             tabLayout.setupWithViewPager(viewPagerTabbed);
         }
-        if (viewPagerAdapterDeafult != null){
-            viewPagerDeafult.setVisibility(View.INVISIBLE);
+        if (viewPagerAdapterDefault != null){
+            viewPagerDefault.setVisibility(View.INVISIBLE);
         }
         viewPagerTabbed.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.VISIBLE);
@@ -250,14 +249,14 @@ public class BaseActivity extends AppCompatActivity{
     /**
      * Adds settings and chat fragments by adding them to viewPagerAdapterDefault.
      */
-    public void addPages(){
+    private void addPages(){
         tabLayout.setVisibility(View.GONE);
         viewPagerTabbed.setVisibility(View.INVISIBLE);
-        viewPagerDeafult = (NoSwipeViewPager) findViewById(R.id.viewPager_deafult);
-        viewPagerAdapterDeafult = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapterDeafult.addFragments(new ChatFragment(), getApplicationContext().getString(R.string.chat_name).toUpperCase());
-        viewPagerAdapterDeafult.addFragments(new SettingsFragment(), getApplicationContext().getString(R.string.settings_name).toUpperCase());
-        viewPagerDeafult.setAdapter(viewPagerAdapterDeafult);
+        viewPagerDefault = (NoSwipeViewPager) findViewById(R.id.viewPager_default);
+        viewPagerAdapterDefault = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapterDefault.addFragments(new ChatFragment(), getApplicationContext().getString(R.string.chat_name).toUpperCase());
+        viewPagerAdapterDefault.addFragments(new SettingsFragment(), getApplicationContext().getString(R.string.settings_name).toUpperCase());
+        viewPagerDefault.setAdapter(viewPagerAdapterDefault);
     }
 
 
@@ -265,7 +264,7 @@ public class BaseActivity extends AppCompatActivity{
      * Sets the title for the toolbar
      * @param title title of the page we want to open.
      */
-    public void setToolBarTitle(String title){
+    private void setToolBarTitle(String title){
         TextView toolbarText = (TextView)findViewById(R.id.toolbar_title);
         toolbarText.setText(title);
 
@@ -312,7 +311,7 @@ public class BaseActivity extends AppCompatActivity{
      * Gets called when location changes and updates the other fragments to show the appropriate
      * information.
      */
-    private Handler locationHandler = new Handler() {
+    private final Handler locationHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             current_position = (android.location.Location) msg.obj;
@@ -324,27 +323,32 @@ public class BaseActivity extends AppCompatActivity{
             }
             //Updating
             else {
-                ((ListFragment) (viewPagerAdapterTabbed.getItem(0))).recieveLocation(current_position);
+                ((ListFragment) (viewPagerAdapterTabbed.getItem(0))).receiveLocation(current_position);
                 for (CityObject tPoint : cityObjects) {
                     tPoint.setCurrentLocation(new Coordinates(current_position.getLatitude(),
                             current_position.getLongitude()));
                     tPoint.setLengthBetween();
                 }
-                ((ChatFragment) (viewPagerAdapterDeafult.getItem(0))).updateLocation(cityObjects.get(0));
+                ((ChatFragment) (viewPagerAdapterDefault.getItem(0))).updateLocation(cityObjects.get(0));
             }
         }
 
     };
 
     /**
-     * Recieves the cityobjects from the database via a handler from getCityObjects class
+     * Receives the cityobjects from the database via a handler from getCityObjects class
      */
-    private Handler receiveFromDb = new Handler(){
+    @SuppressWarnings("unchecked")
+    private final Handler receiveFromDb = new Handler(){
         @Override
         public void handleMessage(Message msg){
 
             if (msg.obj instanceof java.util.ArrayList){
-                cityObjects = (ArrayList<CityObject>)msg.obj;
+
+
+                    cityObjects = (ArrayList<CityObject>)msg.obj;
+
+
 
                     bottomNavigation.restoreBottomNavigation(true);
                     AppBarLayout app = (AppBarLayout)findViewById(R.id.toolbar);
@@ -359,7 +363,7 @@ public class BaseActivity extends AppCompatActivity{
                     else{
                         showTabbed(getString(R.string.city));
                     }
-                    ((ChatFragment) (viewPagerAdapterDeafult.getItem(0))).updateLocation(cityObjects.get(0));
+                    ((ChatFragment) (viewPagerAdapterDefault.getItem(0))).updateLocation(cityObjects.get(0));
 
 
             }

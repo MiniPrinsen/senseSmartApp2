@@ -45,6 +45,7 @@
             android:layout_centerVertical="true"
             android:layout_height="wrap_content">
             <ImageView
+                android:contentDescription="@string/no_internet_access"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center_horizontal"
@@ -73,7 +74,7 @@
         android:paddingBottom="@dimen/bottom_navigation_height"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-    android:id="@+id/viewPager_deafult">
+    android:id="@+id/viewPager_default">
     </com.example.gustaf.touchpoint.HelpClasses.NoSwipeViewPager>
     </RelativeLayout>
     <include layout="@layout/navigationbar_layout"/>

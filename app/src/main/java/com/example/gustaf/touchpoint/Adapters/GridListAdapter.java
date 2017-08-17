@@ -28,10 +28,10 @@ import java.util.List;
 public class GridListAdapter extends RecyclerView.Adapter<Holder> {
 
     private final int mDefaultSpanCount;
-    private List<CityObject>  mItemList;
+    private final List<CityObject>  mItemList;
     private final int      SCREEN_WIDTH;
     private final int     SCREEN_HEIGHT;
-    private Context             context;
+    private final Context             context;
 
     public GridListAdapter(List<CityObject> itemList, GridLayoutManager gridLayoutManager, int defaultSpanCount, int width, int height, Context context) {
         mItemList = itemList;
@@ -113,10 +113,10 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
 
 
     /**
-     * Sets the clickListener to the appropreate grid item. Defines the shared element transition
+     * Sets the clickListener to the appropriate grid item. Defines the shared element transition
      * for the specified grid item.
      */
-    private View.OnClickListener gridPress = new View.OnClickListener() {
+    private final View.OnClickListener gridPress = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     TextView txtView = (TextView)view.findViewById(R.id.gridTextTitle);

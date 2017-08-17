@@ -2,6 +2,7 @@ package com.example.gustaf.touchpoint.Fragment;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -46,6 +47,8 @@ public class ChatFragment extends Fragment {
     private Animation                       spin;
     private ProgressBar              progressbar;
     private ColorStateList              oldColors;
+    private Animation backgroundAnimation2;
+    private Animation backgroundAnimation;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -68,6 +71,8 @@ public class ChatFragment extends Fragment {
         spin = AnimationUtils.loadAnimation(getContext(), R.anim.rotation);
         spin.setRepeatCount(Animation.INFINITE);
         progressbar.startAnimation(spin);
+        backgroundAnimation2 = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
+        backgroundAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         //rotatingImage.startAnimation(spin);
 
         return rootView;
@@ -78,7 +83,7 @@ public class ChatFragment extends Fragment {
      * it vibrates and shows a toast message for a little bit. This is used to tell the user
      * it is not close enough to talk to the object.
      */
-    public View.OnClickListener clickListener = new View.OnClickListener() {
+    private final View.OnClickListener clickListener = new View.OnClickListener() {
         public void onClick(View v) {
             Animation vibrate = AnimationUtils.loadAnimation(getContext(), R.anim.vibrate);
             vibrate.setFillAfter(false);
@@ -98,7 +103,6 @@ public class ChatFragment extends Fragment {
         }
 
     };
-
     /**
      * Function to check where we are and if we need to change it to online/if it's a new object
      * and in that case, change the image and so on.
@@ -107,8 +111,11 @@ public class ChatFragment extends Fragment {
         boolean newTouchPoint = !tPoint.equals(closestCityObject);
         TextView distance = (TextView)rootView.findViewById(R.id.objectDistance);
         if (tPoint.isOnline() && firstTime){
-            //BUGG, RESOURCE NOT FOUND
-            distance.setText(getString(R.string.interact_text));
+            //BUGG, RESOURCE NOT FOUND, MAYBE FIXED
+            Activity activity = getActivity();
+            if(activity != null) {
+                distance.setText(getString(R.string.interact_text));
+            }
         }
         else if (!tPoint.isOnline()){
             distance.setText(tPoint.getDistance());
@@ -135,7 +142,7 @@ public class ChatFragment extends Fragment {
      * @param bitmap image to check
      * @return the dominant color of the image
      */
-    public static int getDominantColor(Bitmap bitmap) {
+    private static int getDominantColor(Bitmap bitmap) {
         Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, 1, 1, true);
         final int color = newBitmap.getPixel(0, 0);
         newBitmap.recycle();
@@ -146,7 +153,7 @@ public class ChatFragment extends Fragment {
      * sets a clickListener if the object is online. In that case, we set it to open a new chat
      * window.
      */
-    private View.OnClickListener chattObjectListener = new View.OnClickListener()
+    private final View.OnClickListener chattObjectListener = new View.OnClickListener()
     {
         public void onClick(View v)
         {
@@ -169,7 +176,7 @@ public class ChatFragment extends Fragment {
      * @param colorToInvert color to invert
      * @return black or white
      */
-    public static int getContrastColor(int colorToInvert) {
+    private static int getContrastColor(int colorToInvert) {
         double y = (299 * Color.red(colorToInvert) + 587 * Color.green(colorToInvert) + 114 * Color.blue(colorToInvert)) / 1000;
         return y >= 128 ? Color.BLACK : Color.WHITE;
     }
@@ -178,8 +185,8 @@ public class ChatFragment extends Fragment {
      * Function to use when a city object goes online. Here we change the size of the circle, adds
      * a animation to it and draws a green stroke around it to make it look active.
      */
-    public void zoomIn(){
-        Animation backgroundAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+    private void zoomIn(){
+
         final ImageView background = (ImageView)rootView.findViewById(R.id.backgroundImage);
 
         Blur b = new Blur();
@@ -231,7 +238,7 @@ public class ChatFragment extends Fragment {
     /**
      * Here we reset all the stuff we change when we call the zoomIn function.
      */
-    public void zoomOut(){
+    private void zoomOut(){
 
         ObjectAnimator scaleBackX = ObjectAnimator.ofFloat(circleContainer, "scaleX", 1.0f).setDuration(1000);
         ObjectAnimator scaleBackY = ObjectAnimator.ofFloat(circleContainer, "scaleY", 1.0f).setDuration(1000);
@@ -251,8 +258,6 @@ public class ChatFragment extends Fragment {
         circleImage.setClickable(false);
         circleImage.setOnClickListener(null);
         circleImage.setOnClickListener(clickListener);
-
-        final Animation backgroundAnimation2 = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
 
         TextView name = (TextView)rootView.findViewById(R.id.objectName);
         TextView distance = (TextView)rootView.findViewById(R.id.objectDistance);

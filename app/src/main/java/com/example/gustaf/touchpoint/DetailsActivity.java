@@ -13,11 +13,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -44,6 +45,8 @@ public class DetailsActivity extends AppCompatActivity {
     private ViewFlipper             flipper;
     private Button                  directions;
     private ScrollView              mScrollView;
+    private Animation               fadein;
+    private Animation               fadeout;
 
     /**
      * Inflating the layout of DetailsActivity. as it says in the comments, we inflate the toolbar
@@ -105,13 +108,12 @@ public class DetailsActivity extends AppCompatActivity {
                             .setNegativeButton(android.R.string.cancel, null) // dismisses by default
                             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override public void onClick(DialogInterface dialog, int which) {
-                                    String test = "https://www.google.com/maps?saddr=My+Location&daddr=%f,%f(%s)&travelmode=walking";
+                                    //String test = "https://www.google.com/maps?saddr=My+Location&daddr=%f,%f(%s)&travelmode=walking";
+                                    String test = getString(R.string.directions_URL);
                                     Coordinates end = cityObject.getCoordinates();
-
                                     String name = cityObject.getName().replace(' ', '+');
                                     String urlString = String.format(test, end.getLatitude(), end.getLongitude(), name);
 
-                                    Log.v("TEST", urlString);
                                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
                                     startActivity(intent);
                                 }
@@ -125,10 +127,12 @@ public class DetailsActivity extends AppCompatActivity {
 
 
     /**
-     * Function to cluster the findviewbyID.
+     * Function to cluster the findviewbyIDs.
      */
-    public void findViewsById() {
+    private void findViewsById() {
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        fadein = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+        fadeout = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
         directions = (Button) findViewById(R.id.directionsButton);
         flipper = (ViewFlipper) findViewById(R.id.slideShow);
         mScrollView = (ScrollView) findViewById(R.id.infofragment);
@@ -142,27 +146,20 @@ public class DetailsActivity extends AppCompatActivity {
      * @param images ArrayList of the images for 1 specific cityObject
      */
     private void createSlideShow(ArrayList<String> images){
-      /*  for (String url : images) {
+        for (String url : images) {
             ImageView slideImage = new ImageView(this);
+            slideImage.setTransitionName("myImage");
             Picasso.with(getApplicationContext()).load(url).into(slideImage);
             slideImage.setScaleType(ImageView.ScaleType.FIT_XY);
             flipper.addView(slideImage);
 
-        }*/
+        }
 
-        ImageView slideImage = new ImageView(this);
-        slideImage.setTransitionName("myImage");
-        Picasso.with(getApplicationContext()).load(images.get(0)).into(slideImage);
-        slideImage.setScaleType(ImageView.ScaleType.FIT_XY);
-        flipper.addView(slideImage);
-
-        /*fadein = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
-        fadeout = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
         flipper.setInAnimation(fadein);
         flipper.setOutAnimation(fadeout);
         flipper.setAutoStart(true);
         flipper.setFlipInterval(4000);
-        flipper.startFlipping();*/
+        flipper.startFlipping();
 
     }
 
@@ -170,7 +167,7 @@ public class DetailsActivity extends AppCompatActivity {
      * Sets the title for the toolbar.
      * @param title title of the toolbar
      */
-    public void setToolbarTitle(String title){
+    private void setToolbarTitle(String title){
         TextView toolbarText = (TextView)findViewById(R.id.toolbar_title);
         toolbarText.setText(title.toUpperCase());
     }
@@ -183,7 +180,7 @@ public class DetailsActivity extends AppCompatActivity {
      */
     private class ScrollPositionObserver implements ViewTreeObserver.OnScrollChangedListener {
 
-        private int mImageViewHeight;
+        private final int mImageViewHeight;
 
         /**
          * checks the height of the photo.

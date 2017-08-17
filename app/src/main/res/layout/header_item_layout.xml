@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <ImageView
+        android:contentDescription="@string/grid_image"
         android:id="@+id/header_image"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -14,13 +15,14 @@
         <include layout="@layout/imagegrid_textview"/>
         <TextView
             android:layout_width="wrap_content"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/colorWhiteTransparent"
             android:layout_height="wrap_content"
             android:id="@+id/distanceTextViewHeader"
             android:paddingBottom="5dp"
             android:layout_gravity="bottom|center" />
         <ImageView
+            android:contentDescription="@string/chat_active"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/online_indicator"
