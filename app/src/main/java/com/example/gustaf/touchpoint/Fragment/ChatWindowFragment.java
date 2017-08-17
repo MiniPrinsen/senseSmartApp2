@@ -218,7 +218,7 @@ public class ChatWindowFragment extends Fragment {
                 throws IOException {
             InputStream stream = null;
             String sendMessage = chatText.getText().toString();
-            String requestURL = urlString + "?message=" + URLEncoder.encode(sendMessage, "UTF-8");
+            String requestURL = urlString + "?id="+chat.getIdString()+"&message=" + URLEncoder.encode(sendMessage, "UTF-8");
             java.net.URL url = new URL(requestURL);
             URLConnection connection = url.openConnection();
 

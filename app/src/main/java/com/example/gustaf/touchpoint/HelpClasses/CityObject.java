@@ -161,6 +161,9 @@ public class CityObject implements Parcelable {
         parcel.writeDouble(getCurrentLocation().getLatitude());
 
     }
+    public String getId(){
+        return _id.get$oid();
+    }
 
     public static final Parcelable.Creator<CityObject> CREATOR
             = new Parcelable.Creator<CityObject>() {
@@ -177,7 +180,7 @@ public class CityObject implements Parcelable {
      * @author fhp
      *
      */
-    private class Oid{
+    public class Oid{
         String $oid;
         String get$oid() {
             return $oid;

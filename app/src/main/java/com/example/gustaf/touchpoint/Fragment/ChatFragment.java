@@ -161,6 +161,7 @@ public class ChatFragment extends Fragment {
             Bundle args = new Bundle();
             args.putString("cityobject",closestCityObject.getImgs().get(0));
             args.putString("name", closestCityObject.getName());
+            args.putString("id", closestCityObject.getId());
 
 
             Intent intent = new Intent(getContext(), ChatActivity.class);

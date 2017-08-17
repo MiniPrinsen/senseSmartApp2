@@ -34,6 +34,7 @@ public class ChatActivity extends AppCompatActivity {
     private AppBarLayout toolbar;
     private boolean keyBoardvisible = false;
     private LinearLayout exampleQuestions;
+    String id = null;
 
     /**
      * This is where we inflate the layout of ChatActivity. That includes the viewpager and toolbar.
@@ -45,6 +46,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         String imageUrl = getIntent().getExtras().getString("cityobject");
         String name = getIntent().getExtras().getString("name");
+        id = getIntent().getExtras().getString("id");
 
         TextView toolbarName = (TextView)findViewById(R.id.name);
         toolbarName.setText(name);
@@ -92,6 +94,12 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
+    }
+    public String getIdString() {
+        if(id!= null) {
+            return id;
+        }
+        return null;
     }
 
 

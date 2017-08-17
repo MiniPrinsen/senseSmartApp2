@@ -23,7 +23,7 @@
     <string name="change_language">Språk</string>
     <string name="interact_text">Klicka för att interagera!</string>
     <string name="sample_questions">Tell me something interesting \n Tell me a joke \n How old are you? \n
-    How are you? \n </string>
+    How are you? \n What\'s the meaning of life? \n </string>
     <string name="sample_questions_title">En del saker du kan fråga mig:</string>
     <string name="search_radius">Maxavstånd</string>
     <string name="length_kilometers">%d KM</string>

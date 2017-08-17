@@ -23,7 +23,7 @@
     <string name="change_language">Language</string>
     <string name="interact_text">Click to interact!</string>
     <string name="sample_questions">Tell me something interesting \n Tell me a joke \n How old are you? \n
-    How are you? \n </string>
+    How are you? \n What\'s the meaning of life? \n Do you know any good places to eat? \n </string>
     <string name="sample_questions_title">Some things you can ask me:</string>
     <string name="search_radius">Max distance</string>
     <string name="length_kilometers">%d KM</string>
