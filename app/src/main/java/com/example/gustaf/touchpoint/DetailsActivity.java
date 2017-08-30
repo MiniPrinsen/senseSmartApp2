@@ -90,6 +90,7 @@ public class DetailsActivity extends AppCompatActivity {
                     Intent i = new Intent(getApplicationContext(), ChatActivity.class);
                     i.putExtra("cityobject",cityObject.getImgs().get(0));
                     i.putExtra("name", cityObject.getName());
+                    i.putExtra("id", cityObject.getId());
                     startActivity(i);
                 }
             });

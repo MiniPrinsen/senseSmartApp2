@@ -37,7 +37,8 @@ import java.net.URLEncoder;
  */
 public class ChatWindowFragment extends Fragment {
     private Button                          buttonSend;
-    private static final String              URL ="http://35.158.191.6:8080/sensesmart/hey";
+    private static final String                URL="http://52.57.72.87:8090/sensesmart/chatbot";
+    //private static final String              URL ="http://35.158.191.6:8080/sensesmart/hey";
     private EditText                        chatText;
     private ChatArrayAdapter                chatArrayAdapter;
     private ListView                        listView;
@@ -218,7 +219,9 @@ public class ChatWindowFragment extends Fragment {
                 throws IOException {
             InputStream stream = null;
             String sendMessage = chatText.getText().toString();
-            String requestURL = urlString + "?id="+chat.getIdString()+"&message=" + URLEncoder.encode(sendMessage, "UTF-8");
+            String id = chat.getIdString();
+            String requestURL = urlString + "?id="+id+"&message=" + URLEncoder.encode(sendMessage, "UTF-8");
+            //Log.d("JOHANNAID", chat.getIdString());
             java.net.URL url = new URL(requestURL);
             URLConnection connection = url.openConnection();
 

@@ -27,7 +27,9 @@ import java.util.ArrayList;
  * We send a POST request to the server and gets a response.
  */
 public class GetCityObjects implements Runnable {
-    private static final String             HOST = "http://35.158.191.6:8080/sensesmart/hey";
+    //http://52.57.72.87:8090/sensesmart/cityobjects?longitude=20&latitude=64&distance=50
+    //private static final String             HOST = "http://35.158.191.6:8080/sensesmart/hey";
+    private static final String             HOST = "http://52.57.72.87:8090/sensesmart/cityobjects";
     private final double                          longitude;
     private final double                          latitude;
     private final int                             distance;
