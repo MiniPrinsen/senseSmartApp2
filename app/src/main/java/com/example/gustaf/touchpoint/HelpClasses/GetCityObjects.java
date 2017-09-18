@@ -28,18 +28,20 @@ import java.util.ArrayList;
  */
 public class GetCityObjects implements Runnable {
     //http://52.57.72.87:8090/sensesmart/cityobjects?longitude=20&latitude=64&distance=50
-    //private static final String             HOST = "http://35.158.191.6:8080/sensesmart/hey";
-    private static final String             HOST = "http://52.57.72.87:8090/sensesmart/cityobjects";
+    //private static final String             HOST = "http://touchpoint.gustafwennerstrom.com/cityobjects";
+    private static final String                   HOST = "http://ec2-52-58-76-230.eu-central-1.compute.amazonaws.com:8090/sensesmart/cityobjects";
     private final double                          longitude;
     private final double                          latitude;
     private final int                             distance;
     private final Handler                         handler;
+    private final String                          imageURL = "http://ec2-52-58-76-230.eu-central-1.compute.amazonaws.com:8090/sensesmart/images";
 
     public GetCityObjects(double lng, double lat, int dist, Handler handler){
         this.longitude = lng;
         this.latitude = lat;
         this.distance = dist;
         this.handler = handler;
+
     }
 
     /**
@@ -81,6 +83,12 @@ public class GetCityObjects implements Runnable {
                 cObject.setCurrentLocation(new Coordinates(latitude, longitude));
                 cObject.setLengthBetween();
                 temp.add(cObject);
+                ArrayList<String> images = cObject.getImgs();
+                for (int j = 0; j < images.size(); j++){
+                    String image = images.get(j);
+                    image = image.substring(image.lastIndexOf("/") + 1, image.length());
+                    images.set(j, imageURL+"/"+image);
+                }
             }
 
         }

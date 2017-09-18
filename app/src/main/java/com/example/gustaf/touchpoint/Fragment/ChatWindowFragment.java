@@ -37,8 +37,7 @@ import java.net.URLEncoder;
  */
 public class ChatWindowFragment extends Fragment {
     private Button                          buttonSend;
-    private static final String                URL="http://52.57.72.87:8090/sensesmart/chatbot";
-    //private static final String              URL ="http://35.158.191.6:8080/sensesmart/hey";
+    private static final String             URL="http://ec2-52-58-76-230.eu-central-1.compute.amazonaws.com:8090/sensesmart/chatbot";
     private EditText                        chatText;
     private ChatArrayAdapter                chatArrayAdapter;
     private ListView                        listView;

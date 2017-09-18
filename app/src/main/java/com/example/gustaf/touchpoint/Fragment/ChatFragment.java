@@ -43,12 +43,12 @@ public class ChatFragment extends Fragment {
     private Boolean             firstTime = true;
     private Boolean              isShown = false;
     private CityObject         closestCityObject;
-    private LinearLayout          circleContainer;
+    private LinearLayout         circleContainer;
     private Animation                       spin;
     private ProgressBar              progressbar;
-    private ColorStateList              oldColors;
-    private Animation backgroundAnimation2;
-    private Animation backgroundAnimation;
+    private ColorStateList             oldColors;
+    private Animation       backgroundAnimation2;
+    private Animation        backgroundAnimation;
 
     public ChatFragment() {
         // Required empty public constructor
