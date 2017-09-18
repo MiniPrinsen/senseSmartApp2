@@ -176,7 +176,7 @@ public class CityObject implements Parcelable {
         }
     };
     /**
-     * Mongodb will automatically generate ObjectId
+     * Mongodb will automatically generate ObjectId - yes
      * @author fhp
      *
      */
@@ -185,7 +185,6 @@ public class CityObject implements Parcelable {
         String get$oid() {
             return $oid;
         }
-
         void set$oid(String $oid) {
             this.$oid = $oid;
         }
